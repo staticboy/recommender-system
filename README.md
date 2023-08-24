@@ -1,10 +1,12 @@
-# Vue 3 + TypeScript + Vite
+# Setup
+## Vue 3 + TypeScript + Vite
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
 ## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+- Optionals: [Tailwindcss IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) + [Auto Close HTML Tags](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag) + [Auto Rename HTML Tags](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag) + [View Git Commit History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 
 ## Type Support For `.vue` Imports in TS
 
@@ -16,3 +18,19 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+## Inital setup
+1. Pull/Clone from repository
+2. Run `npm ci` on git bash to install required libraries
+
+## Run app locally
+Run `npm run dev` on git bash. A local link will be provided in either of these formats 
+- `http://127.0.0.1:xxxx`
+- `http://localhost:xxxx`.
+
+**Note: If local deployment doesn't work, run `npm ci` in the respective folder, then deploy again. Deployment requires all libraries to be up to date.** 
+
+# General
+## How to format your commit messages
+
+[Guide on how to properly format commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
