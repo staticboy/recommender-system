@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { Quasar } from 'quasar'
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from './router/routes'
 import './index.css'
 
 // Import icon libraries
@@ -16,8 +18,20 @@ import 'quasar/src/css/index.sass'
 import './style.css'
 import App from './App.vue'
 
-createApp(App)
-  .use(Quasar, {
-    plugins: {}, // import Quasar plugins and add here
-  })
-  .mount('#app')
+let app = createApp(App)
+let router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+app.use(router)
+app.use(Quasar, {
+  config: {},
+  plugins: {},
+})
+app.mount('#app')
+
+// createApp(App)
+//   .use(Quasar, {
+//     plugins: {}, // import Quasar plugins and add here
+//   })
+//   .mount('#app')
