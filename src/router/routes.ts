@@ -3,7 +3,7 @@ import { RouteRecordRaw } from "vue-router";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("layouts/NoLoginLayout.vue"),
+    component: () => import("../layouts/NoLoginLayout.vue"),
     redirect: {
       path: "/login",
     },
@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: "LoginPage",
         path: "/login",
-        component: () => import("pages/LoginPage.vue"),
+        component: () => import("../pages/LoginPage.vue"),
         meta: {
           noNav: true,
         },
@@ -21,12 +21,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: "",
     meta: { requiresAuth: true },
-    component: () => import("src/layouts/MainLayout.vue"),
+    component: () => import("../layouts/MainLayout.vue"),
     children: [
       {
         name: "HomePage",
         path: "/home",
-        component: () => import("src/pages/HomePage.vue"),
+        component: () => import("../pages/HomePage.vue"),
       },
     ],
   },
@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
+    component: () => import("../pages/ErrorNotFound.vue"),
   },
 ];
 
