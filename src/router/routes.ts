@@ -44,6 +44,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import("../pages/AdminBusinessList.vue"),
   },
   {
+    name: "AdminBusinessProfile",
+    path: "/adm-business-profile",
+    component: () => import("../pages/AdminBusinessProfile.vue"),
+  },
+  {
     name: "AdminCategoriesList",
     path: "/adm-cat-list",
     component: () => import("../pages/AdminCategoryList.vue"),

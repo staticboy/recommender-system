@@ -7,6 +7,10 @@
                     Admin Category List
                 </h1>
 
+                <div class="btngrp">
+                    <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-home" label="Go Home" no-caps />
+
+                </div>
             </header>
 
             <table>
@@ -55,12 +59,13 @@
                     <td>Accessories</td>
                     <td><button>View Category Profile</button></td>
                 </tr>
+                
             </table>
 
 
 
 
-            <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-home" label="Go Home" no-caps />
+
         </div>
     </div>
 </template>
