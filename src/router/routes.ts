@@ -53,6 +53,16 @@ const routes: RouteRecordRaw[] = [
     path: "/adm-cat-list",
     component: () => import("../pages/AdminCategoryList.vue"),
   },
+  {
+    name: "AdminCategoryProfile",
+    path: "/adm-cat-profile",
+    component: () => import("../pages/AdminCategoryProfile.vue"),
+  },
+  {
+    name: "AdminPerformanceDashboard",
+    path: "/adm-performance-dashboard",
+    component: () => import("../pages/AdminPerformanceDashboard.vue"),
+  },
   //admin end
   // Always leave this as last one,
   // but you can also remove it

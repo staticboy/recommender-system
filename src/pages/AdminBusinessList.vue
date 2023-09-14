@@ -25,29 +25,33 @@
         <tr>
           <td>1</td>
           <td>Arctic Corporation</td>
-          <td><router-link to="/adm-business-profile" class="btn">About</router-link></td>
+          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
 
         </tr>
         <tr>
           <td>2</td>
           <td>NASA Enterprises</td>
-          <td><button>Open Profile</button></td>
+          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+
 
         </tr>
         <tr>
           <td>3</td>
           <td>Entity Framework Inc.</td>
-          <td><button>Open Profile</button></td>
+          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+
         </tr>
         <tr>
           <td>4</td>
           <td>Helium Voice Company</td>
-          <td><button>Open Profile</button></td>
+          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+
         </tr>
         <tr>
           <td>5</td>
           <td>Sportify Public Corporation</td>
-          <td><button>Open Profile</button></td>
+          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+
         </tr>
       </table>
 

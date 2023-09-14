@@ -12,7 +12,7 @@
                         <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-cat-list" label="Categories" no-caps />
                     </li>
                     <li>
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-performance" label="Performance" no-caps />
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-performance-dashboard" label="Performance" no-caps />
                     </li>
                 </ul>
             </section>
