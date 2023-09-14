@@ -55,6 +55,11 @@ const routes: RouteRecordRaw[] = [
     path: "/biz-profile",
     component: () => import("../pages/BizOwnerProfile.vue"),
   },
+  {
+    name: "BizOwnerTransactionHistory",
+    path: "/biz-trans-hist",
+    component: () => import("../pages/BizOwnerTransactionHist.vue"),
+  },
   // bizOwner end
   // Always leave this as last one,
   // but you can also remove it
