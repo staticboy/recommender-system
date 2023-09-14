@@ -51,9 +51,9 @@ const routes: RouteRecordRaw[] = [
   //admin end
   //bizOwner start
   {
-    name: "BizOwnerProfile",
-    path: "/biz-profile",
-    component: () => import("../pages/BizOwnerProfile.vue"),
+    name: "BizOwnerSubmitEnquiries",
+    path: "/biz-submit-enq",
+    component: () => import("../pages/BizOwnerSubmitEnq.vue"),
   },
   {
     name: "BizOwnerTransactionHistory",
