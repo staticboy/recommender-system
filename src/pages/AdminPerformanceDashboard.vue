@@ -1,13 +1,33 @@
+<script setup lang="ts">
+import AdminBarGraph from '../components/Administrator/AdminBarGraph.vue';
+import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
+
+
+
+</script>
+
 <template>
     <div class="db-body">
         <header>
             <h1> Performance Dashboard</h1>
             <q-btn class="" color="white" text-color="blue" unelevated to="/adm-home" label="Go Home" no-caps />
-
+            
         </header>
         <div class="db-content ">
 
+            <div class="date-box flex flex-row">   
 
+              <div>
+                <label for="birthday">From :</label>
+                <input type="date" id="birthday" name="birthday">
+              </div>
+
+              <div>
+                <label for="birthday">To :</label>
+                <input type="date" id="birthday" name="birthday">
+              </div>
+
+            </div>
             <div class="" id="first-child">
                 <div class="first-child-internal">
                     <h5>Top Rager</h5>
@@ -91,22 +111,30 @@
             <div class="" id="second-child">
                 <div class="second-child-internal">
                     <h6>Historical Performance</h6>
+                    <div>
+                    
+                    <AdminLineGraph/>
+                    </div>
                 </div>
                 <div class="second-child-internal">
                     <h6>Recommended Brands</h6>
+                    <AdminBarGraph/>
+
                 </div>
             </div>
 
+            <div class="performance-audit">
+              <h6><i>Last Updated : 08 12 2023 12:13:14</i></h6>
+            </div>
 
 
 
         </div>
     </div>
+
 </template>
   
-<script>
 
-</script>
 
 <style scoped lang="scss">
 * {
@@ -142,7 +170,7 @@ img {
 
 #second-child{
   display: grid;
-  grid-template-areas:'_line _line _line _bar _bar';
+  grid-template-areas:'_line _line _line _line _bar _bar ';
   gap: 10px;
   
   padding: 10px;
