@@ -88,6 +88,8 @@
     </div>
   </div>
 </template>
+
+
 <style scoped lang="scss">
 * {
   text-align: left;
