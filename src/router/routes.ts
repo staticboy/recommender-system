@@ -20,13 +20,45 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "",
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: false },
     component: () => import("../layouts/MainLayout.vue"),
     children: [
       {
         name: "HomePage",
         path: "/home",
         component: () => import("../pages/HomePage.vue"),
+      },
+      //Member Pages
+      {
+        name: "MemberWishlist",
+        path: "/user/wishlist",
+        component: () => import("../pages/MemberWishlist.vue"),
+      },
+      {
+        name: "MemberTransactions",
+        path: "/user/transactions",
+        component: () => import("../pages/MemberTransactions.vue"),
+      },
+      {
+        name: "MemberEnquiry",
+        path: "/user/enquiry",
+        component: () => import("../pages/MemberEnquiry.vue"),
+      },
+      //Business Owner Pages
+      {
+        name: "BizProfile",
+        path: "/biz/profile",
+        component: () => import("../pages/BizProfile.vue"),
+      },
+      {
+        name: "BizProducts",
+        path: "/biz/products",
+        component: () => import("../pages/BizProducts.vue"),
+      },
+      {
+        name: "BizProductsAll",
+        path: "/biz/products-all",
+        component: () => import("../pages/BizProductsAdd.vue"),
       },
      
     ],
