@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginModal from "src/components/Modals/LoginModal.vue";
+import LoginModal from "../components/Modals/LoginModal.vue";
 </script>
 <template>
   <q-page>

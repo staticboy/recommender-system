@@ -3,7 +3,7 @@ import { RouteRecordRaw } from "vue-router";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("layouts/NoLoginLayout.vue"),
+    component: () => import("../layouts/NoLoginLayout.vue"),
     redirect: {
       path: "/login",
     },
@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: "LoginPage",
         path: "/login",
-        component: () => import("pages/LoginPage.vue"),
+        component: () => import("../pages/LoginPage.vue"),
         meta: {
           noNav: true,
         },
@@ -20,13 +20,35 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "",
-    meta: { requiresAuth: true },
-    component: () => import("src/layouts/MainLayout.vue"),
+    meta: { requiresAuth: false },
+    component: () => import("../layouts/MainLayout.vue"),
     children: [
       {
         name: "HomePage",
         path: "/home",
-        component: () => import("src/pages/HomePage.vue"),
+        component: () => import("../pages/HomePage.vue"),
+      },
+      //Member Pages
+      {
+        name: "MemberProfile",
+        path: "/user/products",
+        component: () => import("../pages/MemberProducts.vue"),
+      },
+      //Business Owner Pages
+      {
+        name: "BizProfile",
+        path: "/biz/profile",
+        component: () => import("../pages/BizProfile.vue"),
+      },
+      {
+        name: "BizProducts",
+        path: "/biz/products",
+        component: () => import("../pages/BizProducts.vue"),
+      },
+      {
+        name: "BizProductsAll",
+        path: "/biz/products-all",
+        component: () => import("../pages/BizProductsAdd.vue"),
       },
     ],
   },
@@ -34,7 +56,7 @@ const routes: RouteRecordRaw[] = [
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
+    component: () => import("../pages/ErrorNotFound.vue"),
   },
 ];
 
