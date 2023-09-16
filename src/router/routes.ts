@@ -30,9 +30,9 @@ const routes: RouteRecordRaw[] = [
       },
       //Member Pages
       {
-        name: "MemberProfile",
-        path: "/user/products",
-        component: () => import("../pages/MemberProducts.vue"),
+        name: "MemberWishlist",
+        path: "/user/wishlist",
+        component: () => import("../pages/MemberWishlist.vue"),
       },
       //Business Owner Pages
       {

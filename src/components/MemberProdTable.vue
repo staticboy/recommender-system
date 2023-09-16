@@ -2,8 +2,32 @@
   <div>
     <SearchBar v-model="searchQuery" class="q-mb-md" />
 
-    <q-table :rows="filteredProducts" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns"
-      :row-key="row => row.id" grid card-class="bg-blue-7 text-white">
+    <q-table :rows="filteredProducts" :rows-per-page-options="[10, 20, 30]" :columns="columns" :row-key="prod_name"
+      selection="multiple"
+      v-model:selected="selected"
+      grid
+      hide-header>
+      <template v-slot:item="props">
+        <div
+          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
+          >
+          <q-card bordered dense>
+            <q-separator />
+            <q-list dense>
+              <q-item v-for="col in props.cols.filter(col => col.name !== 'desc')" :key="col.prod_name">
+                <q-item-section>
+                  <q-item-label>{{ col.label }}</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-item-label caption>{{ col.value }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+            <q-separator />
+              <q-btn color="primary" rounded glossy icon="shopping_cart" class="btn-fixed-width"/>
+          </q-card>
+        </div>
+      </template>
     </q-table>
   </div>
 </template>
@@ -144,48 +168,23 @@ const products = ref([
   },
 ]);
 
-const categoryOptions = computed(() => [
-  'Golf',
-  'Tennis',
-  'Basketball',
-  'Soccer',
-]);
-
-const subCategoryOptions = computed(() => [
-  'Equipment',
-  'Apparel',
-  'Accesories',
-  'Footwear',
-]);
-
-const availabilityOptions = computed(() => [
-  'Available',
-  'Not Available',
-]);
 
 
 const columns = computed(() => [
-  // {
-  //   name: 'prod_id',
-  //   required: true,
-  //   label: 'ID',
-  //   align: 'left',
-  //   field: 'prod_id',
-  //   sortable: true,
-  // },
+  {
+    name: 'prod_id',
+    required: true,
+    label: 'ID',
+    align: 'left',
+    field: 'prod_id',
+    sortable: true,
+  },
   {
     name: 'prod_name',
     required: true,
     label: 'Product Name',
     align: 'left',
     field: row => row.prod_name + ' (' + row.prod_modelnum + ')',
-    sortable: true,
-  },
-  {
-    name: 'prod_description',
-    label: 'Description',
-    align: 'left',
-    field: 'prod_description',
     sortable: true,
   },
   {
@@ -202,13 +201,6 @@ const columns = computed(() => [
     field: row => '$' + row.prod_price,
     sortable: true,
   },
-  // {
-  //   name: 'prod_modelnum',
-  //   label: 'SKU',
-  //   align: 'left',
-  //   field: 'prod_modelnum' ,
-  //   sortable: true,
-  // },
   {
     name: 'cat_id',
     label: 'Category',
@@ -216,13 +208,6 @@ const columns = computed(() => [
     field: row => row.cat_id + ' - ' + row.sub_cat,
     sortable: true,
   },
-  // {
-  //   name: 'sub_cat',
-  //   label: 'Sub Category',
-  //   align: 'left',
-  //   field: 'sub_cat',
-  //   sortable: true,
-  // },
   {
     name: 'biz_name',
     label: 'Seller',
@@ -245,15 +230,5 @@ const filteredProducts = computed(() => {
   );
 });
 
-const stockQtyStyle = ref((stockQty) => {
-  return {
-    color: stockQty < 20 ? 'red' : 'inherit',
-    'font-weight': stockQty < 20 ? 'bold' : 'normal',
-  };
-});
-
-const toggleRowExpansion = (row) => {
-  row.expanded = !row.expanded;
-};
 
 </script>
