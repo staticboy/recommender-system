@@ -1,4 +1,6 @@
 <script setup lang="ts">
+
+
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">
@@ -10,12 +12,17 @@
           </q-avatar>
 
           <q-toolbar-title>
-            Dashboard
+            Aneh International Sportify
           </q-toolbar-title>
 
           <q-btn flat round dense icon="whatshot" />
       </q-toolbar>
       <template>
+
+        <div>
+       test
+          <TransactionList />
+        </div>
 
       </template>
       <!-- <q-footer></q-footer> -->
