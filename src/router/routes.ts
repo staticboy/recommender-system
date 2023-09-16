@@ -89,6 +89,28 @@ const routes: RouteRecordRaw[] = [
     component: () => import("../pages/AdminEnquiryForm.vue"),
   },
   //admin end
+  //bizOwner start
+  {
+    name: "BizOwnerSubmitEnquiries",
+    path: "/biz-submit-enq",
+    component: () => import("../pages/BizOwnerSubmitEnq.vue"),
+  },
+  {
+    name: "BizOwnerTransactionHistory",
+    path: "/biz-trans-hist",
+    component: () => import("../pages/BizOwnerTransactionHist.vue"),
+  },
+  {
+    name: "BizOwnerProductLists",
+    path: "/biz-prod-lists",
+    component: () => import("../pages/BizOwnerProductLists.vue"),
+  },
+  {
+    name: "BizOwnerChart",
+    path: "/biz-chart",
+    component: () => import("../pages/BizOwnerChart.vue"),
+  },
+  // bizOwner end
   // Always leave this as last one,
   // but you can also remove it
   {
