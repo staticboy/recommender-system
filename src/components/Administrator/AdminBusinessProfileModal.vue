@@ -1,11 +1,14 @@
+<script setup >
 
+import { ref } from 'vue';
 
+</script>
 
 <template>
   
 
 
-
+  
   <div class="fullscreen text-white text-center q-pa-md flex flex-center">
     
     
@@ -15,8 +18,7 @@
         <h1>
           Business Profile : <b>Little Drummer Boy</b>
         </h1>
-        <q-btn class="q-mt-md" color="white" text-color="blue" unelevated to="/adm-business-list" label="Go Back" no-caps />
-
+        
         <form class="q-mt-lg max-w-lg">
           <div class=" mb-8">
             <div class="form-group">
@@ -64,8 +66,8 @@
             </div>
 
             <div class="form-group">
-              <router-link to="/adm-business-list" class="btn" id="approve">Approve</router-link>
-              <router-link to="/adm-business-list" class="btn" id="reject">Reject</router-link>
+              <router-link to="/adm-home" class="btn" id="approve">Approve</router-link>
+              <router-link to="/adm-home" class="btn" id="reject">Reject</router-link>
             </div>
 
           </div>
@@ -114,6 +116,9 @@ export default {
 .l-body {
   width: 960px;
   height: 90vh;
+  background : #36454F;
+  box-sizing: border-box;
+  padding:15px;
 }
 
 

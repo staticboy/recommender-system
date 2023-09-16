@@ -30,7 +30,6 @@
                 </ul>
             </section>
 
-            <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-home" label="Go Home" no-caps />
         </div>
     </div>
 </template>
