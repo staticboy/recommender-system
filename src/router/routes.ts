@@ -59,6 +59,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import("../pages/AdminCategoryProfile.vue"),
   },
   {
+    name: "AdminCategoryNewProfile",
+    path: "/adm-cat-new",
+    component: () => import("../pages/AdminCategoryNewProfile.vue"),
+  },
+  {
     name: "AdminPerformanceDashboard",
     path: "/adm-performance-dashboard",
     component: () => import("../pages/AdminPerformanceDashboard.vue"),
