@@ -16,11 +16,19 @@ const routes: RouteRecordRaw[] = [
           noNav: true,
         },
       },
+      {
+        name: "SignUpPage",
+        path: "/signup",
+        component: () => import("../pages/SignUpPage.vue"),
+        meta: {
+          noNav: true,
+        },
+      },
     ],
   },
   {
     path: "",
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     component: () => import("../layouts/MainLayout.vue"),
     children: [
       {

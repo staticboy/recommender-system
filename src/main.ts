@@ -29,9 +29,3 @@ app.use(Quasar, {
   plugins: {},
 })
 app.mount('#app')
-
-// createApp(App)
-//   .use(Quasar, {
-//     plugins: {}, // import Quasar plugins and add here
-//   })
-//   .mount('#app')
