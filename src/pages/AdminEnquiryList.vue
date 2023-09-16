@@ -7,24 +7,33 @@
     <div class="l-body">
       <header>
         <h1>
-          Admin Business Approval List
+          Admin Enquiries
         </h1>
-        <div class="btngrp flex flex-row">
-
-          <div class="q-mt-xl">
+        <div class="q-mt-xl">
             <router-link to="/adm-home" class="btn">Return Home</router-link>
 
           </div>
+        <div class="btngrp flex flex-row">
+
+
 
         <div class="q-mt-xl form-group">
-            <label for="name">Name:</label>
+            <label for="name">User:</label>
             <input id="name" type="text" placeholder="Enter your business name" />
         </div>
         <div class="q-mt-xl form-group">
             <label for="Status">Status:</label>
             <select id="Status">
-                <option value="2">Approved</option>
-                <option value="1">Pending</option>
+                <option value="2">Responded</option>
+                <option value="1">Submitted</option>
+                <option value="0">None</option>
+            </select>
+        </div>
+        <div class="q-mt-xl form-group">
+            <label for="uType">User Type:</label>
+            <select id="uType">
+                <option value="2">Business Owner</option>
+                <option value="1">Member</option>
                 <option value="0">None</option>
             </select>
         </div>
@@ -43,45 +52,76 @@
         </div>
       </header>
 
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Business Name</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Arctic Corporation</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+      <table class="q-mt-lg">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>User Type</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Arctic Corporation</td>
+      <td>Responded</td>
+      <td>Business Owner</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>NASA Enterprises</td>
+      <td>Submitted</td>
+      <td>Member</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Entity Framework Inc.</td>
+      <td>Responded</td>
+      <td>Business Owner</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Helium Voice Company</td>
+      <td>Submitted</td>
+      <td>Member</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Sportify Public Corporation</td>
+      <td>Responded</td>
+      <td>Business Owner</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Tesla Inc.</td>
+      <td>Submitted</td>
+      <td>Member</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Microsoft Corporation</td>
+      <td>Responded</td>
+      <td>Business Owner</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Alphabet Inc.</td>
+      <td>Submitted</td>
+      <td>Member</td>
+      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+    </tr>
+  </tbody>
+</table>
 
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>NASA Enterprises</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Entity Framework Inc.</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Helium Voice Company</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Sportify Public Corporation</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-      </table>
 
 
 

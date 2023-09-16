@@ -15,7 +15,7 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
 
       <header>
         <h1>
-          Business Profile : <b>Wheat Tea Witty</b>
+          Member Profile: <b>Wheat Tea Witty</b>
         </h1>
         
         <div class="flex flex-row">

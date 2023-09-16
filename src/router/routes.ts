@@ -73,6 +73,16 @@ const routes: RouteRecordRaw[] = [
     path: "/adm-customer-profile",
     component: () => import("../pages/AdminCustomerProfile.vue"),
   },
+  {
+    name: "AdminEnquiryList",
+    path: "/adm-enquiry-list",
+    component: () => import("../pages/AdminEnquiryList.vue"),
+  },
+  {
+    name: "AdminEnquiryForm",
+    path: "/adm-enquiry",
+    component: () => import("../pages/AdminEnquiryForm.vue"),
+  },
   //admin end
   // Always leave this as last one,
   // but you can also remove it
