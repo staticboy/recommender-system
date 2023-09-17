@@ -10,7 +10,7 @@
           Admin Enquiries
         </h1>
         <div class="q-mt-xl">
-            <router-link to="/adm-home" class="btn">Return Home</router-link>
+            <router-link to="/admin/home" class="btn">Return Home</router-link>
 
           </div>
         <div class="btngrp flex flex-row">
@@ -68,56 +68,56 @@
       <td>Arctic Corporation</td>
       <td>Responded</td>
       <td>Business Owner</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>2</td>
       <td>NASA Enterprises</td>
       <td>Submitted</td>
       <td>Member</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>3</td>
       <td>Entity Framework Inc.</td>
       <td>Responded</td>
       <td>Business Owner</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>4</td>
       <td>Helium Voice Company</td>
       <td>Submitted</td>
       <td>Member</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>5</td>
       <td>Sportify Public Corporation</td>
       <td>Responded</td>
       <td>Business Owner</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>6</td>
       <td>Tesla Inc.</td>
       <td>Submitted</td>
       <td>Member</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>7</td>
       <td>Microsoft Corporation</td>
       <td>Responded</td>
       <td>Business Owner</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>8</td>
       <td>Alphabet Inc.</td>
       <td>Submitted</td>
       <td>Member</td>
-      <td><router-link to="/adm-enquiry" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/enquiry" class="btn">Open Profile</router-link></td>
     </tr>
   </tbody>
 </table>

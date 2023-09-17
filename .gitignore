@@ -32,5 +32,3 @@ dist-ssr
 
 # local
 .env
-auto-imports.d.ts
-components.d.ts

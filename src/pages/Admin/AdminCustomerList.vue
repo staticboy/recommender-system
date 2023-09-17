@@ -30,12 +30,12 @@ function toggleModel() {
       -->
       <header>
         <h1>
-          Admin Business Approval List
+          Customer List
         </h1>
         <div class="btngrp flex flex-row">
 
           <div class="q-mt-xl">
-            <router-link to="/adm-home" class="btn">Return Home</router-link>
+            <router-link to="/admin/home" class="btn">Return Home</router-link>
 
           </div>
 
@@ -66,45 +66,76 @@ function toggleModel() {
         </div>
       </header>
 
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Business Name</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Arctic Corporation</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
+      <table class="q-mt-xl">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Customer Name</th>
+      <th>Last Login Datetime</th>
+      <th>Total Purchases</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Caeleb Dressel</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>10</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Rafael Nadal</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>15</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>LeBron James</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>20</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Tiger Woods</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>25</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Rory McIlroy</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>30</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Serena Williams</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>35</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Simone Biles</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>40</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Lionel Messi</td>
+      <td>2023-09-16 18:38:10 PST</td>
+      <td>45</td>
+      <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
+    </tr>
+  </tbody>
+</table>
 
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>NASA Enterprises</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Entity Framework Inc.</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Helium Voice Company</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Sportify Public Corporation</td>
-          <td><router-link to="/adm-business-profile" class="btn">Open Profile</router-link></td>
-
-        </tr>
-      </table>
 
 
 
@@ -158,6 +189,7 @@ Structure start
 .l-body {
     width: 960px;
     height: 90vh;
+    overflow: scroll;
 }
 
 /***********

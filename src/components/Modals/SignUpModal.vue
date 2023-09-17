@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useQuasar } from "quasar";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 // import { useAuthStore } from "src/stores/auth";
@@ -9,7 +10,7 @@ const rules = {
 };
 const router = useRouter();
 // const authStore = useAuthStore();
-// const q = useQuasar();
+const q = useQuasar();
 
 const form = ref({
   email: "",
@@ -18,7 +19,6 @@ const form = ref({
 });
 
 const errorMessage = ref("");
-const loginToggle = ref("member");
 
 const onSubmit = async () => {
   // q.loading.show();
@@ -33,7 +33,10 @@ const onSubmit = async () => {
   //     color: "negative",
   //   });
   // }
-  router.push({ name: "HomePage" });
+  q.notify({
+    message: `Successfully registered! Please check your email for the verification link.`,
+    color: "positive",
+  });
 };
 
 // const login = async () => {
@@ -64,21 +67,7 @@ onMounted(() => {
 <template>
   <q-card class="absolute-center" style="width: 35vw">
     <q-card-section>
-      <h4 class="q-ma-none text-xl">Log In</h4>
-    </q-card-section>
-    <q-card-section class="w-full">
-      <q-btn-toggle
-        flat
-        spread
-        no-caps
-        size="lg"
-        toggle-color="primary"
-        v-model="loginToggle"
-        :options="[
-          { label: 'Member', value: 'member' },
-          { label: 'Business Owner', value: 'biz' },
-        ]"
-      />
+      <h4 class="q-ma-none text-xl">Sign Up</h4>
     </q-card-section>
     <q-card-section class="px-7">
       <q-form @submit.prevent.stop="onSubmit">
@@ -108,26 +97,42 @@ onMounted(() => {
             <q-icon name="lock" />
           </template>
         </q-input>
-        <q-btn
-          size="md"
-          submit
-          class="full-width mt-6"
-          label="Sign In"
-          no-caps
-          color="primary"
-          unelevated
-          @click="onSubmit"
-        />
+        <q-input
+          outlined
+          clearable
+          v-model="form.password"
+          type="password"
+          label="Confirm Password"
+          lazy-rules
+          :rules="rules.password"
+        >
+          <template v-slot:prepend>
+            <q-icon name="lock" />
+          </template>
+        </q-input>
+        <div class="flex justify-between">
+          <q-btn
+            size="md"
+            label="Back"
+            no-caps
+            unelevated
+            @click="router.go(-1)"
+            style="width: 45%;"
+          />
+          <q-btn
+            size="md"
+            submit
+            label="Sign Up"
+            no-caps
+            color="primary"
+            unelevated
+            style="width: 45%;"
+          />
+        </div>
         <div class="text-bold text-center text-white">
           {{ errorMessage }}
         </div>
       </q-form>
-    </q-card-section>
-    <q-card-section>
-      Don't have an account? Sign up
-      <u class="cursor-pointer" @click="router.push({ name: 'SignUpPage' })">
-        here
-      </u>
     </q-card-section>
   </q-card>
 </template>

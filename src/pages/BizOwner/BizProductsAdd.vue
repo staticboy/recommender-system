@@ -120,12 +120,12 @@ const uploadUrl = ref('')
 const uploadedFiles = ref([]);
 const uploading = ref(false);
 
-const onFileAdded = (files) => {
+const onFileAdded = (files: any) => {
   // Handle file added event
   console.log('Files added:', files);
 };
 
-const onFileRemoved = (file) => {
+const onFileRemoved = (file: any) => {
   console.log('File removed:', file);
 };
 

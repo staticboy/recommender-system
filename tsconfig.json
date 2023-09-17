@@ -1,4 +1,5 @@
 {
+  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2020",
@@ -40,7 +41,8 @@
     "src/**/*.vue",
     "src/**/*.js",
     "src/**/*.jsx",
-    "src/**/*.d.ts"
-, "quasar.config.js"  ],
+    "src/**/*.d.ts",
+    "quasar.config.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -7,24 +7,24 @@
                 <ul class="flex ">
                     <li>
 
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-customer-list"
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/customer-list"
                             label="Customers" no-caps />
                     </li>
                     <li>
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-enquiry-list"
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/enquiry-list"
                             label="Enquiry" no-caps />
                     </li>
                     <li>
 
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-business-list"
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/business-list"
                             label="Businesses" no-caps />
                     </li>
                     <li>
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-cat-list"
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/cat-list"
                             label="Categories" no-caps />
                     </li>
                     <li>
-                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/adm-performance-dashboard"
+                        <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/performance-dashboard"
                             label="Performance" no-caps />
                     </li>
                 </ul>

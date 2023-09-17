@@ -10,7 +10,7 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
     <div class="db-body">
         <header>
             <h1> Performance Dashboard</h1>
-            <q-btn class="" color="white" text-color="blue" unelevated to="/adm-home" label="Go Home" no-caps />
+            <q-btn class="" color="white" text-color="blue" unelevated to="/admin/home" label="Go Home" no-caps />
             
         </header>
         <div class="db-content ">

@@ -15,17 +15,17 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
 
       <header>
         <h1>
-          Member Profile: <b>Wheat Tea Witty</b>
+          Category Profile: <b>Ball</b>
         </h1>
-        
+
         <div class="flex flex-row">
-          
+
 
           <div class="form-group q-mt-xl ">
-              <router-link to="/adm-customer-list" class="btn" id="back">Go Back</router-link>
-             
-              <router-link to="/adm-customer-list" class="btn" id="reject">Delete Profile</router-link>
-            </div>
+            <router-link to="/admin/cat-list" class="btn" id="back">Go Back</router-link>
+
+            <router-link to="/admin/cat-list" class="btn" id="reject">Delete Category</router-link>
+          </div>
         </div>
 
 
@@ -35,62 +35,48 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
           <div class=" mb-8">
             <div class="form-group">
               <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Customer Name
+                Sports
               </label>
               <input
                 class=" appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Wheat Tea Witty ">
+                id="" type="text" value="Basketball">
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Phone No
+                Category
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="1800 1234 0009">
+                id="" type="text" value="Ball">
 
             </div>
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Location
+                Date Created
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Jupiter, Solar System, Mily Way Galaxy">
+                id="" type="text" value="09 August 2088 10:10:10 10:11">
 
             </div>
-            <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Sex
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Male">
 
-            </div>
-            <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Date of Birth
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="31 Feb 1289">
 
-            </div>
             <div class="form-group ">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Preferences
+                Popular Brands
               </label>
 
               <div class="flex flex-row cat-liked">
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Basketball" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Men" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Hard" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Gym" no-caps />
+                <q-btn class="q-mt-md" color="black" text-color="white" unelevated label="Wilson" no-caps />
+                <q-btn class="q-mt-md" color="black" text-color="white" unelevated label="Decathlon" no-caps />
+                <q-btn class="q-mt-md" color="black" text-color="white" unelevated label="Spalding" no-caps />
+                <q-btn class="q-mt-md" color="black" text-color="white" unelevated label="Apple" no-caps />
 
 
               </div>
+
+
 
             </div>
 
@@ -100,59 +86,73 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
             <!--Activity-->
 
             <div class="form-group q-mt-xl">
-            <h6><b>Activities</b></h6>
-<hr>
-              <h6>Recent Purchase</h6>
+              <h6><b>Activities</b></h6>
+              <hr>
+
+              <div class="cardholder">
+                <h6>Products in this category:</h6>
+
+                <div class="card">
+                  <h3>125 </h3>
+                  <span>
+                    15% lower than last year
+
+                  </span>
+                  
+                </div>
+
+              </div>
+              <h6>Best Selling Products</h6>
               <table>
                 <thead>
                   <tr>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Quantities Sold</th>
+                    <th>Age-group of Buyers</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td>1</td>
                     <td>Soccer ball</td>
-                    <td>1</td>
-                    <td>$20.00</td>
-                    <td>$20.00</td>
+                    <td>100</td>
+                    <td>10-20</td>
                   </tr>
                   <tr>
+                    <td>2</td>
                     <td>Basketball</td>
-                    <td>1</td>
-                    <td>$15.00</td>
-                    <td>$15.00</td>
+                    <td>99</td>
+                    <td>20-40</td>
                   </tr>
                   <tr>
+                    <td>3</td>
                     <td>Football cleats</td>
-                    <td>1</td>
-                    <td>$30.00</td>
-                    <td>$30.00</td>
+                    <td>12</td>
+                    <td>100+</td>
                   </tr>
                   <tr>
+                    <td>4</td>
                     <td>Tennis racket</td>
-                    <td>1</td>
-                    <td>$50.00</td>
-                    <td>$50.00</td>
+                    <td>14</td>
+                    <td>10-20</td>
                   </tr>
                   <tr>
+                    <td>5</td>
                     <td>Ski goggles</td>
-                    <td>1</td>
-                    <td>$25.00</td>
-                    <td>$25.00</td>
+                    <td>13</td>
+                    <td>20-40</td>
                   </tr>
                 </tbody>
-
               </table>
+
 
 
             </div>
             <div class="form-group">
-              <h6>Frequency of Interaction</h6>
+              <h6>Historical buyrate</h6>
               <div class="adm-graph">
-                <AdminLineGraph/>
+                <AdminLineGraph />
 
               </div>
 
@@ -201,7 +201,12 @@ export default {
   
 <style scoped lang="scss">
 //Structure
-h1,h6{margin: 0;}
+h1,
+h3,
+h6 {
+  margin: 0;
+}
+
 .l-body {
   width: 960px;
   height: 90vh;
@@ -250,7 +255,7 @@ button:hover {
 
 }
 
-#back{
+#back {
   float: left;
 }
 
@@ -284,14 +289,22 @@ p {
 label {
   margin-bottom: 5px;
 }
-.cat-liked *{
+
+.cat-liked * {
   margin: 5px;
 }
 
-.adm-graph{
+.adm-graph {
 
   height: 200px;
   background-color: white;
   padding: 20px;
+}
+
+.cardholder > .card{
+  background: #646cff;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
 }
 </style>  

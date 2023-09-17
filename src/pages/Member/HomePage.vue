@@ -2,9 +2,9 @@
 <template>
   <h2>im home</h2>
   <q-page>
-    <div class="flex tw-flex-col tw-gap-5 tw-items-center tw-px-10">
-      <div class="tw-w-full tw-mt-10">
-        <div class="flex tw-flex-row tw-items-center tw-w-full">
+    <div class="flex flex-col gap-5 items-center px-10">
+      <div class="w-full mt-10">
+        <div class="flex flex-row items-center w-full">
           <h1>Welcome</h1>
         </div>
       </div>
