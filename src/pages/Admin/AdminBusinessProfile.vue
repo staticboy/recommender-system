@@ -13,23 +13,15 @@
       
       <header>
         <h1>
-          Case : <b>Unable to buy item</b>
+          Business Profile : <b>Little Drummer Boy</b>
         </h1>
-        <q-btn class="q-mt-md" color="white" text-color="blue" unelevated to="/adm-enquiry-list" label="Go Back" no-caps />
+        <q-btn class="q-mt-md" color="white" text-color="blue" unelevated to="/admin/business-list" label="Go Back" no-caps />
 
         <form class="q-mt-lg max-w-lg">
           <div class=" mb-8">
             <div class="form-group">
               <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                User ID
-              </label>
-              <input
-                class=" appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="MEM-1001">
-            </div>
-            <div class="form-group">
-              <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                User Name
+                Business Name
               </label>
               <input
                 class=" appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -37,20 +29,20 @@
             </div>
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Submitted on
+                Year Est
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="01 January 2023 10:09:33">
+                id="" type="text" value="2008">
 
             </div>
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                User Type
+                Phone No
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Member">
+                id="" type="text" value="1800 1234 0009">
 
             </div>
             <div class="form-group">
@@ -64,25 +56,16 @@
             </div>
             <div class="form-group ">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                Case Description
+                Business Description
               </label>
               <p>
-                User Unable to purchase item. Wallet is empty. Please advice to enable Purchase
+                Sporting goods companies would like to increase their ecommerce footprint by having a web portal to showcase their products to sports enthusiasts. This is to drive sales and marketing exposures on the products that they sell, which could be challenging when they only rely on showcasing products in their physical stores. Furthermore, they would like to gain insightful information between their products and users to help them formulate their future business decision. 
               </p>
             </div>
 
-            
-            <div class="form-group q-mt-lg ">
-              <hr>
-              <h5 class="">Administrator's Response</h5>
-              <textarea name="" id="admin-response" cols="60" rows="5">Customer is broke. Admin advised to go get a job and use the money to buy ball.
-              </textarea>
-            </div>
-
-            
             <div class="form-group">
-              <router-link to="/adm-enquiry-list" class="btn" id="approve">Send Feedback</router-link>
-              
+              <router-link to="/admin/business-list" class="btn" id="approve">Approve</router-link>
+              <router-link to="/admin/business-list" class="btn" id="reject">Reject</router-link>
             </div>
 
           </div>
@@ -131,10 +114,6 @@ export default {
 .l-body {
   width: 960px;
   height: 90vh;
-  overflow: scroll;
-}
-h1,h2,h3,h4,h5,h6{
-  margin: 4px;
 }
 
 
@@ -198,17 +177,6 @@ input, p{
 p{border: 1px solid white; box-sizing: border-box; padding: 5px;}
 label {
   margin-bottom: 5px;
-}
-
-#admin-response{
-padding: 5px;
-box-sizing: border-box;
-}
-
-.form-group h5{
-  margin-top:16px;
-  margin-bottom:4;
-
 }
 
 </style>  

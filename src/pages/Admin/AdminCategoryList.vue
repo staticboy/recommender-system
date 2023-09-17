@@ -10,8 +10,8 @@
           Admin : Categories List
         </h1>
         <div class="q-mt-xl fl">
-            <router-link to="/adm-home" class="btn">Return Home</router-link>
-            <router-link to="/adm-cat-new" class="btn">New Category</router-link>
+            <router-link to="/admin/home" class="btn">Return Home</router-link>
+            <router-link to="/admin/cat-new" class="btn">New Category</router-link>
 
 
           </div>
@@ -58,7 +58,7 @@
       <td>Basketball Mouthpiece</td>
       <td>50</td>
       <td>2023-09-12</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>2</td>
@@ -66,7 +66,7 @@
       <td>Football Helmet</td>
       <td>60</td>
       <td>2023-09-13</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>3</td>
@@ -74,7 +74,7 @@
       <td>Running Shoes</td>
       <td>70</td>
       <td>2023-09-14</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>4</td>
@@ -82,7 +82,7 @@
       <td>Hockey Stick</td>
       <td>80</td>
       <td>2023-09-15</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>5</td>
@@ -90,7 +90,7 @@
       <td>Tennis Racket</td>
       <td>90</td>
       <td>2023-09-16</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>6</td>
@@ -98,7 +98,7 @@
       <td>Basketball Jersey</td>
       <td>100</td>
       <td>2023-09-17</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>7</td>
@@ -106,7 +106,7 @@
       <td>Football Shoulder Pads</td>
       <td>110</td>
       <td>2023-09-18</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>8</td>
@@ -114,7 +114,7 @@
       <td>Running Shorts</td>
       <td>120</td>
       <td>2023-09-19</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>9</td>
@@ -122,7 +122,7 @@
       <td>Hockey Gloves</td>
       <td>125</td>
       <td>2023-09-20</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>10</td>
@@ -130,7 +130,7 @@
       <td>Tennis Balls</td>
       <td>130</td>
       <td>2023-09-21</td>
-      <td><router-link to="/adm-cat-profile" class="btn">Open Profile</router-link></td>
+      <td><router-link to="/admin/cat-profile" class="btn">Open Profile</router-link></td>
     </tr>
   </tbody>
 </table>

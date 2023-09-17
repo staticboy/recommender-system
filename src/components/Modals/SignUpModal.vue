@@ -69,7 +69,7 @@ onMounted(() => {
     <q-card-section>
       <h4 class="q-ma-none text-xl">Sign Up</h4>
     </q-card-section>
-    <q-card-section class="tw-px-7">
+    <q-card-section class="px-7">
       <q-form @submit.prevent.stop="onSubmit">
         <q-input
           outlined

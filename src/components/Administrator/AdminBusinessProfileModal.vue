@@ -66,8 +66,8 @@ import { ref } from 'vue';
             </div>
 
             <div class="form-group">
-              <router-link to="/adm-home" class="btn" id="approve">Approve</router-link>
-              <router-link to="/adm-home" class="btn" id="reject">Reject</router-link>
+              <router-link to="/admin/home" class="btn" id="approve">Approve</router-link>
+              <router-link to="/admin/home" class="btn" id="reject">Reject</router-link>
             </div>
 
           </div>

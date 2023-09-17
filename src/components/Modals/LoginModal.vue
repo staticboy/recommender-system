@@ -80,7 +80,7 @@ onMounted(() => {
         ]"
       />
     </q-card-section>
-    <q-card-section class="tw-px-7">
+    <q-card-section class="px-7">
       <q-form @submit.prevent.stop="onSubmit">
         <q-input
           outlined
@@ -116,6 +116,7 @@ onMounted(() => {
           no-caps
           color="primary"
           unelevated
+          @click="onSubmit"
         />
         <div class="text-bold text-center text-white">
           {{ errorMessage }}

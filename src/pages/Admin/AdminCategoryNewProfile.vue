@@ -21,9 +21,9 @@
 
 
           <div class="form-group q-mt-xl ">
-            <router-link to="/adm-cat-list" class="btn" id="back">Go Back</router-link>
+            <router-link to="/admin/cat-list" class="btn" id="back">Go Back</router-link>
 
-            <router-link to="/adm-cat-list" class="btn" id="approve">Add Category</router-link>
+            <router-link to="/admin/cat-list" class="btn" id="approve">Add Category</router-link>
           </div>
         </div>
 
