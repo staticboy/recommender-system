@@ -34,9 +34,14 @@ export default {
       component: () => import("../pages/Member/SearchBusinessPage.vue"),
     },
     {
-      name: "ProductREcommendationPage",
+      name: "ProductRecommendationPage",
       path: "recommendation",
       component: () => import("../pages/Member/ProductRecommendationPage.vue"),
+    },
+    {
+      name: "ShoppingCartPage",
+      path: "cart",
+      component: () => import("../pages/Member/ShoppingCartPage.vue"),
     },
   ]
 }

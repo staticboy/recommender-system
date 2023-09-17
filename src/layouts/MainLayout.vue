@@ -14,7 +14,7 @@
         <q-btn stretch flat to="/user/recommendation" label="Product" />
         <q-btn stretch flat to="/user/enquiry" label="Contact Us" />
 
-        <q-btn flat round dense icon="whatshot" />
+        <q-btn flat round dense icon="shopping_cart" to="/user/cart" />
       </q-toolbar>
     </q-header>
     <q-page-container>

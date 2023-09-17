@@ -1,5 +1,5 @@
 <script setup >
-import AdminBusinessProfileModal from '../components/Administrator/AdminBusinessProfileModal.vue';
+import AdminBusinessProfileModal from '../../components/Administrator/AdminBusinessProfileModal.vue';
 import { ref } from 'vue';
 const showModal = ref(false);
 

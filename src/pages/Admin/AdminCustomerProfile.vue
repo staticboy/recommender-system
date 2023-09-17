@@ -1,107 +1,147 @@
 <script setup lang="ts">
-
-import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
-
-
-
+import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 </script>
-
 
 <template>
   <div class="fullscreen text-white text-center q-pa-md flex flex-center">
-
-
     <div class="l-body">
-
       <header>
-        <h1>
-          Member Profile: <b>Wheat Tea Witty</b>
-        </h1>
-        
-        <div class="flex flex-row">
-          
+        <h1>Member Profile: <b>Wheat Tea Witty</b></h1>
 
-          <div class="form-group q-mt-xl ">
-              <router-link to="/admin/customer-list" class="btn" id="back">Go Back</router-link>
-             
-              <router-link to="/admin/customer-list" class="btn" id="reject">Delete Profile</router-link>
-            </div>
+        <div class="flex flex-row">
+          <div class="form-group q-mt-xl">
+            <router-link to="/admin/customer-list" class="btn" id="back"
+              >Go Back</router-link
+            >
+
+            <router-link to="/admin/customer-list" class="btn" id="reject"
+              >Delete Profile</router-link
+            >
+          </div>
         </div>
 
-
-
-
         <form class="q-mt-lg max-w-lg">
-          <div class=" mb-8">
+          <div class="mb-8">
             <div class="form-group">
-              <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Customer Name
               </label>
               <input
-                class=" appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Wheat Tea Witty ">
+                class="appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id=""
+                type="text"
+                value="Wheat Tea Witty "
+              />
             </div>
 
             <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Phone No
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="1800 1234 0009">
-
+                id=""
+                type="text"
+                value="1800 1234 0009"
+              />
             </div>
             <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Location
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Jupiter, Solar System, Mily Way Galaxy">
-
+                id=""
+                type="text"
+                value="Jupiter, Solar System, Mily Way Galaxy"
+              />
             </div>
             <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Sex
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="Male">
-
+                id=""
+                type="text"
+                value="Male"
+              />
             </div>
             <div class="form-group">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Date of Birth
               </label>
               <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id="" type="text" value="31 Feb 1289">
-
+                id=""
+                type="text"
+                value="31 Feb 1289"
+              />
             </div>
-            <div class="form-group ">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            <div class="form-group">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
                 Preferences
               </label>
 
               <div class="flex flex-row cat-liked">
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Basketball" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Men" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Hard" no-caps />
-                <q-btn class="q-mt-md" color="black" text-color="white" unelevated  label="Gym" no-caps />
-
-
+                <q-btn
+                  class="q-mt-md"
+                  color="black"
+                  text-color="white"
+                  unelevated
+                  label="Basketball"
+                  no-caps
+                />
+                <q-btn
+                  class="q-mt-md"
+                  color="black"
+                  text-color="white"
+                  unelevated
+                  label="Men"
+                  no-caps
+                />
+                <q-btn
+                  class="q-mt-md"
+                  color="black"
+                  text-color="white"
+                  unelevated
+                  label="Hard"
+                  no-caps
+                />
+                <q-btn
+                  class="q-mt-md"
+                  color="black"
+                  text-color="white"
+                  unelevated
+                  label="Gym"
+                  no-caps
+                />
               </div>
-
             </div>
-
-
-
 
             <!--Activity-->
 
             <div class="form-group q-mt-xl">
-            <h6><b>Activities</b></h6>
-<hr>
+              <h6><b>Activities</b></h6>
+              <hr />
               <h6>Recent Purchase</h6>
               <table>
                 <thead>
@@ -144,33 +184,20 @@ import AdminLineGraph from '../components/Administrator/AdminLineGraph.vue';
                     <td>$25.00</td>
                   </tr>
                 </tbody>
-
               </table>
-
-
             </div>
             <div class="form-group">
               <h6>Frequency of Interaction</h6>
               <div class="adm-graph">
-                <AdminLineGraph/>
-
+                <AdminLineGraph />
               </div>
-
-
             </div>
-
           </div>
         </form>
-
       </header>
-
-
-
-
     </div>
   </div>
 </template>
-
 
 <!--<script >
 
@@ -195,19 +222,17 @@ export default {
 
 </script>-->
 
-
-
-
-  
 <style scoped lang="scss">
 //Structure
-h1,h6{margin: 0;}
+h1,
+h6 {
+  margin: 0;
+}
 .l-body {
   width: 960px;
   height: 90vh;
   overflow: scroll;
 }
-
 
 * {
   text-align: left;
@@ -247,10 +272,9 @@ button:hover {
   color: red;
   margin: 5px;
   float: right;
-
 }
 
-#back{
+#back {
   float: left;
 }
 
@@ -284,14 +308,13 @@ p {
 label {
   margin-bottom: 5px;
 }
-.cat-liked *{
+.cat-liked * {
   margin: 5px;
 }
 
-.adm-graph{
-
+.adm-graph {
   height: 200px;
   background-color: white;
   padding: 20px;
 }
-</style>  
+</style>
