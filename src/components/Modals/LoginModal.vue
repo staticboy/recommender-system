@@ -33,7 +33,13 @@ const onSubmit = async () => {
   //     color: "negative",
   //   });
   // }
-  router.push({ name: "HomePage" });
+  if (form.value.email.includes("admin")) {
+    router.push({ name: "AdminHome" });
+  } else if (form.value.email.includes("mem")) {
+    router.push({ name: "HomePage" });
+  } else {
+    router.push({ name: "BizOwnerHome" });
+  }
 };
 
 // const login = async () => {

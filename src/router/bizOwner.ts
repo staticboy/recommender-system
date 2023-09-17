@@ -4,6 +4,11 @@ export default {
   // meta: { requiresAuth: true, requiresBiz: true },
   children: [
     {
+      name: "BizOwnerHome",
+      path: "home",
+      component: () => import("../pages/BizOwner/BizOwnerHome.vue"),
+    },
+    {
       name: "BizOwnerSubmitEnquiries",
       path: "submit-enq",
       component: () => import("../pages/BizOwner/BizOwnerSubmitEnq.vue"),

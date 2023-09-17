@@ -15,6 +15,10 @@
         <q-btn stretch flat to="/user/enquiry" label="Contact Us" />
 
         <q-btn flat round dense icon="shopping_cart" to="/user/cart" />
+        &nbsp;&nbsp;
+        <q-btn flat round dense icon="account_circle" to="/user/profile" />
+        &nbsp;&nbsp;&nbsp;
+        <q-btn flat round dense label="Log Out" to="/login" />
       </q-toolbar>
     </q-header>
     <q-page-container>

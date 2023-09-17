@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import ProductTable from '../components/BizProdTable.vue';
+import ProductTable from '../../components/BizProdTable.vue';
 </script>
 
 
