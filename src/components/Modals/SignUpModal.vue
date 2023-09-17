@@ -15,6 +15,7 @@ const q = useQuasar();
 const form = ref({
   email: "",
   password: "",
+  confirmPassword: "",
   loginRole: "admin",
 });
 
@@ -100,7 +101,7 @@ onMounted(() => {
         <q-input
           outlined
           clearable
-          v-model="form.password"
+          v-model="form.confirmPassword"
           type="password"
           label="Confirm Password"
           lazy-rules
@@ -127,6 +128,7 @@ onMounted(() => {
             color="primary"
             unelevated
             style="width: 45%;"
+            @click="onSubmit"
           />
         </div>
         <div class="text-bold text-center text-white">

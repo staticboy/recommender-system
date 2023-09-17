@@ -65,27 +65,29 @@ const category = ref({
           label="Name"
           lazy-rules
           :rules="[(val) => !!val || 'Name is required']"
+          :disable="!editMode.profile"
         />
         <q-input
           outlined
           v-model="form.phoneNum"
           label="Phone Number"
-          lazy-rules
-          :rules="[(val) => !!val || 'Name is required']"
+          :disable="!editMode.profile"
         />
         <q-input
           outlined
           v-model="form.email"
           label="Email"
           lazy-rules
-          :rules="[(val) => !!val || 'Name is required']"
+          :rules="[(val) => !!val || 'Email is required']"
+          :disable="!editMode.profile"
         />
         <q-input
           outlined
           v-model="form.dob"
           label="Date of Birth"
           lazy-rules
-          :rules="[(val) => !!val || 'Name is required']"
+          :rules="[(val) => !!val || 'DOB is required']"
+          :disable="!editMode.profile"
         />
       </div>
       <div style="width: 48%">
@@ -95,15 +97,15 @@ const category = ref({
             v-model="form.zipCode"
             label="Zipcode"
             lazy-rules
-            :rules="[(val) => !!val || 'Name is required']"
+            :rules="[(val) => !!val || 'Zipcode is required']"
+            :disable="!editMode.profile"
             style="width: 48%"
           />
           <q-input
             outlined
             v-model="form.location"
             label="Location"
-            lazy-rules
-            :rules="[(val) => !!val || 'Name is required']"
+            :disable="!editMode.profile"
             style="width: 48%"
           />
         </div>
@@ -112,14 +114,16 @@ const category = ref({
           v-model="form.password"
           label="Password"
           lazy-rules
-          :rules="[(val) => !!val || 'Name is required']"
+          :rules="[(val) => !!val || 'Password is required']"
+          :disable="!editMode.profile"
         />
         <q-input
           outlined
           v-model="form.confirmPassword"
           label="Confirm Password"
           lazy-rules
-          :rules="[(val) => !!val || 'Name is required']"
+          :rules="[(val) => !!val || 'Password is required']"
+          :disable="!editMode.profile"
         />
       </div>
     </div>
@@ -150,6 +154,7 @@ const category = ref({
         use-chips
         v-model="category.sports"
         label="Sport Categories"
+        :disable="!editMode.preferences"
         style="width: 48%"
       >
       </q-select>
@@ -159,6 +164,7 @@ const category = ref({
         use-chips
         v-model="category.item"
         label="Item Categories"
+        :disable="!editMode.preferences"
         style="width: 48%"
       />
     </div>
