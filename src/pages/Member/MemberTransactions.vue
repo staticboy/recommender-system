@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import TransactionTable from '../components/MemberTransTable.vue';
+import TransactionTable from '../../components/MemberTransTable.vue';
 </script>
 
 

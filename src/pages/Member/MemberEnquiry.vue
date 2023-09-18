@@ -12,10 +12,10 @@
             <q-input
             outlined
             v-model="enquiry.enq_subject"
-            label="Email"
+            label="Subject"
             dense
             required
-            type="email"
+            type="text"
             class="q-mr-md"
           ></q-input>
           </div>
