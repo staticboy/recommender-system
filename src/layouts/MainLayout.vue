@@ -17,6 +17,8 @@
         <q-space />
         <div class="q-ml-xs">
           <q-btn flat round dense icon="shopping_cart" to="/user/cart" />&nbsp;&nbsp;
+          <q-btn flat round dense icon="favorite" to="/user/wishlist" />&nbsp;&nbsp;
+          <q-btn flat round dense icon="history" to="/user/transactions" />&nbsp;&nbsp;
           <q-btn flat round dense icon="account_circle" to="/user/profile" />&nbsp;&nbsp;
           <q-btn flat round dense label="Log Out" to="/login" />
         </div>
