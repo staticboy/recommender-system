@@ -23,6 +23,7 @@ const form = ref({
   location: "Singapore",
   password: "********",
   confirmPassword: "",
+  gender: "Male",
 });
 const category = ref({
   sports: [
@@ -72,6 +73,7 @@ const category = ref({
           v-model="form.phoneNum"
           label="Phone Number"
           :disable="!editMode.profile"
+          class="q-mb-md"
         />
         <q-input
           outlined
@@ -109,6 +111,15 @@ const category = ref({
             style="width: 48%"
           />
         </div>
+          <q-select
+          outlined
+          use-chips
+          v-model="form.gender"
+          label="Gender"
+          :disable="!editMode.profile"
+          style="width: 48%"
+          class="q-mb-md"
+        />
         <q-input
           outlined
           v-model="form.password"
