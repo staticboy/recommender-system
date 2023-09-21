@@ -31,7 +31,7 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
       </div>
       <div class="" id="first-child">
         <div class="first-child-internal">
-          <h5>Top Rager</h5>
+          <h5>Top Buyers</h5>
           <table>
             <thead>
               <tr>
@@ -43,17 +43,17 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
             <tbody>
               <tr>
                 <td>1</td>
-                <td>Pavav</td>
+                <td>Pant</td>
                 <td>20%</td>
               </tr>
               <tr>
                 <td>2</td>
-                <td>Rohan</td>
+                <td>Roshan</td>
                 <td>15%</td>
               </tr>
               <tr>
                 <td>3</td>
-                <td>Enkat</td>
+                <td>Elon</td>
                 <td>10%</td>
               </tr>
               <tr>
@@ -63,7 +63,7 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
               </tr>
               <tr>
                 <td>5</td>
-                <td>Priya</td>
+                <td>Pietro</td>
                 <td>5%</td>
               </tr>
             </tbody>
