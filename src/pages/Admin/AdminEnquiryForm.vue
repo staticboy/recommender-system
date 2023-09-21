@@ -1,17 +1,10 @@
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
+  <div class="text-center q-pa-md flex flex-center">
     <div class="l-body">
       <header>
-        <h1>Case : <b>Unable to buy item</b></h1>
-        <q-btn
-          class="q-mt-md"
-          color="white"
-          text-color="blue"
-          unelevated
-          to="/admin/enquiry-list"
-          label="Go Back"
-          no-caps
-        />
+        <h4>INC100021 : <b>Unable to buy item</b></h4>
+
+      
 
         <form class="q-mt-lg max-w-lg">
           <div class="mb-8">
@@ -146,8 +139,6 @@ export default {
 
 .l-body {
   width: 960px;
-  height: 90vh;
-  overflow: scroll;
 }
 h1,
 h2,

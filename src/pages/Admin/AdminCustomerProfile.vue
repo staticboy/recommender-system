@@ -3,12 +3,12 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 </script>
 
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
-    <div class="l-body">
+  <div class=" text-center q-pa-md flex flex-center">
+    <div class="">
       <header>
         <h1>Member Profile: <b>Wheat Tea Witty</b></h1>
 
-        <div class="flex flex-row">
+        <div class="flex flex-row btn-grp">
           <div class="form-group q-mt-xl">
             <router-link to="/admin/customer-list" class="btn" id="back"
               >Go Back</router-link
@@ -101,7 +101,7 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
                 Preferences
               </label>
 
-              <div class="flex flex-row cat-liked">
+              <div class="flex flex-row cat-liked " style="width: 800px;">
                 <q-btn
                   class="q-mt-md"
                   color="black"
@@ -270,7 +270,7 @@ button:hover {
 #reject {
   border-color: red;
   color: red;
-  margin: 5px;
+  
   float: right;
 }
 

@@ -1,6 +1,9 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
+
+
+  <q-page>
+    <div class="text-center q-pa-md flex flex-center">
     <div class="l-body">
       <header>
         <h1>Admin Enquiries</h1>
@@ -146,6 +149,8 @@
       </table>
     </div>
   </div>
+  </q-page>
+ 
 </template>
 
 <style scoped lang="scss">
@@ -153,8 +158,11 @@
   text-align: left;
 }
 
+label{color : black}
+
 table * {
   padding: 8px;
+  
 }
 
 .btn,
@@ -198,7 +206,7 @@ Structure start
 ************/
 .l-body {
   width: 960px;
-  height: 90vh;
+  margin-top: 10px;
 }
 
 /***********

@@ -1,63 +1,81 @@
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
+  <div class="text-center q-pa-md flex flex-center">
     <div class="admin-hbody">
-      <h1>Admin Jobs</h1>
-      <section class="admin_jobs">
-        <ul class="flex">
+     
+      <section class="admin_jobs">'
+        <div>
+          <h5>Welcome Sysadmin001</h5>
+        </div>
+        <ul class="flex fl-box">
           <li>
             <q-btn
               class="q-mt-xl"
-              color="white"
-              text-color="blue"
+              color="grey"
+              text-color="black"
               unelevated
               to="/admin/customer-list"
               label="Customers"
               no-caps
             />
+            <p  class="q-mt-md">
+              Manage and view customers
+            </p>
           </li>
           <li>
             <q-btn
               class="q-mt-xl"
-              color="white"
-              text-color="blue"
+              color="grey"
+              text-color="black"
               unelevated
               to="/admin/enquiry-list"
               label="Enquiry"
               no-caps
             />
+            <p  class="q-mt-md">
+              Address users' queries
+            </p>
           </li>
           <li>
             <q-btn
               class="q-mt-xl"
-              color="white"
-              text-color="blue"
+              color="grey"
+              text-color="black"
               unelevated
               to="/admin/business-list"
               label="Businesses"
               no-caps
             />
+            <p  class="q-mt-md">
+              Manage and view businesses
+            </p>
           </li>
           <li>
             <q-btn
               class="q-mt-xl"
-              color="white"
-              text-color="blue"
+              color="grey"
+              text-color="black"
               unelevated
               to="/admin/cat-list"
               label="Categories"
               no-caps
             />
+            <p  class="q-mt-md">
+              Manage and view categories
+            </p>
           </li>
           <li>
             <q-btn
               class="q-mt-xl"
-              color="white"
-              text-color="blue"
+              color="grey"
+              text-color="black"
               unelevated
               to="/admin/performance-dashboard"
               label="Performance"
               no-caps
             />
+            <p  class="q-mt-md">
+              Deeper look into platform's lifecycle
+            </p>
           </li>
         </ul>
       </section>
@@ -71,11 +89,12 @@ ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
-.admin_jobs {
-  margin: 0 auto;
 
-  width: 960px;
+.fl-box > *{
+  box-sizing: border-box;
+  padding: 25px;
+
 }
 </style>

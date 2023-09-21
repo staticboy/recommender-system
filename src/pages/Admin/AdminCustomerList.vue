@@ -11,9 +11,9 @@ function toggleModel() {
 
 <template>
 
-
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
-    <div class="l-body">
+  <q-page>
+    <div class="text-center q-pa-md flex flex-center">
+    <div class="">
 
       <!-----
       <button id="toggler" @click="toggleModel()">Open Modal</button>
@@ -32,12 +32,13 @@ function toggleModel() {
         <h1>
           Customer List
         </h1>
-        <div class="btngrp flex flex-row">
-
-          <div class="q-mt-xl">
+        <div class="q-mt-xl">
             <router-link to="/admin/home" class="btn">Return Home</router-link>
 
           </div>
+        <div class="btngrp flex flex-row">
+
+
 
         <div class="q-mt-xl form-group">
             <label for="name">Name:</label>
@@ -133,6 +134,8 @@ function toggleModel() {
       <td>45</td>
       <td><router-link to="/admin/customer-profile" class="btn">Open Profile</router-link></td>
     </tr>
+
+
   </tbody>
 </table>
 
@@ -141,6 +144,8 @@ function toggleModel() {
 
     </div>
   </div>
+  </q-page>
+
 </template>
 
 
@@ -185,13 +190,13 @@ h1,h2,h3,h4,h5,h6{
 
 /***********
 Structure start
-************/
+
 .l-body {
     width: 960px;
     height: 90vh;
     overflow: scroll;
 }
-
+************/
 /***********
 Structure end
 ************/
@@ -206,7 +211,7 @@ input, label, select{
 }
 
 .btngrp > div {
-  margin-left: 10px;
+ 
 
 }
 

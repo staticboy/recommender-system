@@ -1,17 +1,11 @@
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
+  <div class=" text-center q-pa-md flex flex-center">
     <div class="l-body">
       <header>
+
+        <router-link to="/admin/business-list" class="  btn">Back</router-link>
         <h1>Business Profile : <b>Little Drummer Boy</b></h1>
-        <q-btn
-          class="q-mt-md"
-          color="white"
-          text-color="blue"
-          unelevated
-          to="/admin/business-list"
-          label="Go Back"
-          no-caps
-        />
+
 
         <form class="q-mt-lg max-w-lg">
           <div class="mb-8">
@@ -130,7 +124,9 @@ export default {
 
 <style scoped lang="scss">
 //Structure
-
+h1{
+  margin-top: 15px;
+}
 .l-body {
   width: 960px;
   height: 90vh;

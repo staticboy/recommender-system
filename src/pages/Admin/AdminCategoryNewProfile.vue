@@ -1,18 +1,18 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
-    <div class="l-body">
+  <div class=" text-center q-pa-md flex flex-center">
+    <div class="">
       <header>
         <h1>Admin : Create Category Profile</h1>
 
         <div class="flex flex-row">
-          <div class="form-group q-mt-xl">
+          <div class="form-group q-mt-xl flex flex-row btn-grp">
             <router-link to="/admin/cat-list" class="btn" id="back"
               >Go Back</router-link
             >
 
-            <router-link to="/admin/cat-list" class="btn" id="approve"
+            <router-link to="/admin/cat-list" class="btn" id="back"
               >Add Category</router-link
             >
           </div>
@@ -97,9 +97,11 @@ h6 {
 }
 
 .l-body {
-  width: 960px;
-  height: 90vh;
-  overflow: scroll;
+
+}
+
+.btn-grp{
+  justify-content:space-between; 
 }
 
 * {
