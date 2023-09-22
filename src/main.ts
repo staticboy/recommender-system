@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Quasar } from 'quasar'
+import { Notify, Quasar } from 'quasar'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from './router/routes'
 import './index.css'
@@ -25,7 +25,7 @@ let router = createRouter({
 })
 app.use(router)
 app.use(Quasar, {
-  config: {},
-  plugins: {},
+  plugins: { Notify },
+  config: { notify: { position: 'bottom' } },
 })
 app.mount('#app')
