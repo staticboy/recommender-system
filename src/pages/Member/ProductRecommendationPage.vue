@@ -51,9 +51,14 @@ const openDialog = (index: number) => {
       <div class="flex flex-row items-center" style="padding-top: 5%">
         <h3 style="margin: 0 auto">Products</h3>
       </div>
-      <div class="grid">
+      <div class="grid grid-cols-3 gap-3">
         <template v-for="p in 7" :key="p">
-          <q-card dark bordered class="card" @click="openDialog(p)">
+          <q-card
+            dark
+            bordered
+            class="flex flex-col justify-center items-center rounded-xl cursor-pointer q-px-sm q-py-lg"
+            @click="openDialog(p)"
+          >
             <q-card-section>
               <div class="text-h6">Product {{ p }}</div>
               <div class="text-subtitle2">by John Doe</div>
@@ -68,7 +73,12 @@ const openDialog = (index: number) => {
     </template>
     <q-dialog v-model="dialog">
       <div class="flex" style="height: 50%; width: 700px">
-        <q-card dark bordered class="card" style="height: 100%; width: 45%">
+        <q-card
+          dark
+          bordered
+          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+          style="height: 100%; width: 45%"
+        >
           <q-card-section>
             <div class="text-h6">Product {{ selected }}</div>
             <div class="text-subtitle2">by John Doe</div>
@@ -78,7 +88,12 @@ const openDialog = (index: number) => {
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </q-card-section>
         </q-card>
-        <q-card dark bordered class="card" style="height: 100%; width: 55%">
+        <q-card
+          dark
+          bordered
+          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+          style="height: 100%; width: 55%"
+        >
           <q-card-section>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -123,22 +138,4 @@ const openDialog = (index: number) => {
     </q-dialog>
   </q-page>
 </template>
-<style scoped>
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  padding-top: 5%;
-}
-.card {
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.5rem;
-  color: white;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-}
-</style>
+<style scoped></style>
