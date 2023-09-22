@@ -3,19 +3,22 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 </script>
 
 <template>
-  <div class="fullscreen text-white text-center q-pa-md flex flex-center">
-    <div class="l-body">
+  <div class=" text-center q-pa-md flex flex-center">
+    <div class="">
       <header>
         <h1>Category Profile: <b>Ball</b></h1>
 
         <div class="flex flex-row">
           <div class="form-group q-mt-xl">
-            <router-link to="/admin/cat-list" class="btn" id="back"
+            <router-link to="/admin/cat-list" class="btn" id="fn"
               >Go Back</router-link
             >
 
+            <router-link to="/admin/cat-list" class="btn" id="approve"
+              >Update</router-link
+            >
             <router-link to="/admin/cat-list" class="btn" id="reject"
-              >Delete Category</router-link
+              >Delete</router-link
             >
           </div>
         </div>
@@ -58,12 +61,10 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
               >
                 Date Created
               </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="09 August 2088 10:10:10 10:11"
-              />
+
+              <p style="margin-left: 0; padding-left: 0;">
+                09 August 2088 10:10:10 10:11
+              </p>
             </div>
 
             <div class="form-group">
@@ -248,14 +249,22 @@ button:hover {
   border-color: green;
   color: green;
   margin: 5px;
-  float: right;
+  float: left;
+  margin-left: 200px;
 }
 
 #reject {
   border-color: red;
   color: red;
   margin: 5px;
-  float: right;
+  float: left;
+}
+
+#fn {
+  border-color: 646cff;
+  color: 646cff;
+  margin: 5px;
+  float: left;
 }
 
 #back {
@@ -274,13 +283,13 @@ button:focus-visible {
   ************/
 .form-group {
   margin-bottom: 15px;
-  width: 50%;
+  
 }
 
 input,
 p {
   width: 100%;
-  pointer-events: none; //disable interaction
+  //pointer-events: none; //disable interaction
 }
 
 p {
@@ -304,7 +313,7 @@ label {
 }
 
 .cardholder > .card {
-  background: #646cff;
+  border: 1px solid black;
   margin-top: 8px;
   margin-bottom: 8px;
 }

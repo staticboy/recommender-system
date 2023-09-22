@@ -199,7 +199,7 @@ button:focus-visible {
   ************/
 .form-group {
   margin-bottom: 15px;
-  width: 50%;
+
 }
 
 input,
@@ -219,6 +219,7 @@ label {
 #admin-response {
   padding: 5px;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .form-group h5 {

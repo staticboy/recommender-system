@@ -182,7 +182,7 @@ button:focus-visible {
   ************/
 .form-group {
   margin-bottom: 15px;
-  width: 50%;
+  
 }
 
 input,
