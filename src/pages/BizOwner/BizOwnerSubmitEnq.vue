@@ -2,6 +2,11 @@
   <div>
     <h1 class="text-2xl font-semibold mb-4">Feedback Form</h1>
 
+    <!-- Home Button -->
+    <button @click="goToHome" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+      Home
+    </button>
+
     <!-- Normal Flow: Step 1 -->
     <div v-if="step === 1" class="mb-4">
       <p>Select Feedback Type:</p>
@@ -46,10 +51,6 @@
     <!-- Normal Flow: Step 3 (Feedback Submitted Successfully) -->
     <div v-else-if="step === 3" class="mb-4">
       <p>Feedback submitted successfully.</p>
-      <!-- Change to direct to HOME -->
-      <button @click="goToHome" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-        Home
-      </button>
     </div>
   </div>
 </template>
@@ -85,6 +86,7 @@ function goToHome() {
   router.push('/biz/home'); // Use router.push() to navigate to /biz/home
 }
 </script>
+
 
   
   <style scoped>
