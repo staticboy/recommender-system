@@ -1,85 +1,91 @@
 <template>
-    <div>
-      <h1 class="text-2xl font-semibold mb-4">Feedback Form</h1>
-  
-      <!-- Normal Flow: Step 1 -->
-      <div v-if="step === 1" class="mb-4">
-        <p>Select Feedback Type:</p>
-        <label for="feedbackTypeReport">
-          <input
-            type="radio"
-            id="feedbackTypeReport"
-            value="Report an Issue"
-            v-model="selectedFeedbackType"
-            class="mr-2"
-          />
-          Report an Issue
-        </label>
-        <label for="feedbackTypeSuggestion">
-          <input
-            type="radio"
-            id="feedbackTypeSuggestion"
-            value="Provide Suggestions"
-            v-model="selectedFeedbackType"
-            class="mr-2"
-          />
-          Provide Suggestions
-        </label>
-        <button @click="proceedToStep(2)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Next
-        </button>
-      </div>
-  
-      <!-- Normal Flow: Step 2 -->
-      <div v-else-if="step === 2" class="mb-4">
-        <p>Business owners input their comments in form fields:</p>
-        <textarea
-          v-model="feedbackComments"
-          placeholder="Enter your feedback comments"
-          class="w-full px-3 py-2 rounded-md border border-gray-300"
-        ></textarea>
-        <button @click="proceedToStep(3)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Next
-        </button>
-      </div>
-  
-      <!-- Normal Flow: Step 3 (Feedback Submitted Successfully) -->
-      <div v-else-if="step === 3" class="mb-4">
-        <p>Feedback submitted successfully.</p>
-        <!-- Change to direct to HOME -->
-        <button @click="resetSteps" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Home
-        </button>
-      </div>
+  <div>
+    <h1 class="text-2xl font-semibold mb-4">Feedback Form</h1>
+
+    <!-- Normal Flow: Step 1 -->
+    <div v-if="step === 1" class="mb-4">
+      <p>Select Feedback Type:</p>
+      <label for="feedbackTypeReport">
+        <input
+          type="radio"
+          id="feedbackTypeReport"
+          value="Report an Issue"
+          v-model="selectedFeedbackType"
+          class="mr-2"
+        />
+        Report an Issue
+      </label>
+      <label for="feedbackTypeSuggestion">
+        <input
+          type="radio"
+          id="feedbackTypeSuggestion"
+          value="Provide Suggestions"
+          v-model="selectedFeedbackType"
+          class="mr-2"
+        />
+        Provide Suggestions
+      </label>
+      <button @click="proceedToStep(2)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        Next
+      </button>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const step = ref(1);
-  const selectedFeedbackType = ref('');
-  const feedbackComments = ref('');
-  
-  function proceedToStep(nextStep) {
-    step.value = nextStep;
-  }
-  function submitFeedback() {
-    // Implement logic to save feedback
-    // Display success message and move to Step 3
-    proceedToStep(3);
-  }
-  function cancelFeedback() {
-    // Implement logic to cancel feedback submission
-    resetSteps();
-  }
-  function resetSteps() {
-    // Reset all steps and data
-    step.value = 1;
-    selectedFeedbackType.value = '';
-    feedbackComments.value = '';
-  }
-  </script>
+
+    <!-- Normal Flow: Step 2 -->
+    <div v-else-if="step === 2" class="mb-4">
+      <p>Business owners input their comments in form fields:</p>
+      <textarea
+        v-model="feedbackComments"
+        placeholder="Enter your feedback comments"
+        class="w-full px-3 py-2 rounded-md border border-gray-300"
+      ></textarea>
+      <button @click="proceedToStep(3)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        Next
+      </button>
+    </div>
+
+    <!-- Normal Flow: Step 3 (Feedback Submitted Successfully) -->
+    <div v-else-if="step === 3" class="mb-4">
+      <p>Feedback submitted successfully.</p>
+      <!-- Change to direct to HOME -->
+      <button @click="goToHome" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        Home
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
+
+const router = useRouter(); // Create a router instance
+
+const step = ref(1);
+const selectedFeedbackType = ref('');
+const feedbackComments = ref('');
+
+function proceedToStep(nextStep) {
+  step.value = nextStep;
+}
+function submitFeedback() {
+  // Implement logic to save feedback
+  // Display success message and move to Step 3
+  proceedToStep(3);
+}
+function cancelFeedback() {
+  // Implement logic to cancel feedback submission
+  resetSteps();
+}
+function goToHome() {
+  // Reset all steps and data
+  //step.value = 1;
+  //selectedFeedbackType.value = '';
+  //feedbackComments.value = '';
+  //route back to home
+  router.push('/biz/home'); // Use router.push() to navigate to /biz/home
+}
+</script>
+
   
   <style scoped>
   /* Add your component-specific styles here */
