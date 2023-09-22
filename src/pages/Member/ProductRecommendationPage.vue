@@ -10,18 +10,11 @@ const openDialog = (index: number) => {
   selected.value = index;
   dialog.value = !dialog.value;
 };
-const notify = () => {
-  $q.notify({
-    message: "Saved to wishlist",
-    color: "positive",
-    icon: "cloud_done",
-  });
-};
 </script>
 <template>
   <q-page>
     <template v-if="next === 0">
-      <div class="flex flex-row items-center">
+      <div class="flex flex-col items-center">
         <h1 style="margin: 0 auto">User 1, welcome to Sportify</h1>
         <span
           style="
@@ -100,7 +93,14 @@ const notify = () => {
               no-caps
               icon="save"
               label="Save to wishlist"
-              @click="notify()"
+              @click="
+                () =>
+                  $q.notify({
+                    message: 'Saved to wishlist',
+                    color: 'positive',
+                    icon: 'cloud_done',
+                  })
+              "
             />
             <q-btn
               flat
@@ -108,7 +108,14 @@ const notify = () => {
               no-caps
               icon="add_shopping_cart"
               label="Add to cart"
-              @click="notify()"
+              @click="
+                () =>
+                  $q.notify({
+                    message: 'Added to cart',
+                    color: 'positive',
+                    icon: 'add_shopping_cart',
+                  })
+              "
             />
           </q-card-section>
         </q-card>
