@@ -246,6 +246,11 @@ input, label, select{
   margin-left: 10px;
 }
 
+select, input{
+  border: 1px solid black;
+
+}
+
 .btngrp > div {
  
 

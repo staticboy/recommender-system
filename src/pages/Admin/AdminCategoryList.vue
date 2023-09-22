@@ -174,6 +174,11 @@ table * {
   padding: 8px;
 }
 
+select, input{
+  border: 1px solid black;
+
+}
+
 .btn,
 button {
   border-radius: 8px;

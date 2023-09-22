@@ -137,6 +137,12 @@ h6 {
   padding: 0;
 }
 
+select, input{
+  border: 1px solid black;
+
+}
+
+
 /***********
 Structure start
 ************/

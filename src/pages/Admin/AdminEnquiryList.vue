@@ -209,6 +209,11 @@ Structure start
   margin-top: 10px;
 }
 
+select, input{
+  border: 1px solid black;
+
+}
+
 /***********
 Structure end
 ************/
