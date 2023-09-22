@@ -270,8 +270,8 @@ button:hover {
 #reject {
   border-color: red;
   color: red;
-  
-  float: right;
+  margin-left: 700px;
+  float: left;
 }
 
 #back {
@@ -290,7 +290,7 @@ button:focus-visible {
   ************/
 .form-group {
   margin-bottom: 15px;
-  width: 50%;
+  //width: 50%;
 }
 
 input,

@@ -220,6 +220,13 @@ label {
   padding: 5px;
   box-sizing: border-box;
   width: 100%;
+  max-width:100%;
+  min-width:100%;
+
+  height: 200px;
+  max-height:200px;
+  min-height:200px;
+  border: #1a1a1a solid 1px;
 }
 
 .form-group h5 {
