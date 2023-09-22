@@ -1,5 +1,5 @@
 export const DEMO_BUSINESS_LIST = [
-  "Golf Carts",
+  "Golf",
   "Badmintons",
   "Shirts",
   "Pants",
