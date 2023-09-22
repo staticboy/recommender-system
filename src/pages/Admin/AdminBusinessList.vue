@@ -31,7 +31,7 @@ function toggleModel() {
       <header>
 
         <h1>
-          Admin Business Approval List
+          Admin Business Management List
         </h1>
         <div class="q-mt-xl fl">
           <router-link to="/admin/home" class="btn">Return Home</router-link>
@@ -48,9 +48,10 @@ function toggleModel() {
         <div class="q-mt-md form-group">
             <label for="Status">Status:</label>
             <select id="Status">
+               <option value="0">None</option>
                 <option value="2">Approved</option>
                 <option value="1">Pending</option>
-                <option value="0">None</option>
+               
             </select>
         </div>
         <div class="q-mt-md date-pickers">
@@ -73,9 +74,9 @@ function toggleModel() {
     <tr>
       <th>ID</th>
       <th>Business Name</th>
-      <th>Year Established</th>
+      <th>Last Login</th>
       <th>City</th>
-      <th>Sales Growth</th>
+      <th>Status</th>
       <th>Open Profile</th>
     </tr>
   </thead>
@@ -83,113 +84,89 @@ function toggleModel() {
     <tr>
       <td>1</td>
       <td>Arctic Corporation</td>
-      <td>2012</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Outram Park</td>
-      <td>10%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>2</td>
       <td>NASA Enterprises</td>
-      <td>2015</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Ang Mo Kio</td>
-      <td>15%</td>
+      <td>pending</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>3</td>
       <td>Entity Framework Inc.</td>
-      <td>2017</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Raffles Place</td>
-      <td>12%</td>
+      <td>reject</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>4</td>
       <td>Helium Voice Company</td>
-      <td>2018</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Jurong East</td>
-      <td>19%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>5</td>
       <td>Sportify Public Corporation</td>
-      <td>2016</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Paya Lebar</td>
-      <td>13%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>6</td>
       <td>Acxiom Corporation</td>
-      <td>2010</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Orchard</td>
-      <td>16%</td>
+      <td>pending</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>7</td>
       <td>Dun & Bradstreet Holdings</td>
-      <td>2014</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Chinatown</td>
-      <td>14%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>8</td>
       <td>Experian</td>
-      <td>2013</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Bugis</td>
-      <td>17%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>9</td>
       <td>TransUnion International</td>
-      <td>2016</td>
+      <td>2023-09-22 23:23:02</td>
       <td>HarbourFront</td>
-      <td>18%</td>
+      <td>reject</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>10</td>
       <td>Equifax</td>
-      <td>2017</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Bayfront</td>
-      <td>11%</td>
+      <td>pending</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
     <tr>
       <td>11</td>
       <td>Nielsen Holdings</td>
-      <td>2015</td>
+      <td>2023-09-22 23:23:02</td>
       <td>Outram Park</td>
-      <td>15%</td>
-      <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
-    </tr>
-    <tr>
-      <td>12</td>
-      <td>Kantar Group</td>
-      <td>2014</td>
-      <td>Ang Mo Kio</td>
-      <td>12%</td>
-      <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td>Ipsos</td>
-      <td>2013</td>
-      <td>Raffles Place</td>
-      <td>19%</td>
-      <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
-    </tr>
-    <tr>
-      <td>14</td>
-      <td>GfK</td>
-      <td>2016</td>
-      <td>Jurong</td>
-      <td>19%</td>
+      <td>approved</td>
       <td><router-link to="/admin/business-profile" class="btn">Open Profile</router-link></td>
     </tr>
   </tbody>

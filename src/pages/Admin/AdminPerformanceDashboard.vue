@@ -7,15 +7,11 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
   <div class="db-body">
     <header>
       <h1>Performance Dashboard</h1>
-      <q-btn
-        class=""
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/admin/home"
-        label="Go Home"
-        no-caps
-      />
+      <div class="q-mt-xl q-mb-md">
+          <router-link to="/admin/home" class="btn">Return Home</router-link>
+ 
+        </div>
+
     </header>
     <div class="db-content">
       <div class="date-box flex flex-row">
