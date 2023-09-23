@@ -26,9 +26,11 @@ const navRoutes = computed(() => {
         </q-avatar>
 
         <q-btn stretch flat :to="navRoutes + '/home'" label="Home" />
-        <q-btn stretch flat to="/user/search" label="Business" />
-        <q-btn stretch flat to="/user/recommendation" label="Product" />
-        <q-btn stretch flat to="/user/enquiry" label="Contact Us" />
+        <template v-if="navRoutes === '/user'">
+          <q-btn stretch flat to="/user/search" label="Business" />
+          <q-btn stretch flat to="/user/recommendation" label="Product" />
+          <q-btn stretch flat to="/user/enquiry" label="Contact Us" />
+        </template>
 
         <q-space />
         <div class="q-ml-xs">
