@@ -7,9 +7,9 @@
     <div class="l-body">
       <header>
         <h1>Admin Enquiries</h1>
-        <div class="q-mt-xl">
+        <!-- <div class="q-mt-xl">
           <router-link to="/admin/home" class="btn">Return Home</router-link>
-        </div>
+        </div> -->
         <div class="btngrp flex flex-row">
           <div class="q-mt-xl form-group">
             <label for="name">User:</label>

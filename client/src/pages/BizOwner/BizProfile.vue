@@ -5,9 +5,6 @@
         <div class="col-9">
           <h1 class="q-mb-md">Edit Business Profile</h1>
         </div>
-        <div>
-          <q-btn type="submit" color="primary" label="Home" class="q-mt-md q-mr-md" dense @click="goToHome"></q-btn>
-        </div>
         <div class="col-3">
           <q-btn type="submit" color="primary" label="Edit" class="q-mt-md q-mr-md" dense v-show="isNotInEdit"
             @click="toggleDisabled"></q-btn>
@@ -60,13 +57,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
+// import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
 
-const router = useRouter(); // Create a router instance
+// const router = useRouter(); // Create a router instance
 
-const goToHome = () => {
-  router.push('/biz/home');
-};
+// const goToHome = () => {
+//   router.push('/biz/home');
+// };
 
 const profile = ref({
   username: 'john_doe',

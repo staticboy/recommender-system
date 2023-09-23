@@ -2,11 +2,6 @@
   <div>
     <h1 class="text-2xl font-semibold mb-4">Feedback Form</h1>
 
-    <!-- Home Button -->
-    <button @click="goToHome" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-      Home
-    </button>
-
     <!-- Normal Flow: Step 1 -->
     <div v-if="step === 1" class="mb-4">
       <p>Select Feedback Type:</p>
@@ -77,14 +72,9 @@ function cancelFeedback() {
   // Implement logic to cancel feedback submission
   resetSteps();
 }
-function goToHome() {
-  // Reset all steps and data
-  //step.value = 1;
-  //selectedFeedbackType.value = '';
-  //feedbackComments.value = '';
-  //route back to home
-  router.push('/biz/home'); // Use router.push() to navigate to /biz/home
-}
+// function goToHome() {
+//   router.push('/biz/home'); // Use router.push() to navigate to /biz/home
+// }
 </script>
 
 

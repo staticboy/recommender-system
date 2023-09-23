@@ -32,10 +32,10 @@ function toggleModel() {
         <h1>
           Customer List
         </h1>
-        <div class="q-mt-xl">
+        <!-- <div class="q-mt-xl">
             <router-link to="/admin/home" class="btn">Return Home</router-link>
 
-          </div>
+          </div> -->
         <div class="btngrp flex flex-row">
 
 

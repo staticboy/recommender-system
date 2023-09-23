@@ -15,14 +15,6 @@ npm install vue3-VueApexChartss VueApexChartss-->
   <div class="p-4">
     <h1 class="text-2xl font-semibold">Product Data Report</h1>
 
-    <!-- Home Button -->
-    <button
-      @click="goToHome"
-      class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-    >
-      Home
-    </button>
-
     <!-- Product Selection -->
     <div class="mb-4">
       <label v-for="product in availableProducts" :key="product">
@@ -356,8 +348,8 @@ function getDummyCustomerChurnData(product) {
   }
   // Add more products as needed
 }
-function goToHome() {
-  router.push('/biz/home');
-}
+// function goToHome() {
+//   router.push('/biz/home');
+// }
 </script>
 

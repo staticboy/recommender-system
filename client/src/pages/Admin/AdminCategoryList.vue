@@ -4,12 +4,12 @@
     <div class="">
       <header>
         <h1>Admin : Categories List</h1>
-        <div class="q-mt-xl fl">
+        <!-- <div class="q-mt-xl fl">
           <router-link to="/admin/home" class="btn">Return Home</router-link>
           <router-link to="/admin/cat-new" class="btn"
             >New Category</router-link
           >
-        </div>
+        </div> -->
         <div class="btngrp flex flex-row">
           <div class="q-mt-xl form-group">
             <label for="name">Category Name :</label>

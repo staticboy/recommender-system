@@ -2,10 +2,6 @@
   <div>
     <h1 class="text-2xl font-semibold mb-4">Transaction History</h1>
 
-    <button @click="goToHome" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-      Home
-    </button>
-
     <!-- Step 1: Filter by User Account -->
     <div v-if="step === 1" class="mb-4">
       <!-- Display user account filter options -->
@@ -118,12 +114,12 @@ function resetSteps() {
   selectedTransaction.value = null;
 };
 
-function goToHome() {
-  // Reset all steps and data
-  resetSteps();
-  //route back to home
-  router.push('/biz/home'); // Use router.push() to navigate to /biz/home
-};
+// function goToHome() {
+//   // Reset all steps and data
+//   resetSteps();
+//   //route back to home
+//   router.push('/biz/home'); // Use router.push() to navigate to /biz/home
+// };
 </script>
   
 <style scoped>
