@@ -19,14 +19,24 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Inital setup
+## Initial setup
 1. Pull/Clone from repository
 2. Run `npm ci` on git bash to install required libraries
 
 ## Run app locally
-Run `npm run dev` on git bash. A local link will be provided in either of these formats 
+**Frontend**: cd to client folder (`cd client`) on Git Bash and run `npm run dev`. A local link will be provided in either of these formats 
 - `http://127.0.0.1:xxxx`
 - `http://localhost:xxxx`.
+Any uncommitted frontend changes made locally will reflect on this link.
+
+**Backend**: cd to server folder (`cd server`) on Git Bash and run `npm run start`. Any local api calls will be in this format: `http://localhost:3000/xxxx`. 
+
+To view the database direct, download PostgreSQL and pgAdmin4. Connect to database server to view tables and database functions.
+
+To test any apis locally, download Postman and run the api call there
+
+[How to send a request using Postman](https://learning.postman.com/docs/getting-started/sending-the-first-request/)
+
 
 **Note: If local deployment doesn't work, run `npm ci` in the respective folder, then deploy again. Deployment requires all libraries to be up to date.** 
 
