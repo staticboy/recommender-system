@@ -1,15 +1,12 @@
 import express from 'express';
-import pgPromise from 'pg-promise';
 import dotenv from 'dotenv';
+import { db, pgp } from './db'; 
+import memberRoutes from './src/routes/memberRoutes';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
-const connectionString = `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`;
-
-const pgp = pgPromise();
-const db = pgp(connectionString);
 
 async function testDatabaseConnection() {
     try {
@@ -17,12 +14,14 @@ async function testDatabaseConnection() {
       console.log('Successfully connected to db:', result[0].util_get_hello);
     } catch (error) {
       console.error('Error:', error);
-    } finally {
-      pgp.end();
-    }
+    } 
 }
 
 testDatabaseConnection();
+
+app.use(express.json());
+
+app.use('/api/member', memberRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
