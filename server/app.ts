@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import { db, pgp } from './db'; 
 import memberRoutes from './src/routes/memberRoutes';
 import categoryRoutes from './src/routes/categoryRoutes';
+import enquiryRoutes from './src/routes/enquiryRoutes';
+
+
 
 dotenv.config();
 
@@ -23,8 +26,9 @@ testDatabaseConnection();
 app.use(express.json());
 
 app.use('/api/member', memberRoutes);
-
 app.use('/api/category', categoryRoutes);
+app.use('/api/enquiries', enquiryRoutes);
+
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
