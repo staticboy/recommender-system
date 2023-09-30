@@ -55,12 +55,40 @@ export async function insertEnquiry(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM enq_insert_new($1)', [req.body]);
 
-        if (result.status === 1) {
+    
+        if (result.enq_insert_new === 1) {
             res.status(200).json({ message: 'Enquiry sent successfully.' });
-        } else if (result.status === -1) {
+        } else if (result.enq_insert_new === -1) {
             res.status(500).json({ error: 'DB error: Enquiry insertion failed.' });
         } else {
-            res.status(500).json({ error: 'Internal server error.'});
+        
+        res.status(500).json({ error: 'Internal server error.' });
+
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
+
+//UPDATE
+export async function updateEnqByAdm(req: Request, res: Response) {
+    try {
+
+
+        const result = await db.one(
+            'SELECT * FROM enq_update_by_adm($1)', [req.body]);
+
+    
+        if (result.enq_update_by_adm === 1) {
+            res.status(200).json({ message: 'Response to enquiry has been sent to the user' });
+        } else if (result.enq_update_by_adm === -1) {
+            res.status(500).json({ error: 'DB error: Enquiry no longer in OPEN state.' });
+        } else {
+        
+        res.status(500).json({ error: 'Internal server error.' });
+
         }
     } catch (error) {
         console.error(error);

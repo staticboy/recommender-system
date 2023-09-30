@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllEnquiries, getEnquiryById, getEnquiryBySubmitDateSorted, insertEnquiry } from '../controllers/enquiryController';
+import { getAllEnquiries, getEnquiryById, getEnquiryBySubmitDateSorted, insertEnquiry, updateEnqByAdm } from '../controllers/enquiryController';
 
 const router = Router();
 
@@ -8,6 +8,8 @@ router.get('/getEnquiryById', getEnquiryById);
 router.get('/getEnquiryBySubmitDateSorted', getEnquiryBySubmitDateSorted);
 router.get('/getEnquiryBySubmitDateSorted', getEnquiryBySubmitDateSorted);
 router.post('/insertEnquiry', insertEnquiry);
+router.post('/updateEnqByAdm', updateEnqByAdm);
+
 
 
 

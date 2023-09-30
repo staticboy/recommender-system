@@ -28,6 +28,7 @@ testDatabaseConnection();
 app.use(express.json());
 
 app.use('/api/member', memberRoutes);
+app.use('/api/enquiries', enquiryRoutes);
 
 app.use('/api/category', categoryRoutes);
 
