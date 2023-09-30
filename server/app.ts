@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import { db, pgp } from './db'; 
 import memberRoutes from './src/routes/memberRoutes';
 import categoryRoutes from './src/routes/categoryRoutes';
+import businessRoutes from './src/routes/businessRoutes';
+import productRoutes from './src/routes/productRoutes';
 import enquiryRoutes from './src/routes/enquiryRoutes';
 
 
@@ -26,9 +28,8 @@ testDatabaseConnection();
 app.use(express.json());
 
 app.use('/api/member', memberRoutes);
-app.use('/api/category', categoryRoutes);
-app.use('/api/enquiries', enquiryRoutes);
 
+app.use('/api/category', categoryRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);

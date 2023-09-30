@@ -212,7 +212,7 @@ export async function updateMemberPreferenceInfo(req: Request, res: Response) {
 export async function updateMemberProfileInfo(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM mem-update_profilee_info($1)', [req.body]);
+            'SELECT * FROM mem_update_profile_info($1)', [req.body]);
 
         if (result === 1) {
             res.status(200).json({ message: 'Profile information updated successfully.' });
