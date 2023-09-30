@@ -17,7 +17,7 @@ router.post('/addNewBusiness', insertNewBusiness);
 router.put('/editStatus', updateBusinessStatus);
 router.put('/editProfile', updateBusinessProfile);
 router.put('/verifyBiz', bizAccountVerify);
-router.put('/bizLogin', bizLogin);
+router.post('/bizLogin', bizLogin);
 
 
 export default router;

@@ -4,6 +4,7 @@ import { db, pgp } from './db';
 import memberRoutes from './src/routes/memberRoutes';
 import categoryRoutes from './src/routes/categoryRoutes';
 import businessRoutes from './src/routes/businessRoutes';
+import productRoutes from './src/routes/productRoutes';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use('/api/member', memberRoutes);
 app.use('/api/business', businessRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/product', productRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
