@@ -8,7 +8,7 @@ router.get('/getEnquiryById', getEnquiryById);
 router.get('/getEnquiryBySubmitDateSorted', getEnquiryBySubmitDateSorted);
 router.get('/getEnquiryBySubmitDateSorted', getEnquiryBySubmitDateSorted);
 router.post('/insertEnquiry', insertEnquiry);
-router.post('/updateEnqByAdm', updateEnqByAdm);
+router.put('/updateEnqByAdm', updateEnqByAdm);
 
 
 
