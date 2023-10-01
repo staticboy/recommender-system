@@ -81,10 +81,11 @@
 
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch, reactive } from 'vue';
 import SearchBar from './SearchBar.vue';
 import { DEMO_PRODUCT_LIST } from '../constants.ts'
 
+const filteredProductsRef = ref([]);
 const searchQuery = ref('');
 const pagination = ref({
   sortBy: 'prod_name',
@@ -112,6 +113,7 @@ const availabilityOptions = computed(() => [
   'Not Available',
 ]);
 
+let rowExpandedStates = reactive({});
 
 const columns = computed(() => [
   {
@@ -203,6 +205,11 @@ const stockQtyStyle = ref((stockQty) => {
 
 const toggleRowExpansion = (row) => {
   row.expanded = !row.expanded;
+  rowExpandedStates[row.id] = !rowExpandedStates[row.id];
 };
 
+// watch(filteredProductsRef, (newFilteredProducts) => {
+//   // Update the filteredProducts computed property
+//   filteredProducts.value = newFilteredProducts;
+// });
 </script>

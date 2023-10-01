@@ -5,11 +5,25 @@
         <div class="col-9">
           <h1 class="q-mb-md">Edit Business Profile</h1>
         </div>
-        <div class="col-3">
-          <q-btn type="submit" color="primary" label="Edit" class="q-mt-md q-mr-md" dense v-show="isNotInEdit"
-            @click="toggleDisabled"></q-btn>
-          <q-btn type="submit" color="white" text-color="black" label="Cancel" class="q-mt-md" dense
-            @click="toggleDisabled"></q-btn>
+      </div>
+      <div class="row">
+        <div class="col-6 pb-4">
+          <div class="col-3">
+            <q-uploader v-model="profileImage" label="Profile Image" accept=".jpg, .jpeg, .png"
+              @click="uploadProfileImage">
+            </q-uploader>
+            <div class="text-h6 q-mb-md" v-if="profileImage">
+              Selected File: {{ profileImage }}
+            </div>
+          </div>
+        </div>
+        <div class="flex col-6 justify-end items-center">
+          <div> <!-- Create a flex container and align content to the end (right) -->
+            <q-btn type="submit" color="primary" label="Edit" class="q-mt-md q-mr-md" dense v-show="isNotInEdit"
+              @click="toggleDisabled"></q-btn>
+            <q-btn type="submit" color="white" text-color="black" label="Cancel" class="q-mt-md" dense
+              @click="toggleDisabled"></q-btn>
+          </div>
         </div>
       </div>
       <q-form @submit.prevent="updateProfile">
@@ -49,21 +63,20 @@
         </div>
       </q-form>
 
-      <q-btn type="submit" color="primary" label="Update Profile" class="q-mt-md" dense v-show="isInEdit"
+      <div class="flex justify-end">
+        <q-btn type="submit" color="primary" label="Update Profile" class="q-mt-md" dense v-show="isInEdit"
         @click="updateProfile"></q-btn>
+      </div>
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-// import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
+import { useRouter } from 'vue-router';
 
-// const router = useRouter(); // Create a router instance
-
-// const goToHome = () => {
-//   router.push('/biz/home');
-// };
+const router = useRouter();
+const profileImage = ref(null);
 
 const profile = ref({
   username: 'john_doe',
@@ -86,8 +99,23 @@ const toggleDisabled = () => {
   isNotInEdit.value = !isNotInEdit.value;
 };
 
-const updateProfile = () => {
+const goToHome = () => {
+  router.push('/biz/home'); // Use router.push() to navigate to /biz/home
+};
 
+const updateProfile = () => {
+//update profile and show notification update successful
+  toggleDisabled();
+  goToHome();
+};
+
+const uploadProfileImage = (file: any) => {
+  if (file) {
+    // Handle the file upload here
+    // You can send it to your server, store it in a database, etc.
+    // You can access the uploaded file data in the 'file' object
+    console.log('Uploaded file:', file);
+  }
 };
 </script>
 

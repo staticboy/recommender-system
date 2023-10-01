@@ -1,141 +1,44 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-semibold mb-4">Feedback Form</h1>
+  <q-page>
+    <div class="q-pa-md">
+      <div class="row">
+        <div class="col-9">
+          <h1 class="q-mb-md">Submit Enquiry</h1>
+        </div>
+      </div>
+      <q-form @submit.prevent="submitEnquiry">
+        <div class="row">
+          <div class="col-6">
+            <q-input outlined v-model="enquiry.enq_subject" label="Subject" dense required type="text"
+              class="q-mr-md"></q-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <q-input outlined v-model="enquiry.enq_message" label="Description" type="textarea" :rows=4 dense required
+              class="q-mt-md width-100"></q-input>
+          </div>
+        </div>
+      </q-form>
 
-    <!-- Normal Flow: Step 1 -->
-    <div v-if="step === 1" class="mb-4">
-      <p>Select Feedback Type:</p>
-      <label for="feedbackTypeReport">
-        <input
-          type="radio"
-          id="feedbackTypeReport"
-          value="Report an Issue"
-          v-model="selectedFeedbackType"
-          class="mr-2"
-        />
-        Report an Issue
-      </label>
-      <label for="feedbackTypeSuggestion">
-        <input
-          type="radio"
-          id="feedbackTypeSuggestion"
-          value="Provide Suggestions"
-          v-model="selectedFeedbackType"
-          class="mr-2"
-        />
-        Provide Suggestions
-      </label>
-      <button @click="proceedToStep(2)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-        Next
-      </button>
+      <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="submitEnquiry"></q-btn>
     </div>
-
-    <!-- Normal Flow: Step 2 -->
-    <div v-else-if="step === 2" class="mb-4">
-      <p>Business owners input their comments in form fields:</p>
-      <textarea
-        v-model="feedbackComments"
-        placeholder="Enter your feedback comments"
-        class="w-full px-3 py-2 rounded-md border border-gray-300"
-      ></textarea>
-      <button @click="proceedToStep(3)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-        Next
-      </button>
-    </div>
-
-    <!-- Normal Flow: Step 3 (Feedback Submitted Successfully) -->
-    <div v-else-if="step === 3" class="mb-4">
-      <p>Feedback submitted successfully.</p>
-    </div>
-  </div>
+  </q-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
+import { useRouter } from 'vue-router';
 
-const router = useRouter(); // Create a router instance
+const router = useRouter();
 
-const step = ref(1);
-const selectedFeedbackType = ref('');
-const feedbackComments = ref('');
+const enquiry = ref({
+  enq_subject: 'Sample Member Enquiry Subject',
+  enq_message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+});
 
-function proceedToStep(nextStep) {
-  step.value = nextStep;
-}
-function submitFeedback() {
-  // Implement logic to save feedback
-  // Display success message and move to Step 3
-  proceedToStep(3);
-}
-function cancelFeedback() {
-  // Implement logic to cancel feedback submission
-  resetSteps();
-}
-// function goToHome() {
-//   router.push('/biz/home'); // Use router.push() to navigate to /biz/home
-// }
+
+const submitEnquiry = () => {
+  router.push('/biz/home');
+};
 </script>
-
-
-  
-  <style scoped>
-  /* Add your component-specific styles here */
-  .text-2xl {
-    font-size: 1.5rem; /* Adjust the font size as needed */
-  }
-  
-  .mb-4 {
-    margin-bottom: 1rem; /* Adjust the margin as needed */
-  }
-  
-  .mr-2 {
-    margin-right: 0.5rem; /* Adjust the margin as needed */
-  }
-  
-  .mt-4 {
-    margin-top: 1rem; /* Adjust the margin as needed */
-  }
-  
-  .w-full {
-    width: 100%; /* Set width to 100% */
-  }
-  
-  .px-3 {
-    padding-left: 0.75rem; /* Adjust the padding as needed */
-    padding-right: 0.75rem; /* Adjust the padding as needed */
-  }
-  
-  .py-2 {
-    padding-top: 0.5rem; /* Adjust the padding as needed */
-    padding-bottom: 0.5rem; /* Adjust the padding as needed */
-  }
-  
-  .rounded-md {
-    border-radius: 0.375rem; /* Adjust the border radius as needed */
-  }
-  
-  .border {
-    /* Add your border styles here */
-    border-width: 1px;
-    border-color: #d1d5db; /* Adjust the border color as needed */
-  }
-  
-  .border-gray-300 {
-    /* Add your border styles here */
-    border-color: #e5e7eb; /* Adjust the border color as needed */
-  }
-  
-  .bg-blue-500 {
-    background-color: #2563eb; /* Adjust the background color as needed */
-  }
-  
-  .text-white {
-    color: #fff; /* Adjust the text color as needed */
-  }
-  
-  .hover\:bg-blue-600:hover {
-    background-color: #3b82f6; /* Adjust the hover background color as needed */
-  }
-  </style>
-  

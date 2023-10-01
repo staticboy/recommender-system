@@ -13,6 +13,10 @@
         </q-tabs>
 
         <div v-if="selectedTab === 'tab1'">
+          <div class="col-3">
+            <q-uploader label="Product Image" accept=".jpg,.jpeg,.png" v-model="product.image" multiple:max-files="9"
+              class="q-mt-md"></q-uploader>
+          </div>
           <div class="row">
             <div class="col-6">
               <q-input outlined v-model="product.prod_name" label="Name" dense required type="text"
@@ -47,13 +51,12 @@
                 class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
-              <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" dense></q-btn>
+              <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
             </div>
           </div>
         </div>
-        <div v-if="selectedTab === 'tab2'">
-          <div class="row">
-            <div class="col-12 flex justify-center">
+        <div v-if="selectedTab === 'tab2'" class="col-12">
+            <div class="col">
               <q-uploader label="Drag and drop files here or click to choose" accept=".csv" v-model="uploadedFiles"
                 :url="uploadUrl" @added="onFileAdded" @removed="onFileRemoved" class="q-mt-md">
                 <!-- <template v-slot:header="{ files }">
@@ -70,7 +73,9 @@
               <q-btn color="negative" dense @click="removeFile(index)">Remove</q-btn>
             </div> -->
             </div>
-          </div>
+            <div class="col-4">
+              <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
+            </div>
         </div>
 
       </div>
@@ -81,7 +86,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const selectedTab = ref('tab1');
 
 const product = ref(
@@ -95,6 +102,7 @@ const product = ref(
     cat_id: 'Golf',
     sub_cat: 'Equipment',
     prod_status: 'Not Available',
+    image: '',
   });
 
 const categoryOptions = computed(() => [
@@ -118,7 +126,7 @@ const availabilityOptions = computed(() => [
 
 const uploadUrl = ref('')
 const uploadedFiles = ref([]);
-const uploading = ref(false);
+// const uploading = ref(false);
 
 const onFileAdded = (files: any) => {
   // Handle file added event
@@ -129,17 +137,22 @@ const onFileRemoved = (file: any) => {
   console.log('File removed:', file);
 };
 
-const uploadFiles = () => {
-  // File upload logic here
-  uploading.value = true;
-};
+// const uploadFiles = () => {
+//   // File upload logic here
+//   uploading.value = true;
+// };
 
-const cancelUpload = () => {
-  uploading.value = false;
-};
+// const cancelUpload = () => {
+//   uploading.value = false;
+// };
 
-const removeFile = (index) => {
-  uploadedFiles.value.splice(index, 1);
+// const removeFile = (index) => {
+//   uploadedFiles.value.splice(index, 1);
+// };
+
+const addProduct = () => {
+  //add product to database
+  router.push('/biz/home');
 };
 
 onMounted(() => {

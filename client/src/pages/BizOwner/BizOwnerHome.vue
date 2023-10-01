@@ -56,7 +56,7 @@
                 text-color="blue"
                 unelevated
                 to="/biz/chart"
-                label="View Chart"
+                label="Dashboard"
                 no-caps
               />
             </li>
