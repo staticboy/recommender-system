@@ -249,6 +249,28 @@ export async function memberLogin(req: Request, res: Response) {
 
 
 
+//Purchase 
+export async function memberSendTransaction(req: Request, res: Response) {
+    try {
+        const result = await db.one(
+            'SELECT * FROM mem_insert_transaction($1)', [req.body]);
+
+        if (result.mem_insert_transaction === 1) {
+            res.status(200).json({ message: 'Transaction successfully completed' });
+        } else if (result.mem_insert_transaction === -1) {
+            res.status(500).json({ error: 'Please check user input.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
+
+
+
 
 
 
