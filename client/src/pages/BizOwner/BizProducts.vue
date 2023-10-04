@@ -11,6 +11,7 @@
           color="primary"
           label="Add Product"
           class="q-mt-md q-mr-md"
+          @click="addProduct()"
           dense
         ></q-btn>
         </div>
@@ -22,6 +23,14 @@
 
 <script setup lang="ts">
 import ProductTable from '../../components/BizProdTable.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+//function "" redirect to "../pages/BizOwner/BizProductsAdd.vue"
+const addProduct = () => {
+  router.push('/biz/products-all');
+};
 </script>
 
 

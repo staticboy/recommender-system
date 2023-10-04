@@ -33,7 +33,7 @@
             </template>
           </q-td>
         </q-tr>
-        <q-tr v-show="props.row.expanded" :props="props">
+        <q-tr v-if="props.row.expanded" :props="props">
           <q-td colspan="100%">
             <div class="row">
               <div class="col">
@@ -68,8 +68,8 @@
                   class="q-mr-md" />
               </div>
               <div class="col">
-                <q-btn type="submit" color="primary" label="Update" class="q-mt-md q-mr-md" dense></q-btn>
-                <q-btn type="submit" color="red" label="Delete" class="q-mt-md q-mr-md" dense></q-btn>
+                <q-btn type="submit" color="primary" label="Update" @click="updateRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
+                <q-btn type="submit" color="red" label="Delete" @click="deleteRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
               </div>
             </div>
           </q-td>
@@ -85,7 +85,7 @@ import { ref, computed, watch, reactive } from 'vue';
 import SearchBar from './SearchBar.vue';
 import { DEMO_PRODUCT_LIST } from '../constants.ts'
 
-const filteredProductsRef = ref([]);
+const filteredProductsRef = ref([...DEMO_PRODUCT_LIST]);
 const searchQuery = ref('');
 const pagination = ref({
   sortBy: 'prod_name',
@@ -93,6 +93,21 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 5,
 });
+
+const updateRow = (row) => {
+  //update values using api
+  toggleRowExpansion(row);
+};
+
+const deleteRow = (key) => {
+  //remove item via api
+  filteredProductsRef.value.splice(key, 1);
+  q.notify({
+    message: "Deleted from cart",
+    icon: "delete",
+    color: "positive",
+  });
+};
 
 const categoryOptions = computed(() => [
   'Golf',
@@ -112,8 +127,6 @@ const availabilityOptions = computed(() => [
   'Available',
   'Not Available',
 ]);
-
-let rowExpandedStates = reactive({});
 
 const columns = computed(() => [
   {
@@ -184,9 +197,8 @@ const columns = computed(() => [
 ]);
 
 const filteredProducts = computed(() => {
-  return DEMO_PRODUCT_LIST.filter((product) => {
+  return filteredProductsRef.value.filter((product) => {
     const searchString = searchQuery.value.toLowerCase();
-
     return (
       Object.values(product)
         .map((value) => (typeof value === 'string' ? value.toLowerCase() : value))
@@ -205,11 +217,7 @@ const stockQtyStyle = ref((stockQty) => {
 
 const toggleRowExpansion = (row) => {
   row.expanded = !row.expanded;
-  rowExpandedStates[row.id] = !rowExpandedStates[row.id];
+  console.log(row);
 };
 
-// watch(filteredProductsRef, (newFilteredProducts) => {
-//   // Update the filteredProducts computed property
-//   filteredProducts.value = newFilteredProducts;
-// });
 </script>
