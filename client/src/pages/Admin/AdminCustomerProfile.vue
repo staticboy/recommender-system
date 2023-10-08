@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
-</script>
+
 
 <template>
   <div class=" text-center q-pa-md flex flex-center">
@@ -10,130 +8,88 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 
         <div class="flex flex-row btn-grp">
           <div class="form-group q-mt-xl">
-            <router-link to="/admin/customer-list" class="btn" id="back"
-              >Go Back</router-link
-            >
+            <q-btn to="/admin/customer-list" class="btn" id="back" color="primary" @click="goBack()" label="Go Back" />
 
-            <router-link to="/admin/customer-list" class="btn" id="reject"
-              >Delete Profile</router-link
-            >
+            <q-btn to="/admin/customer-list" class="btn" id="reject" color="negative" @click="deleteProfile()"
+              label="Delete Profile" />
           </div>
         </div>
+
+        <q-form class="q-mt-lg max-w-lg">
+          <div class="mb-8">
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Customer Name
+              </label>
+              <q-input outlined dense v-model="profile.name" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Phone No
+              </label>
+              <q-input outlined dense v-model="profile.phoneNo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Email
+              </label>
+              <q-input outlined dense v-model="profile.email" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Address
+              </label>
+              <q-input outlined dense v-model="profile.address" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Gender
+              </label>
+              <q-input outlined dense v-model="profile.gender" readonly />
+            </div>
+
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Date Of Birth
+              </label>
+              <q-input outlined dense v-model="profile.dob" readonly />
+            </div>
+
+          </div>
+        </q-form>
 
         <form class="q-mt-lg max-w-lg">
           <div class="mb-8">
             <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
-                Customer Name
-              </label>
-              <input
-                class="appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="Wheat Tea Witty "
-              />
-            </div>
-
-            <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
-                Phone No
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="1800 1234 0009"
-              />
-            </div>
-            <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
-                Location
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="Jupiter, Solar System, Mily Way Galaxy"
-              />
-            </div>
-            <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
-                Sex
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="Male"
-              />
-            </div>
-            <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
-                Date of Birth
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="31 Feb 1289"
-              />
-            </div>
-            <div class="form-group">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                 Preferences
               </label>
 
               <div class="flex flex-row cat-liked " style="width: 800px;">
-                <q-btn
-                  class="q-mt-md"
-                  color="black"
-                  text-color="white"
-                  unelevated
-                  label="Basketball"
-                  no-caps
-                />
-                <q-btn
-                  class="q-mt-md"
-                  color="black"
-                  text-color="white"
-                  unelevated
-                  label="Men"
-                  no-caps
-                />
-                <q-btn
-                  class="q-mt-md"
-                  color="black"
-                  text-color="white"
-                  unelevated
-                  label="Hard"
-                  no-caps
-                />
-                <q-btn
-                  class="q-mt-md"
-                  color="black"
-                  text-color="white"
-                  unelevated
-                  label="Gym"
-                  no-caps
-                />
+                <q-item class="q-mt-md" clickable style="background-color: black; color: white; border-radius: 16px;">
+                  <q-item-section>
+                    <q-item-label color="white">Basketball</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="q-mt-md" clickable style="background-color: black; color: white; border-radius: 16px;">
+                  <q-item-section>
+                    <q-item-label color="white">Men</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="q-mt-md" clickable style="background-color: black; color: white; border-radius: 16px;">
+                  <q-item-section>
+                    <q-item-label color="white">Hard</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="q-mt-md" clickable style="background-color: black; color: white; border-radius: 16px;">
+                  <q-item-section>
+                    <q-item-label color="white">Gym</q-item-label>
+                  </q-item-section>
+                </q-item>
               </div>
             </div>
 
@@ -199,28 +155,37 @@ import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
   </div>
 </template>
 
-<!--<script >
 
+<script setup lang="ts">
+import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
+import { ref } from 'vue';
+// import { DEMO_CUSTOMER_LIST } from '../../constants.ts'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+// const filteredCustomerRef = ref([...DEMO_CUSTOMER_LIST]);
+// const searchQuery = ref('');
 
+const profile = ref({
+  name: 'john_doe',
+  phoneNo: 96969696,
+  address: '3 Bukit Batok Crescent 628553',
+  email: 'johndoe@example.com',
+  gender: 'Binary',
+  dob: '03-04-1996',
+  country: 'Singapore',
+});
 
+const goBack = () => {
+  router.push({ path: '../admin/customer-list' });
+}
 
-export default {
-  name: 'VerticalForm',
-  data() {
-    return {
-      name: '',
-      address: '',
-      businessSummary: '',
-      yearFound: '',
-    };
-  },
+const deleteProfile = () => {
+  //remove profile via api
+  router.push({ path: '../admin/customer-list' });
 };
+</script>
 
-
-
-
-</script>-->
 
 <style scoped lang="scss">
 //Structure
@@ -228,6 +193,7 @@ h1,
 h6 {
   margin: 0;
 }
+
 .l-body {
   width: 960px;
   height: 90vh;
@@ -308,6 +274,7 @@ p {
 label {
   margin-bottom: 5px;
 }
+
 .cat-liked * {
   margin: 5px;
 }

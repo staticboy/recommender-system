@@ -2,8 +2,8 @@
   <div class=" text-center q-pa-md flex flex-center">
     <div class="l-body">
       <header>
-
-        <router-link to="/admin/business-list" class="  btn">Back</router-link>
+        <q-btn type="submit" color="primary" label="Back" class="q-mt-md q-mr-md" dense
+              @click="goToBusinessList()"></q-btn>
         <h1>Business Profile : <b>Little Drummer Boy</b></h1>
 
 
@@ -99,28 +99,17 @@
   </div>
 </template>
 
-<!--<script >
+<script setup lang="ts">
+// import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 
-
-
-
-export default {
-  name: 'VerticalForm',
-  data() {
-    return {
-      name: '',
-      address: '',
-      businessSummary: '',
-      yearFound: '',
-    };
-  },
+const goToBusinessList = () => {
+  router.push('/admin/business-list');
 };
+</script>
 
-
-
-
-</script>-->
 
 <style scoped lang="scss">
 //Structure
