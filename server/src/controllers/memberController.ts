@@ -175,10 +175,20 @@ export async function insertNewMember(req: Request, res: Response) {
     try {
         const result = await db.one(
             'SELECT * FROM mem_register_acct($1)', [req.body]);
-
+        /*
+        //Hey Anne, I edited this code because i noticed that this code is able to insert the row into the table
+        //but it throws back internal server error. 
         if (result === 1) {
             res.status(200).json({ message: 'New member added successfully.' });
         } else if (result === -1) {
+            res.status(500).json({ error: 'Duplicate member email found.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error.' });
+        }
+        */
+        if (result.result_code === 1) {
+            res.status(200).json({ message: 'New member added successfully.' });
+        } else if (result.result_code === -1) {
             res.status(500).json({ error: 'Duplicate member email found.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
