@@ -37,15 +37,27 @@ export async function getProdByBizId(req: Request, res: Response) {
 }
 
 // INSERT
+/*** Sample
+{
+   "prod_name": "Head Speed Pro",
+   "prod_description": "Long story",
+   "prod_price": 299.55,
+   "prod_stockqty": 6,
+   "prod_modelnum": "J100",
+   "cat_id": "C0035",
+   "sub_cat": "Racket",
+   "biz_id": "B0014"
+}
 
+ */
 export async function insertNewProduct(req: Request, res: Response) {
     try {
         const result = await db.one(
             'SELECT * FROM prod_insert_new($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.prod_insert_new === 1) {
             res.status(200).json({ message: 'New product added successfully.' });
-        } else if (result === -1) {
+        } else if (result.prod_insert_new  === -1) {
             res.status(500).json({ error: 'Db error: Create product failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
