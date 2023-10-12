@@ -120,9 +120,9 @@ export async function bizLogin(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM biz_check_credentials($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.biz_check_credentials === 1) {
             res.status(200).json({ message: 'Welcome to Sportify.' });
-        } else if (result === -1) {
+        } else if (result.biz_check_credentials === -1) {
             res.status(500).json({ error: 'Please check user input.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
