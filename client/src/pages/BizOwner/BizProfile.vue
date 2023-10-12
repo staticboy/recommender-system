@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    {{ bizProfileDetails }}
     <div class="q-pa-md">
       <div class="row">
         <div class="col-9">
@@ -79,16 +80,16 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { postDataToApi } from './biz-service';
+import { useStore } from './../../stores';
 
+const store = useStore();
+const { bizProfileDetails } = store.bizOwner;
 
-
-
-
-postDataToApi();
-
+// postDataToApi();
 
 onMounted(async () => {
     try {
+      await store.bizOwner.getBizOwnerProfileDetails("B0031");
       postDataToApi();
     } catch (error) {
       // Handle the error

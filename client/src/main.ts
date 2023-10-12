@@ -17,13 +17,16 @@ import '@quasar/extras/material-symbols-sharp/material-symbols-sharp.css'
 import 'quasar/src/css/index.sass'
 import './style.css'
 import App from './App.vue'
+import { createPinia } from 'pinia'
 
 let app = createApp(App)
+const pinia = createPinia()
 let router = createRouter({
   history: createWebHistory(),
   routes,
 })
 app.use(router)
+app.use(pinia)
 app.use(Quasar, {
   plugins: { Notify, Dialog },
   config: { notify: { position: 'bottom' } },
