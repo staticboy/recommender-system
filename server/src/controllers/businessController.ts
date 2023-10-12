@@ -44,9 +44,9 @@ export async function insertNewBusiness(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM biz_register_acct($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.result_code === 1) {
             res.status(200).json({ message: 'New business owner added successfully.' });
-        } else if (result === -1) {
+        } else if (result.result_code === -1) {
             res.status(500).json({ error: 'Duplicate business email found.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
