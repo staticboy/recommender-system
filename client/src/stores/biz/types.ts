@@ -14,3 +14,14 @@ export interface BizProfileDetails {
   country: string;
   biz_desc: string;
 }
+
+export interface BizProductDetails {
+  prod_name: string;
+  prod_description: string;
+  prod_price: number;
+  prod_stockqty: number;
+  prod_modelnum: number;
+  cat_id: string;
+  sub_cat: string;
+  biz_id: string;
+}
