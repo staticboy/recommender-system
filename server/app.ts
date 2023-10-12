@@ -30,6 +30,8 @@ app.use(express.json());
 app.use('/api/member', memberRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/product', productRoutes);
+app.use('/api/business', businessRoutes);
+
 
 
 app.use('/api/category', categoryRoutes);

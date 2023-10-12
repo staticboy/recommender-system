@@ -67,13 +67,33 @@
         <q-btn type="submit" color="primary" label="Update Profile" class="q-mt-md" dense v-show="isInEdit"
         @click="updateProfile"></q-btn>
       </div>
+
+      <div>
+
+      </div>
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { postDataToApi } from './biz-service';
+
+
+
+
+
+postDataToApi();
+
+
+onMounted(async () => {
+    try {
+      postDataToApi();
+    } catch (error) {
+      // Handle the error
+    }
+});
 
 const router = useRouter();
 const profileImage = ref(null);
@@ -117,5 +137,9 @@ const uploadProfileImage = (file: any) => {
     console.log('Uploaded file:', file);
   }
 };
+
+
+
+
 </script>
 
