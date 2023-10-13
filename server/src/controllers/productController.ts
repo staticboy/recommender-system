@@ -17,7 +17,7 @@ export async function getProdAll(req: Request, res: Response) {
 export async function getProdById(req: Request, res: Response) {
     try 
     {
-        const product = await db.one('SELECT * FROM prod_get_by_id()');
+        const product = await db.one('SELECT * FROM prod_get_by_id($1)', [req.body]);
         res.json(product);
     } catch (error) {
         console.error(error);
