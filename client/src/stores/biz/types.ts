@@ -25,3 +25,13 @@ export interface BizProductDetails {
   sub_cat: string;
   biz_id: string;
 }
+
+export interface ediProductDetails {
+
+  prod_id: string,
+  updated_name: string,
+  updated_description: string,
+  updated_price: number,
+  updated_stockqty: number,
+  updated_modelnum: string
+}

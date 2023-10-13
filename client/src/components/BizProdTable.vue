@@ -86,6 +86,8 @@ import SearchBar from './SearchBar.vue';
 import axios from 'axios';
 import { DEMO_PRODUCT_LIST } from '../constants.ts'
 
+
+
 const filteredProductsRef = ref([...DEMO_PRODUCT_LIST]);
 const searchQuery = ref('');
 const pagination = ref({
@@ -95,9 +97,28 @@ const pagination = ref({
   rowsPerPage: 5,
 });
 
+const updatedProfile = ref({
+  prod_id: '',
+  updated_name: '',
+  updated_description: '',
+  updated_price: 0,
+  updated_stockqty: 0,
+  updated_modelnum: ''
+});
+
 const updateRow = (row) => {
-  //update values using api
+  //jsonb in backend function accepts different key names
+  updatedProfile._rawValue.prod_id = row.prod_id;
+  updatedProfile._rawValue.updated_name = row.prod_name;
+  updatedProfile._rawValue.updated_description = row.prod_description;
+  updatedProfile._rawValue.updated_price = row.prod_price;
+  updatedProfile._rawValue.updated_modelnum = row.prod_modelnum;
+  updatedProfile._rawValue.updated_stockqty = row.prod_stockqty;
+
+
   toggleRowExpansion(row);
+  console.warn(updatedProfile._rawValue);
+  updateRowProduct();
 };
 
 const deleteRow = (key) => {
@@ -218,17 +239,33 @@ const stockQtyStyle = ref((stockQty) => {
 
 const toggleRowExpansion = (row) => {
   row.expanded = !row.expanded;
-  console.log(row);
+  console.log(row.prod_name);
 };
 
 const fetchProductData = async () => {
   try {
     //change biz id value to the id of current login biz owner
-    var param = {"biz_id": 'B0004'} 
+    var param = {"biz_id": 'B0038'} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
     console.log(response)
     if (response.statusText === "OK") {
       filteredProductsRef.value = response.data;
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+
+const updateRowProduct = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/product/editInfo`, updatedProfile._rawValue);
+    console.log(response)
+    if (response.statusText === "OK") {
+      fetchProductData();
     } else {
       console.error('Failed to fetch product data');
     }

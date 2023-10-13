@@ -76,9 +76,9 @@ export async function updateProductInfo(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM prod_update_details($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.prod_update_details === 1) {
             res.status(200).json({ message: 'Product details updated successfully.' });
-        } else if (result === -1) {
+        } else if (result.prod_update_details === -1) {
             res.status(500).json({ error: 'DB error: Product info update failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
