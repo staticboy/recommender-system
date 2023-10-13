@@ -81,8 +81,9 @@
 
 
 <script setup>
-import { ref, computed, watch, reactive } from 'vue';
+import { ref, computed, watch, reactive, onMounted } from 'vue';
 import SearchBar from './SearchBar.vue';
+import axios from 'axios';
 import { DEMO_PRODUCT_LIST } from '../constants.ts'
 
 const filteredProductsRef = ref([...DEMO_PRODUCT_LIST]);
@@ -219,5 +220,24 @@ const toggleRowExpansion = (row) => {
   row.expanded = !row.expanded;
   console.log(row);
 };
+
+const fetchProductData = async () => {
+  try {
+    var param = {"biz_id": 'B0004'}
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      filteredProductsRef.value = response.data;
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+onMounted(() => {
+  fetchProductData();
+});
 
 </script>

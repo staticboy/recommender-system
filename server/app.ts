@@ -7,8 +7,6 @@ import businessRoutes from './src/routes/businessRoutes';
 import productRoutes from './src/routes/productRoutes';
 import enquiryRoutes from './src/routes/enquiryRoutes';
 
-
-
 dotenv.config();
 
 const app = express();
@@ -27,13 +25,16 @@ testDatabaseConnection();
 
 app.use(express.json());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use('/api/member', memberRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/business', businessRoutes);
-
-
-
 app.use('/api/category', categoryRoutes);
 
 app.listen(port, () => {
