@@ -64,9 +64,9 @@ export async function updateBusinessStatus(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM biz_update_account_status($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.biz_update_account_status === 1) {
             res.status(200).json({ message: 'Business account status updated successfully.' });
-        } else if (result === -1) {
+        } else if (result.biz_update_account_status === -1) {
             res.status(500).json({ error: 'DB error: Preference update failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
@@ -82,9 +82,9 @@ export async function updateBusinessProfile(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM biz_update_profile($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.biz_update_profile === 1) {
             res.status(200).json({ message: 'Profile information updated successfully.' });
-        } else if (result === -1) {
+        } else if (result.biz_update_profile === -1) {
             res.status(500).json({ error: 'DB error: Profile update failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

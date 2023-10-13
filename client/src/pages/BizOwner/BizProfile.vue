@@ -115,11 +115,16 @@ const toggleDisabled = () => {
 };
 
 const goToHome = () => {
+
   router.push('/biz/home'); // Use router.push() to navigate to /biz/home
+
+
 };
 
 const updateProfile = () => {
 //update profile and show notification update successful
+  console.warn(profile._rawValue.biz_id) //check with anne/DH
+  UpdateBizProfile();
   toggleDisabled();
   goToHome();
 };
@@ -133,7 +138,7 @@ const uploadProfileImage = (file: any) => {
   }
 };
 
-//API call
+//API call get profile
 const fetchBizProfile = async () => {
   try {
     //change biz id value to the id of current login biz owner
@@ -142,6 +147,25 @@ const fetchBizProfile = async () => {
     console.log(response)
     if (response.statusText === "OK") {
       profile.value = response.data;
+      console.warn(response.data);
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+//API update profile 
+// Biz_ID taken from profile 
+const UpdateBizProfile = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    var param = profile
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/business/editProfile`, param._rawValue);
+    console.log(response)
+    if (response.statusText === "OK") {
+      fetchBizProfile(); //refresh values
       console.warn(response.data);
     } else {
       console.error('Failed to fetch product data');
