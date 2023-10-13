@@ -4,7 +4,7 @@
     <div class="q-pa-md">
       <div class="row">
         <div class="col-9">
-          <h1 class="q-mb-md">Edit Business Profile</h1>
+          <h1 class="q-mb-md">Edit Business Profile :  {{ profile.biz_id }}</h1>
         </div>
       </div>
       <div class="row">
@@ -30,7 +30,7 @@
       <q-form @submit.prevent="updateProfile">
         <div class="row">
           <div class="col-6">
-            <q-input outlined v-model="profile.email" label="Email" dense required type="email" class="q-mr-md"
+            <q-input outlined v-model="profile.biz_email" label="Email" dense required type="email" class="q-mr-md"
               :disable="true"></q-input>
           </div>
           <div class="col-6">
@@ -40,7 +40,7 @@
         </div>
         <div class="row q-mt-md">
           <div class="col-3">
-            <q-input outlined v-model="profile.yr_est" label="Year Established" dense required type="number"
+            <q-input outlined v-model="profile.biz_yearest" label="Year Established" dense required type="number"
               class="q-mr-md" :maxlength="4" :readonly="isDisabled"></q-input>
           </div>
           <div class="col-3">
@@ -48,17 +48,17 @@
               class="q-mr-md" :maxlength="8" :readonly="isDisabled"></q-input>
           </div>
           <div class="col-3">
-            <q-input outlined v-model="profile.address" label="Address" type="textarea" :rows=3 dense required
+            <q-input outlined v-model="profile.biz_address" label="Address" type="textarea" :rows=3 dense required
               class="q-mr-md" :readonly="isDisabled"></q-input>
           </div>
           <div class="col-3">
-            <q-input outlined v-model="profile.country" label="Country" dense required type="text" class="q-mr-md"
+            <q-input outlined v-model="profile.biz_country" label="Country" dense required type="text" class="q-mr-md"
               :disable="isDisabled"></q-input>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
-            <q-input outlined v-model="profile.biz_desc" label="Description" type="textarea" :rows=3 dense required
+            <q-input outlined v-model="profile.biz_description" label="Description" type="textarea" :rows=3 dense required
               class="q-mt-md width-100" :readonly="isDisabled"></q-input>
           </div>
         </div>
@@ -79,35 +79,29 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { postDataToApi } from './biz-service';
+//import { postDataToApi } from './biz-service';
+import axios from 'axios';
 import { useStore } from './../../stores';
 
 const store = useStore();
 const { bizProfileDetails } = store.bizOwner;
 
-// postDataToApi();
 
-onMounted(async () => {
-    try {
-      await store.bizOwner.getBizOwnerProfileDetails("B0031");
-      postDataToApi();
-    } catch (error) {
-      // Handle the error
-    }
-});
+
+
 
 const router = useRouter();
 const profileImage = ref(null);
 
 const profile = ref({
-  username: 'john_doe',
-  biz_name: 'Pearl Jam Sporting Goods',
-  biz_phoneno: '91001001',
-  email: 'johndoe@example.com',
-  yr_est: '2003',
-  address: '3 Bukit Batok Crescent 628553',
-  country: 'Singapore',
-  biz_desc: 'Our business has been around for very long... we sell golf equipment at a good price'
+  biz_id: 'Bxxxxx',
+  biz_name: 'Reg account',
+  biz_email: 'johndoe@example.com',
+  biz_phoneno: 13,
+  biz_yearest: '1911',
+  biz_address: '3 Bukit Batok Crescent 628553',
+  biz_country: 'Singapore',
+  biz_description: 'Our business has been around for very long... we sell golf equipment at a good price'
 });
 
 const isDisabled = ref(true);
@@ -138,6 +132,35 @@ const uploadProfileImage = (file: any) => {
     console.log('Uploaded file:', file);
   }
 };
+
+//API call
+const fetchBizProfile = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    var param = {"biz_id": 'B0031'} 
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getById`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      profile.value = response.data;
+      console.warn(response.data);
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+
+onMounted(async () => {
+    try {
+      //await store.bizOwner.getBizOwnerProfileDetails("B0001");
+      //postDataToApi();
+      fetchBizProfile();
+    } catch (error) {
+      // Handle the error
+    }
+});
 
 
 

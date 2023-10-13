@@ -223,7 +223,8 @@ const toggleRowExpansion = (row) => {
 
 const fetchProductData = async () => {
   try {
-    var param = {"biz_id": 'B0004'}
+    //change biz id value to the id of current login biz owner
+    var param = {"biz_id": 'B0004'} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
     console.log(response)
     if (response.statusText === "OK") {

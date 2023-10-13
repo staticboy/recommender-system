@@ -32,7 +32,8 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
 
 
   const getBizOwnerProfileDetails = async (biz_id: string) => {
-    const resp = await axios.post<BizProfileDetails>("http://localhost:3000/api/business/getProfile", { biz_id: biz_id });
+    console.log(biz_id);
+    const resp = await axios.post<BizProfileDetails>(`${import.meta.env.VITE_API_URL}/api/business/getById`, { biz_id: biz_id });
     bizProfileDetails.value = resp.data;
   }
 
