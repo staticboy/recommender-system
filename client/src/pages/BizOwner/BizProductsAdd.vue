@@ -59,19 +59,7 @@
             <div class="col">
               <q-uploader label="Drag and drop files here or click to choose" accept=".csv" v-model="uploadedFiles"
                 :url="uploadUrl" @added="onFileAdded" @removed="onFileRemoved" class="q-mt-md">
-                <!-- <template v-slot:header="{ files }">
-                <q-btn color="primary" v-if="!uploading && files.length > 0" @click="uploadFiles">
-                  Upload Files
-                </q-btn>
-                <q-btn color="primary" v-else @click="cancelUpload">
-                  Cancel Upload
-                </q-btn>
-              </template> -->
               </q-uploader>
-              <!-- <div v-for="(file, index) in uploadedFiles" :key="index">
-              {{ file.name }}
-              <q-btn color="negative" dense @click="removeFile(index)">Remove</q-btn>
-            </div> -->
             </div>
             <div class="col-4">
               <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
@@ -93,6 +81,7 @@ import axios from 'axios';
 
 const router = useRouter();
 const selectedTab = ref('tab1');
+const categoryOptions = ref([]);
 
 const product = ref(
   {
@@ -109,12 +98,12 @@ const product = ref(
     biz_id : ''
   });
 
-const categoryOptions = computed(() => [
-  'Golf',
-  'Tennis',
-  'Basketball',
-  'Soccer',
-]);
+// const categoryOptions = computed(() => [
+//   'Golf',
+//   'Tennis',
+//   'Basketball',
+//   'Soccer',
+// ]);
 
 const subCategoryOptions = computed(() => [
   'Equipment',
@@ -168,8 +157,6 @@ const addProduct = () => {
 };
 
 
-
-
 //API POST : New product row
 //product/addNewProd
 const postRowProduct = async () => {
@@ -194,8 +181,8 @@ const getAllCategrories = async () => {
     console.log(response)
     if (response.statusText === "OK") {
       console.log(response.data);
-     
-      
+      //populate Category droplist
+      categoryOptions.value = response.data.map((category: { cat_name: any; }) => category.cat_name);
     } else {
       console.error('Failed to fetch product data');
     }
