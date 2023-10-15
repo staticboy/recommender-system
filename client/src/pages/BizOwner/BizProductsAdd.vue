@@ -11,7 +11,7 @@
           <q-tab name="tab2" label="Import csv files">
           </q-tab>
         </q-tabs>
-
+        
         <div v-if="selectedTab === 'tab1'">
           <div class="col-3">
             <q-uploader label="Product Image" accept=".jpg,.jpeg,.png" v-model="product.image" multiple:max-files="9"
@@ -78,6 +78,7 @@
             </div>
         </div>
 
+
       </div>
       <!-- <ProductTable /> -->
     </div>
@@ -87,22 +88,25 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+
 
 const router = useRouter();
 const selectedTab = ref('tab1');
 
 const product = ref(
   {
-    prod_id: 'P0PJ001',
-    prod_name: 'Golf Club Set',
-    prod_description: 'Complete set of golf clubs for all skill levels.',
-    prod_stockqty: 15,
-    prod_price: 499.99,
-    prod_modelnum: 'GC-001',
-    cat_id: 'Golf',
-    sub_cat: 'Equipment',
-    prod_status: 'Not Available',
+    prod_id: '',
+    prod_name: '',
+    prod_description: '.',
+    prod_stockqty: 0,
+    prod_price: 0,
+    prod_modelnum: '',
+    cat_id: '',
+    sub_cat: '',
+    prod_status: '',
     image: '',
+    biz_id : ''
   });
 
 const categoryOptions = computed(() => [
@@ -152,11 +156,56 @@ const onFileRemoved = (file: any) => {
 
 const addProduct = () => {
   //add product to database
+  product._rawValue.prod_price = Number(product._rawValue.prod_price);
+  product._rawValue.prod_stockqty = Number(product._rawValue.prod_stockqty);
+  product._rawValue.biz_id = "B0038";
+
+
+
+  postRowProduct();
   router.push('/biz/home');
+
+};
+
+
+
+
+//API POST : New product row
+//product/addNewProd
+const postRowProduct = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/addNewProd`, product._rawValue);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log("item added")
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+const getAllCategrories = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getCatAll`);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+     
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
 };
 
 onMounted(() => {
-
+  getAllCategrories()
 });
 </script>
 

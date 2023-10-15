@@ -21,6 +21,7 @@
         </div>
       </q-form>
 
+
       <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="submitEnquiry"></q-btn>
     </div>
   </q-page>
@@ -28,17 +29,44 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios from 'axios';
+
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const enquiry = ref({
-  enq_subject: 'Sample Member Enquiry Subject',
-  enq_message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+  enq_subject: '',
+  enq_message: '',
+  enq_submitby : 'B0038'
+
 });
 
 
 const submitEnquiry = () => {
-  router.push('/biz/home');
+  //router.push('/biz/home');
+  console.log(enquiry._rawValue);
+  postRowEnquiry()
 };
+
+//API POST : New product row
+//product/addNewProd
+const postRowEnquiry = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries/insertEnquiry`, enquiry._rawValue);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log("Enquiry sent");
+      router.push('/biz/home');;
+
+    } else {
+      console.error('failed to send enquiry');
+    }
+  } catch (error) {
+    console.error('Critical error:', error);
+  }
+};
+
+
 </script>
