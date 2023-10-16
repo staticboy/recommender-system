@@ -51,7 +51,8 @@
 
       <q-table :rows="filteredList" :columns="columns">
         <template v-slot:body="props">
-          <q-tr :props="props">
+         <q-tr :props="props">
+          
             <q-td key="enq_id" :props="props">
               {{ props.row.enq_id }}
             </q-td>
@@ -61,14 +62,12 @@
             <q-td key="enq_subject" :props="props">
               {{ props.row.enq_subject }}
             </q-td>
-            <q-td key="userType" :props="props">
-              {{ props.row.userType }}
-            </q-td>
+
             <q-td key="enq_submitdate" :props="props">
               {{ props.row.enq_submitdate }}
             </q-td>
-            <q-td key="enq_submitdate" :props="props">
-              {{ props.row.enq_submitdate }}
+            <q-td key="enq_status" :props="props">
+              {{ props.row.enq_status }}
             </q-td>
             <q-td>
               <q-btn color="primary" label="View" @click="viewRow(props.row)" />
@@ -168,13 +167,7 @@ const columns = computed(() => [
     field: 'enq_submitby',
     sortable: true,
   },
-  {
-    name: 'last_login_date',
-    label: 'Last login date',
-    align: 'left',
-    field: 'last_login_date',
-    sortable: true,
-  },
+
   {
     name: 'enq_subject',
     label: 'Enquiry Subject',
@@ -182,20 +175,8 @@ const columns = computed(() => [
     field: 'enq_subject',
     sortable: true,
   },
-  {
-    name: 'enq_message',
-    label: 'Enquiry Message',
-    align: 'left',
-    field: 'enq_message',
-    sortable: true,
-  },
-  {
-    name: 'userType',
-    label: 'User Type',
-    align: 'left',
-    field: 'userType',
-    sortable: true,
-  },
+
+
   {
     name: 'enq_submitdate',
     label: 'Enquiry Date',
@@ -210,13 +191,7 @@ const columns = computed(() => [
     field: 'enq_status',
     sortable: true,
   },
-  {
-    name: 'admin_id',
-    label: 'admin ',
-    align: 'left',
-    field: 'admin_id',
-    sortable: true,
-  },
+
   {
     name: 'action',
     label: '',

@@ -151,6 +151,8 @@
 
           <q-input outlined  v-model="enquiry.enq_response"  type="textarea" :rows=4 dense required
               class="q-mt-md width-100 ticket"></q-input>
+
+    
         </div>
 
 
@@ -159,8 +161,14 @@
         
       </q-form>
 
+      <div class=" q-gutter-md">
+        <q-btn type="button" color="outline" label="Cancel" class="q-mt-md" dense @click="goToEnquiryList"></q-btn>
+        <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
+      </div>
 
-      <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
+
+
+
     </div>
   </q-page>
 </template>
