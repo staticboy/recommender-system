@@ -163,7 +163,7 @@
 
       <div class=" q-gutter-md">
         <q-btn type="button" color="outline" label="Cancel" class="q-mt-md" dense @click="goToEnquiryList"></q-btn>
-        <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
+        <q-btn v-bind:disable="enquiry.enq_status === 'RESPONDED'" type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
       </div>
 
 
