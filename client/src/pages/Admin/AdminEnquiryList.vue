@@ -69,6 +69,9 @@
             <q-td key="enq_status" :props="props">
               {{ props.row.enq_status }}
             </q-td>
+            <q-td key="user_type" :props="props">
+              {{ props.row.user_type }}
+            </q-td>
             <q-td>
               <q-btn color="primary" label="View" @click="viewRow(props.row)" />
             </q-td>
@@ -132,8 +135,8 @@ const statusOptions = [
 ];
 
 const userTypeOptions = [
-  { label: 'Business Owner', value: 'Business Owner' },
-  { label: 'Member', value: 'Member' },
+  { label: 'Business Owner', value: 'B' },
+  { label: 'Member', value: 'M' },
 ];
 
 const submitForm = () => {
@@ -176,7 +179,6 @@ const columns = computed(() => [
     sortable: true,
   },
 
-
   {
     name: 'enq_submitdate',
     label: 'Enquiry Date',
@@ -191,7 +193,13 @@ const columns = computed(() => [
     field: 'enq_status',
     sortable: true,
   },
-
+  {
+    name: 'user_type',
+    label: 'User Type',
+    align: 'left',
+    field: 'user_type',
+    sortable: true,
+  },
   {
     name: 'action',
     label: '',
@@ -248,6 +256,7 @@ const fetchEnquiryData = async () => {
     
     console.log(response);
     if (response.statusText === "OK") {
+
       tableData.value = response.data;
     
       console.log(tableData);

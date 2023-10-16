@@ -5,7 +5,7 @@ import { db } from '../../db';
 export async function getAllEnquiries(req: Request, res: Response) {
     try 
     {
-        const enquiry = await db.any('SELECT * FROM enq_get_all()');
+        const enquiry = await db.any('SELECT * FROM enq_get_all2()');
         res.json(enquiry);
     } catch (error) {
         console.error(error);
