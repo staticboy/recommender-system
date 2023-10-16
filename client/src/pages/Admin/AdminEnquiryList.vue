@@ -49,7 +49,7 @@
         </q-card>
       </q-form>
 
-      <q-table :rows="filteredList">
+      <q-table :rows="filteredList" :columns="columns">
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="enq_id" :props="props">
@@ -151,7 +151,80 @@ const tableData = ref([
 
 ]);
 
-
+const columns = computed(() => [
+  {
+    name: 'enq_id',
+    required: true,
+    label: 'ID',
+    align: 'left',
+    field: 'enq_id',
+    sortable: true,
+  },
+  {
+    name: 'enq_submitby',
+    required: true,
+    label: 'Submitted By',
+    align: 'left',
+    field: 'enq_submitby',
+    sortable: true,
+  },
+  {
+    name: 'last_login_date',
+    label: 'Last login date',
+    align: 'left',
+    field: 'last_login_date',
+    sortable: true,
+  },
+  {
+    name: 'enq_subject',
+    label: 'Enquiry Subject',
+    align: 'left',
+    field: 'enq_subject',
+    sortable: true,
+  },
+  {
+    name: 'enq_message',
+    label: 'Enquiry Message',
+    align: 'left',
+    field: 'enq_message',
+    sortable: true,
+  },
+  {
+    name: 'userType',
+    label: 'User Type',
+    align: 'left',
+    field: 'userType',
+    sortable: true,
+  },
+  {
+    name: 'enq_submitdate',
+    label: 'Enquiry Date',
+    align: 'left',
+    field: 'enq_submitdate',
+    sortable: true,
+  },
+  {
+    name: 'enq_status',
+    label: 'Enquiry Status',
+    align: 'left',
+    field: 'enq_status',
+    sortable: true,
+  },
+  {
+    name: 'admin_id',
+    label: 'admin ',
+    align: 'left',
+    field: 'admin_id',
+    sortable: true,
+  },
+  {
+    name: 'action',
+    label: '',
+    align: 'right',
+    field: '',
+    sortable: false,
+  },
+]);
 
 const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'id', sortable: true },
