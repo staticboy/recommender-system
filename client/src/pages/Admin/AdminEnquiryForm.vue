@@ -1,11 +1,12 @@
 <template>
+<!----
   <div class="text-center q-pa-md flex flex-center">
     <div class="l-body">
       <header>
         <q-btn type="submit" color="primary" label="Back" class="q-mt-md q-mr-md" dense
               @click="goToEnquiryList()"></q-btn>
         <h4>INC100021 : <b>Unable to buy item</b></h4>
-
+        
         <form class="q-mt-lg max-w-lg">
           <div class="mb-8">
             <div class="form-group">
@@ -71,20 +72,179 @@
             </div>
           </div>
         </form>
+      
+
       </header>
     </div>
-  </div>
+  </div>-->
+  <q-page>
+    
+    <div class="q-pa-md">
+      <div class="heading"> 
+
+      <h4>{{ enquiry.enq_id }} : <b>{{ enquiry.enq_subject }}</b></h4>
+      </div>
+
+
+      
+      <q-form @submit.prevent="goToEnquiryList">
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                User ID
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+              <q-input readonly  v-model="enquiry.enq_submitby" dense required type="text"
+              class="q-mr-md"></q-input>
+        </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+               Description
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-input readonly  v-model="enquiry.enq_message"  type="textarea" :rows=4 dense required
+              class="q-mt-md width-100 ticket"></q-input>
+        </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+               Submitted Date
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-input readonly  v-model="enquiry.enq_submitdate"  type="text" :rows=4 dense required
+              class="q-mt-md width-100 ticket"></q-input>
+        </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Status
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-input readonly  v-model="enquiry.enq_status"  type="text" :rows=4 dense required
+              class="q-mt-md width-100 ticket"></q-input>
+        </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Response
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-input outlined  v-model="enquiry.enq_response"  type="textarea" :rows=4 dense required
+              class="q-mt-md width-100 ticket"></q-input>
+        </div>
+
+
+
+
+        
+      </q-form>
+
+
+      <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
+    </div>
+  </q-page>
 </template>
 
 <script setup lang="ts">
-// import { ref } from 'vue';
+import { ref,  onMounted} from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from './../../stores';
+import axios from 'axios';
+
+
+const store = useStore();
+const { selectedEnqId } = store.adm;
 
 const router = useRouter();
+
+const enquiry = ref({
+  enq_id: '',
+  enq_submitby: '',
+  enq_subject: '',
+  enq_message: '',
+  enq_submitdate: '',
+  admin_id: 'admin.data',
+  enq_response: '',
+  enq_responsedate: '',
+  enq_status: ''
+
+
+});
+
 
 const goToEnquiryList = () => {
   router.push('/admin/enquiry-list');
 };
+
+//API Call to get the body
+const fetchEnquiryData = async () => {
+  try {
+    var param = {"enq_id": selectedEnqId.enq_id} 
+    console.log(param);
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries/getEnquiryById`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      enquiry.value = response.data;
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+
+//API Call to get the body
+const updateEnquiryData = async () => {
+  try {
+    enquiry.value.admin_id = 'adminuser'
+    
+
+    var param = {"enq_id": enquiry.value.enq_id, 
+                  "enq_response" : enquiry.value.enq_response, 
+                  "admin_id" : enquiry.value.admin_id} 
+    console.log(param);
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/enquiries/updateEnqByAdm`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      goToEnquiryList();
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+onMounted(() => {
+  console.log(selectedEnqId.enq_id);
+
+  fetchEnquiryData();
+});
 
 </script>
 
@@ -95,13 +255,19 @@ const goToEnquiryList = () => {
   width: 960px;
 }
 
+.heading{
+
+  margin-bottom: 30px;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin: 4px;
+  margin: 0;
+  padding: 0;
 }
 
 * {
@@ -152,6 +318,9 @@ button:focus-visible {
 /***********
   FORMS
   ************/
+.ticket{
+  border: none;
+}
 .form-group {
   margin-bottom: 15px;
 

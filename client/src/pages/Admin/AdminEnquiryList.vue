@@ -52,23 +52,26 @@
       <q-table :rows="filteredList">
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td key="id" :props="props">
-              {{ props.row.id }}
+            <q-td key="enq_id" :props="props">
+              {{ props.row.enq_id }}
             </q-td>
-            <q-td key="name" :props="props">
-              {{ props.row.name }}
+            <q-td key="enq_submitby" :props="props">
+              {{ props.row.enq_submitby }}
             </q-td>
-            <q-td key="status" :props="props">
-              {{ props.row.status }}
+            <q-td key="enq_subject" :props="props">
+              {{ props.row.enq_subject }}
             </q-td>
             <q-td key="userType" :props="props">
               {{ props.row.userType }}
             </q-td>
-            <q-td key="date" :props="props">
-              {{ props.row.date }}
+            <q-td key="enq_submitdate" :props="props">
+              {{ props.row.enq_submitdate }}
+            </q-td>
+            <q-td key="enq_submitdate" :props="props">
+              {{ props.row.enq_submitdate }}
             </q-td>
             <q-td>
-              <q-btn color="primary" label="View" @click="viewRow()" />
+              <q-btn color="primary" label="View" @click="viewRow(props.row)" />
             </q-td>
           </q-tr>
         </template>
@@ -80,12 +83,19 @@
 
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+import { useStore } from './../../stores';
+const store = useStore();
+const { selectedEnqId } = store.adm;
+
 
 const router = useRouter();
 
 const userName = ref('');
+
 const status = ref('');
 const userType = ref('');
 const startDate = ref('');
@@ -135,32 +145,40 @@ const resetForm = () => {
   // Reset form fields
 };
 
+//Items
 const tableData = ref([
-  { id: 1, name: 'User 1', status: 'Closed', userType: 'Member', date: '2023-10-01' },
-  { id: 2, name: 'User 2', status: 'Open', userType: 'Business Owner', date: '2023-10-02' },
-  { id: 3, name: 'User 3', status: 'Responded', userType: 'Member', date: '2023-10-03' },
+  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,userType: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
+
 ]);
+
+
 
 const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'id', sortable: true },
-  { name: 'name', required: true, label: 'Name', align: 'left', field: 'name', sortable: true },
-  { name: 'status', label: 'Status', align: 'left', field: 'status', sortable: true },
+  { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'name', sortable: true },
+  { name: 'enq_status', label: 'Status', align: 'left', field: 'status', sortable: true },
   { name: 'userType', label: 'User Type', align: 'left', field: 'userType', sortable: true },
-  { name: 'date', label: 'Date', align: 'left', field: 'date', sortable: true },
+  { name: 'enq_submitdate', label: 'Date', align: 'left', field: 'date', sortable: true },
 ]);
 
-const viewRow = () => {
-  router.push('/admin/enquiry');
+//not sure why i have the red underline but it works
+const viewRow = (row) => {
+  router.push({path : '/admin/enquiry'});
+  
+  selectedEnqId.enq_id = row.enq_id;
+
 };
+
+
 
 const filteredList = computed(() => {  //filtering not working
   return tableData.value.filter((item) => {
     return (
-      (!userName.value || item.name.toLowerCase().includes(userName.value.toLowerCase())) &&
-      (!status.value || item.status === status.value) &&
+      (!userName.value || item.enq_id.toLowerCase().includes(userName.value.toLowerCase())) &&
+      (!status.value || item.enq_status === status.value) &&
       (!userType.value || item.userType === userType.value) &&
-      (!startDate.value || item.date >= startDate.value) &&
-      (!endDate.value || item.date <= endDate.value)
+      (!startDate.value || item.enq_submitdate >= startDate.value) &&
+      (!endDate.value || item.enq_submitdate <= endDate.value)
     );
   });
 });
@@ -168,6 +186,36 @@ const filteredList = computed(() => {  //filtering not working
 // Watch for changes in filter inputs and update the filtered list
 watch([userName, status, userType, startDate, endDate], () => {
   // The computed property `filteredList` will automatically update here
+});
+
+
+
+
+
+//API Fetch
+const fetchEnquiryData = async () => {
+  try {
+    
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enquiries/getAllEnquiries`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      tableData.value = response.data;
+    
+      console.log(tableData);
+      console.log(tableData.value);
+      
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+onMounted(() => {
+  fetchEnquiryData()
 });
 </script>
 

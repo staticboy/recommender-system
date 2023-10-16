@@ -3,6 +3,8 @@ import { createPinia } from "pinia";
 import { Router } from "vue-router";
 import { useCounterStore } from "./example-store";
 import { useBizOwnerStore } from "./biz/index";
+import { useAdminStore } from "./adm/index";
+
 
 /*
  * When adding new properties to stores, you should also
@@ -36,4 +38,5 @@ export default store((/* { ssrContext } */) => {
 export const useStore = () => ({
   counter: useCounterStore(),
   bizOwner: useBizOwnerStore(),
+  adm : useAdminStore()
 });

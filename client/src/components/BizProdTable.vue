@@ -7,6 +7,7 @@
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th auto-width />
+          
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
