@@ -4,7 +4,7 @@
       <header>
         <q-btn type="submit" color="primary" label="Back" class="q-mt-md q-mr-md" dense
               @click="goToBusinessList()"></q-btn>
-        <h1>Business Profile : <b>Little Drummer Boy</b></h1>
+        <h1>{{ business.biz_id }} : <b>{{ business.biz_name }}</b></h1>
 
 
         <form class="q-mt-lg max-w-lg">
@@ -14,14 +14,9 @@
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-first-name"
               >
-                Business Name
+                Status
               </label>
-              <input
-                class="appearance-none block bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="Little Drummer Boy"
-              />
+              <h6>{{ business.biz_status }}</h6>
             </div>
             <div class="form-group">
               <label
@@ -30,12 +25,7 @@
               >
                 Year Est
               </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="2008"
-              />
+              <h6>{{ business.biz_yearest }}</h6>
             </div>
             <div class="form-group">
               <label
@@ -44,12 +34,8 @@
               >
                 Phone No
               </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="1800 1234 0009"
-              />
+              <h6>{{ business.biz_phoneno }}</h6>
+
             </div>
             <div class="form-group">
               <label
@@ -58,12 +44,8 @@
               >
                 Address
               </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                id=""
-                type="text"
-                value="1234 Chuckle Avenue Laughington, Haha 56789 Funnyland"
-              />
+              <h6>{{ business.biz_address }}</h6>
+
             </div>
             <div class="form-group">
               <label
@@ -73,24 +55,18 @@
                 Business Description
               </label>
               <p>
-                Sporting goods companies would like to increase their ecommerce
-                footprint by having a web portal to showcase their products to
-                sports enthusiasts. This is to drive sales and marketing
-                exposures on the products that they sell, which could be
-                challenging when they only rely on showcasing products in their
-                physical stores. Furthermore, they would like to gain insightful
-                information between their products and users to help them
-                formulate their future business decision.
+                {{ business.biz_description }}
               </p>
             </div>
 
-            <div class="form-group">
-              <router-link to="/admin/business-list" class="btn" id="approve"
-                >Approve</router-link
-              >
-              <router-link to="/admin/business-list" class="btn" id="reject"
-                >Reject</router-link
-              >
+            <div v-if="business.biz_status !== 'VERIFIED'" class="form-group q-gutter-md">
+            
+              <q-btn type="button" color="positive" label="Verify" class="q-mt-md" dense @click="updateBusinessData(1)"></q-btn>
+
+            </div>
+            <div v-else class="form-group">
+              <q-btn type="button" color="negative" label="Disable" class="q-mt-md" dense @click="updateBusinessData(-1)"></q-btn>
+
             </div>
           </div>
         </form>
@@ -100,14 +76,85 @@
 </template>
 
 <script setup lang="ts">
-// import { ref } from 'vue';
+import { ref,  onMounted} from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from './../../stores';
+import axios from 'axios';
+
+const store = useStore();
+const { selectedBizId } = store.adm;
 
 const router = useRouter();
+
+
+const business = ref({
+  biz_address: '',
+  biz_country: '',
+  biz_description: '',
+  biz_email: '',
+  biz_id: '',
+  biz_name: '',
+  biz_phoneno: '',
+  biz_regdate: '',
+  biz_status: '',
+  biz_yearest: ''
+
+});
+
+//API Call to get the body
+const fetchBusinessData = async () => {
+  try {
+    var param = {"biz_id": selectedBizId.biz_id} 
+    console.log(param);
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getById`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      business.value = response.data;
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+//API call to edit body : status
+//business/verifyBiz
+const updateBusinessData = async (row : any) => {
+  try {
+    var param = {"biz_id": selectedBizId.biz_id} 
+    console.log(param);
+
+    //call result depends on status
+    var link = row == 1 ? `${import.meta.env.VITE_API_URL}/api/business/verifyBiz`  : `${import.meta.env.VITE_API_URL}/api/business/disableBiz`
+   
+    
+    const response = await axios.put(link, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      goToBusinessList();
+
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
 
 const goToBusinessList = () => {
   router.push('/admin/business-list');
 };
+
+onMounted(() => {
+  console.log(selectedBizId.biz_id);
+
+  fetchBusinessData();
+});
 </script>
 
 

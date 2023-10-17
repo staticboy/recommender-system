@@ -224,7 +224,7 @@ const fetchEnquiryData = async () => {
 };
 
 
-//API Call to get the body
+//API Call to update the body
 const updateEnquiryData = async () => {
   try {
     enquiry.value.admin_id = 'adminuser'

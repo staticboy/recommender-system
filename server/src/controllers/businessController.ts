@@ -100,9 +100,27 @@ export async function bizAccountVerify(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM biz_verify_account($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.biz_verify_account === 1) {
             res.status(200).json({ message: 'New business account approved successfully.' });
-        } else if (result === -1) {
+        } else if (result.biz_verify_account === -1) {
+            res.status(500).json({ error: 'DB error: business account update failed.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
+export async function bizAccountDisable(req: Request, res: Response) {
+    try {
+        const result = await db.one(
+            'SELECT * FROM biz_disable_account($1)', [req.body]);
+
+        if (result.biz_disable_account === 1) {
+            res.status(200).json({ message: 'Business account disabled successfully.' });
+        } else if (result.biz_disable_account === -1) {
             res.status(500).json({ error: 'DB error: business account update failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

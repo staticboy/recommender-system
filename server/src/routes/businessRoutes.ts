@@ -5,7 +5,8 @@ import { getBusinessAll,
   updateBusinessStatus,
   updateBusinessProfile,
   bizAccountVerify,
-  bizLogin,
+  bizAccountDisable,
+  bizLogin, 
   insertNewBusiness } from '../controllers/businessController';
 
 const router = Router();
@@ -17,6 +18,7 @@ router.post('/addNewBusiness', insertNewBusiness);
 router.put('/editStatus', updateBusinessStatus);
 router.put('/editProfile', updateBusinessProfile);
 router.put('/verifyBiz', bizAccountVerify);
+router.put('/disableBiz', bizAccountDisable);
 router.post('/bizLogin', bizLogin);
 
 

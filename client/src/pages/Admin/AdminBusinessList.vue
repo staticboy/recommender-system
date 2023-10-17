@@ -30,10 +30,10 @@
           <q-tr :props="props">
             <q-td key="biz_id" :props="props">{{ props.row.biz_id }}</q-td>
             <q-td key="biz_name" :props="props">{{ props.row.biz_name }}</q-td>
-            <q-td key="last_login_date" :props="props">{{ props.row.last_login_date }}</q-td>
-            <q-td key="status" :props="props">{{ props.row.status }}</q-td>
+            <q-td key="biz_phoneno" :props="props">{{ props.row.biz_phoneno }}</q-td>
+            <q-td key="biz_status" :props="props">{{ props.row.biz_status }}</q-td>
             <q-td auto-width key="action" :props="props">
-              <q-btn type="submit" color="primary" label="View" @click="view()" dense />
+              <q-btn type="button" color="primary" label="View" @click="view(props.row.biz_id)" dense />
             </q-td>
           </q-tr>
         </template>
@@ -44,11 +44,23 @@
 
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { DEMO_BUSINESS_LIST_ADMIN } from "../../constants.ts"
+import { ref, computed, onMounted } from 'vue';
+//import { DEMO_BUSINESS_LIST_ADMIN } from "../../constants.ts"
 import { useRouter } from 'vue-router';
 
+
+import axios from 'axios';
+
+import { useStore } from './../../stores';
+const store = useStore();
+const { selectedBizId } = store.adm;
+
+
+
+
 const router = useRouter();
+const bizList = ref([]);
+
 const bizName = ref('');
 const accStatus = ref('');
 const fromDate = ref('');
@@ -78,18 +90,19 @@ const columns = computed(() => [
     field: 'biz_name',
     sortable: true,
   },
+
   {
-    name: 'last_login_date',
-    label: 'Last login date',
+    name: 'biz_phoneno',
+    label: 'Phone',
     align: 'left',
-    field: 'last_login_date',
+    field: 'biz_phoneno',
     sortable: true,
   },
   {
-    name: 'status',
+    name: 'biz_status',
     label: 'Status',
     align: 'left',
-    field: 'status',
+    field: 'biz_status',
     sortable: true,
   },
   {
@@ -101,17 +114,55 @@ const columns = computed(() => [
   },
 ]);
 
+
+
 const filteredList = computed(() => {
-  return DEMO_BUSINESS_LIST_ADMIN.filter((b) => {
+  return bizList.value.filter((b) => {
     return (
-      (!bizName.value || b.biz_name.toLowerCase().includes(bizName.value.toLowerCase()))
+      (!bizName.value || b.biz_name.toLowerCase().includes(bizName.value.toLowerCase() ))
     );
   });
 });
 
-const view = () => {
-  router.push('../admin/business-profile');
+
+
+
+//API Fetch
+const fetchBizData = async () => {
+  try {
+    
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/business/getAll`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+
+      bizList.value = response.data;
+      console.log(bizList.value);
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
 };
+
+const view = (row) => {
+
+  selectedBizId.biz_id = row;
+  console.log(selectedBizId.biz_id );
+
+  router.push('../admin/business-profile');
+
+
+
+};
+
+onMounted(() => {
+  console.log(store.adm);
+
+  fetchBizData();
+});
 
 </script>
 

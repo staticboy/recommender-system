@@ -10,9 +10,14 @@ export const useAdminStore = defineStore("administrator", () => {
         enq_id : ''
       });
 
+    const selectedBizId = ref({
+        biz_id : ''
+      });  
+
 
   return {
-    selectedEnqId
+    selectedEnqId,
+    selectedBizId
 
   };
 });
