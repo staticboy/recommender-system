@@ -20,17 +20,23 @@
         <table class="min-w-full table-auto">
           <thead>
             <tr>
-              <th class="px-4 py-2">Date</th>
-              <th class="px-4 py-2">Customer</th>
-              <th class="px-4 py-2">Amount</th>
+              <th class="px-4 py-2">Purchase ID</th>
+              <th class="px-4 py-2">Customer ID</th>
+              <th class="px-4 py-2">Customer Name</th>
+              <th class="px-4 py-2">Customer Name</th>
+              <th class="px-4 py-2">Purchase Date</th>
+
               <th class="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="transaction in filteredTransactions" :key="transaction.id">
-              <td class="border px-4 py-2">{{ transaction.date }}</td>
-              <td class="border px-4 py-2">{{ transaction.customer }}</td>
-              <td class="border px-4 py-2">{{ transaction.amount }}</td>
+            <tr v-for="transaction in filteredTransactions" :key="transaction.purchase_id">
+              <td class="border px-4 py-2">{{ transaction.purchase_id }}</td>
+              <td class="border px-4 py-2">{{ transaction.user_id }}</td>
+              <td class="border px-4 py-2">{{ transaction.user_name }}</td>
+              <td class="border px-4 py-2">{{ transaction.total_amount }}</td>
+              <td class="border px-4 py-2">{{ transaction.purchase_date }}</td>
+
               <td class="border px-4 py-2">
                 <button @click="viewItemsInTransaction(transaction)"
                   class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
@@ -69,20 +75,20 @@
         <table class="w-full mt-4">
           <thead>
             <tr>
-              <th class="px-4 py-2">Order ID</th>
-              <th class="px-4 py-2">Order Date</th>
-              <th class="px-4 py-2">Settlement Amount</th>
-              <th class="px-4 py-2">Revenue</th>
-              <th class="px-4 py-2">Fees</th>
+              
+              <th class="px-4 py-2">Product ID</th>
+              <th class="px-4 py-2">Product Name</th>
+              <th class="px-4 py-2">Quantity</th>
+             
             </tr>
           </thead>
           <tbody>
             <tr v-for="order in selectedTransaction.settlementBreakdown" :key="order.id">
-              <td class="border px-4 py-2">{{ order.orderId }}</td>
-              <td class="border px-4 py-2">{{ order.orderDate }}</td>
-              <td class="border px-4 py-2">{{ order.settlementAmount }}</td>
-              <td class="border px-4 py-2">{{ order.revenue }}</td>
-              <td class="border px-4 py-2">{{ order.fees }}</td>
+              
+              <td class="border px-4 py-2">{{ order.prod_id }}</td>
+              <td class="border px-4 py-2">{{  prodNameMapper(order.prod_id) }}</td>
+              <td class="border px-4 py-2">{{ order.quantity }}</td>
+             
             </tr>
           </tbody>
         </table>
@@ -92,14 +98,23 @@
 </template>
   
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useStore } from './../../stores';
 
+
+const store = useStore();
+const { selectedBizId } = store.adm;
 const router = useRouter(); // Create a router instance
 const selectedTransaction = ref(null);
 const fromDate = ref('');
 const toDate = ref('');
-const transactions = [
+
+const products = ref([]);
+
+
+const transactions = ref([
   {
     id: 1,
     date: '2023-09-01',
@@ -118,7 +133,7 @@ const transactions = [
     customer: 'Bob Johnson',
     amount: 50.0,
   }
-];
+]);
 
 function resetSteps() {
   selectedTransaction.value = null;
@@ -126,13 +141,21 @@ function resetSteps() {
 
 const filteredTransactions = computed(() => {
   // Filter transactions based on fromDate and toDate
-  return transactions.filter((transaction) => {
+  return transactions.value.filter((transaction) => {
     return (
       (!fromDate.value || transaction.date >= fromDate.value) &&
       (!toDate.value || transaction.date <= toDate.value)
     );
   });
 });
+
+const prodNameMapper = (product_id) => {
+  
+  let k = products.value.filter(x => x.prod_id === product_id);
+  let product_name = k.map(item => item.prod_name);
+  console.log(product_name[0]);
+  return product_name[0];
+};
 
 const updateFilteredTransactions = () => {
   // This function is called whenever fromDate or toDate changes
@@ -141,30 +164,61 @@ const updateFilteredTransactions = () => {
 
 const viewItemsInTransaction = (transaction) => {
   selectedTransaction.value = {
-    id: 1,
-    statementDate: '2023-09-15',
-    settlementBreakdown: [
-      {
-        id: 1,
-        orderId: 'ABC123',
-        orderDate: '2023-09-10',
-        settlementAmount: 1000,
-        revenue: 900,
-        fees: 100,
-      },
-      {
-        id: 2,
-        orderId: 'DEF456',
-        orderDate: '2023-09-12',
-        settlementAmount: 1500,
-        revenue: 1400,
-        fees: 100,
-      },
-    ],
+    id: transaction.purchase_id,
+    statementDate: transaction.purchase_date,
+    settlementBreakdown: transaction.prod_quantity,
   }
   };
 
   watch([fromDate, toDate], updateFilteredTransactions);
+
+
+
+//API Fetch transaction list
+const fetchBizData = async () => {
+  try {
+    var param = {"biz_id" : "B0014"};
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/bizGetTxn`, param);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      transactions.value = response.data;
+      console.log(transactions.value);
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+
+
+//API Fetch product list
+const fetchProdData = async () => {
+  try {
+    
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getAll`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      products.value = response.data;
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+onMounted(async () => {
+  console.log(store.adm);
+  await fetchProdData();
+  await fetchBizData();
+});
+
 
 </script>
   

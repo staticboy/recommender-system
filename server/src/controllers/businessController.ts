@@ -37,6 +37,17 @@ export async function getBusinessByRegdate(req: Request, res: Response) {
     } 
 }
 
+export async function getBusinessTxn(req: Request, res: Response) {
+    try 
+    {
+        const business = await db.any('SELECT * FROM biz_get_transaction($1)', [req.body]);
+        res.status(200).json(business);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
+
 // INSERT
 
 export async function insertNewBusiness(req: Request, res: Response) {
