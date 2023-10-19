@@ -45,10 +45,15 @@
 
 
 <script setup>
-import { ref, computed, watch, reactive } from 'vue';
+import { ref, computed, watch, reactive, onMounted } from 'vue';
 import SearchBar from '../SearchBar.vue';
 import { DEMO_CUSTOMER_LIST } from '../../constants.ts'
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useStore } from './../../stores';
+
+
+const store = useStore();
 
 const router = useRouter();
 const filteredCustomerRef = ref([...DEMO_CUSTOMER_LIST]);
@@ -114,25 +119,33 @@ const columns = computed(() => [
         name: 'last_login_date',
         label: 'Last Login Date',
         align: 'left',
-        field: 'last_login_date',
+        field: 'log_timestamp',
         sortable: true,
     },
-    {
-        name: 'last_login_time',
-        label: 'Last Login Time',
-        align: 'left',
-        field: 'last_login_time',
-        sortable: true,
-    },
+
     {
         name: 'status',
-        label: 'Status',
+        label: 'status',
         align: 'left',
-        field: 'status',
+        field: 'user_status',
+        sortable: true,
+    },
+    {
+        name: 'action',
+        label: '',
+        align: '',
+        field: '',
+        sortable: true,
+    },    {
+        name: 'action',
+        label: '',
+        align: '',
+        field: '',
         sortable: true,
     },
 ]);
 
+/*
 const filteredCustomers = computed(() => {
     return filteredCustomerRef.value.filter((product) => {
         const searchString = searchQuery.value.toLowerCase();
@@ -144,6 +157,15 @@ const filteredCustomers = computed(() => {
     }).slice(
     );
 });
+*/
+
+const filteredCustomers = computed(() => {
+  return filteredCustomerRef.value.filter((b) => {
+    return (
+      (!searchQuery.value || b.user_name.toLowerCase().includes(searchQuery.value.toLowerCase() ))
+    );
+  });
+});
 
 const stockQtyStyle = ref((stockQty) => {
     return {
@@ -151,4 +173,31 @@ const stockQtyStyle = ref((stockQty) => {
         'font-weight': stockQty < 20 ? 'bold' : 'normal',
     };
 });
+
+const fetchMemberData = async () => {
+  try {
+    
+    console.log("invoke");
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getAll`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      filteredCustomerRef.value = response.data;
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+
+onMounted(async () => {
+  console.log(store.adm);
+  await fetchMemberData();
+
+});
+
+
 </script>

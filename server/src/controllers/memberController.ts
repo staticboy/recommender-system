@@ -7,7 +7,7 @@ import { db } from '../../db';
 export async function getMemberAll(req: Request, res: Response) {
     try 
     {
-        const members = await db.any('SELECT * FROM mem_get_all()');
+        const members = await db.any('SELECT * FROM mem_get_all_with_lastlogin()');
         res.json(members);
     } catch (error) {
         console.error(error);
@@ -214,9 +214,9 @@ export async function updateMemberProfileInfo(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM mem_update_profile_info($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.mem_update_profile_info === 1) {
             res.status(200).json({ message: 'Profile information updated successfully.' });
-        } else if (result === -1) {
+        } else if (result.mem_update_profile_info === -1) {
             res.status(500).json({ error: 'DB error: Profile update failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

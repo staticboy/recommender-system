@@ -149,6 +149,7 @@ const filteredTransactions = computed(() => {
   });
 });
 
+//filters prodid then map result to retrieve the values
 const prodNameMapper = (product_id) => {
   
   let k = products.value.filter(x => x.prod_id === product_id);

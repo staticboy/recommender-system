@@ -4,14 +4,14 @@
   <div class=" text-center q-pa-md flex flex-center">
     <div class="">
       <header>
-        <h1>Member Profile: <b>Wheat Tea Witty</b></h1>
+        <h1>Member Profile: <b>{{ profile.user_id }}</b></h1>
 
         <div class="flex flex-row btn-grp">
           <div class="form-group q-mt-xl">
             <q-btn to="/admin/customer-list" class="btn" id="back" color="primary" @click="goBack()" label="Go Back" />
 
-            <q-btn to="/admin/customer-list" class="btn" id="reject" color="negative" @click="deleteProfile()"
-              label="Delete Profile" />
+            <q-btn class="btn" id="reject" color="negative" @click="deleteProfile()"
+              label="Deactivate Profile" />
           </div>
         </div>
 
@@ -21,42 +21,66 @@
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Customer Name
               </label>
-              <q-input outlined dense v-model="profile.name" readonly />
+              <q-input outlined dense v-model="profile.user_name" readonly />
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Phone No
               </label>
-              <q-input outlined dense v-model="profile.phoneNo" readonly />
+              <q-input outlined dense v-model="profile.user_phoneno" readonly />
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Email
               </label>
-              <q-input outlined dense v-model="profile.email" readonly />
+              <q-input outlined dense v-model="profile.user_email" readonly />
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Address
               </label>
-              <q-input outlined dense v-model="profile.address" readonly />
+              <q-input outlined dense v-model="profile.user_address" readonly />
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Gender
               </label>
-              <q-input outlined dense v-model="profile.gender" readonly />
+              <q-input outlined dense v-model="profile.user_gender" readonly />
             </div>
 
             <div class="form-group">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Date Of Birth
               </label>
-              <q-input outlined dense v-model="profile.dob" readonly />
+              <q-input outlined dense v-model="profile.user_dob" readonly />
+            </div>
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Address
+              </label>
+              <q-input outlined dense v-model="profile.user_address" readonly />
+            </div>
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Country
+              </label>
+              <q-input outlined dense v-model="profile.user_country" readonly />
+            </div>
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Registration Date
+              </label>
+              <q-input outlined dense v-model="profile.user_regdate" readonly />
+            </div>
+            <div class="form-group">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Status
+              </label>
+              <q-input outlined dense v-model="profile.user_status" readonly />
             </div>
 
           </div>
@@ -158,7 +182,9 @@
 
 <script setup lang="ts">
 import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
-import { ref } from 'vue';
+import  { ref, onMounted }  from 'vue';
+import axios from 'axios';
+
 // import { DEMO_CUSTOMER_LIST } from '../../constants.ts'
 import { useRouter } from 'vue-router';
 
@@ -166,24 +192,88 @@ const router = useRouter();
 // const filteredCustomerRef = ref([...DEMO_CUSTOMER_LIST]);
 // const searchQuery = ref('');
 
+const currentUserID = ref();
+
 const profile = ref({
-  name: 'john_doe',
-  phoneNo: 96969696,
-  address: '3 Bukit Batok Crescent 628553',
-  email: 'johndoe@example.com',
-  gender: 'Binary',
-  dob: '03-04-1996',
-  country: 'Singapore',
+  
+    user_id: "-",
+    user_email: "-",
+    user_password: "-",
+    user_name: "",
+    user_dob: "",
+    user_phoneno: 0,
+    user_address: "",
+    user_country: "",
+    user_gender: "",
+    user_status: "",
+    user_regdate: ""
+
 });
 
 const goBack = () => {
   router.push({ path: '../admin/customer-list' });
 }
 
-const deleteProfile = () => {
-  //remove profile via api
-  router.push({ path: '../admin/customer-list' });
+const deleteProfile = async () => {
+  //removal isnt actually invoke deletion, its just deactivating a profile
+
+  profile.value.user_status = 'INACTIVE';
+  console.log('inactive');
+  await setInactiveMember();
+  console.log(profile.value);
+
+  //router.push({ path: '../admin/customer-list' });
 };
+
+//GET MEMBER PROFILE API
+const fetchMemberData = async () => {
+  try {
+    var param = {"user_id" : currentUserID.value}
+    console.log("invoke");
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/getById`, param);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      profile.value = response.data;
+    } else {
+      console.error('Failed to fetch profile data');
+    }
+  } catch (error) {
+    console.error('Error while fetching profile data:', error);
+  }
+};
+
+
+//EDIT(DEACTIVATE) MEMBER PROFILE API
+const setInactiveMember = async () => {
+  try {
+    
+    console.log(profile._rawValue);
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/editProfile`, profile._rawValue);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      profile.value = response.data;
+    } else {
+      console.error('Failed to fetch profile data');
+    }
+  } catch (error) {
+    console.error('Error while fetching profile data:', error);
+  }
+};
+
+
+
+onMounted(async () => {
+  //console.log(this.$route.query);
+  currentUserID.value = router.currentRoute.value.query.id;
+  console.log(currentUserID.value);
+
+  fetchMemberData();
+});
+
 </script>
 
 
