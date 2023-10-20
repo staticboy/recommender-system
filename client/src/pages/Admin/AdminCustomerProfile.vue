@@ -222,7 +222,7 @@ const deleteProfile = async () => {
   await setInactiveMember();
   console.log(profile.value);
 
-  //router.push({ path: '../admin/customer-list' });
+  router.push({ path: '../admin/customer-list' });
 };
 
 //GET MEMBER PROFILE API
