@@ -13,8 +13,7 @@ import { getMemberAll,
   updateMemberProfileInfo,
   deleteMemberWishItem,
   deleteMemberCartItem,
-  deleteMemberPreferenceInfo,
-  memberLogin } from '../controllers/memberController';
+  deleteMemberPreferenceInfo } from '../controllers/memberController';
 
 const router = Router();
 
@@ -30,7 +29,6 @@ router.post('/addNewWishlist', insertProdWishlist);
 router.post('/memberSendTransaction', memberSendTransaction); //purchase
 router.put('/editPref', updateMemberPreferenceInfo);
 router.put('/editProfile', updateMemberProfileInfo);
-router.put('/memberLogin', memberLogin);
 router.delete('/delWish', deleteMemberWishItem);
 router.delete('/delCart', deleteMemberCartItem);
 router.delete('/delPref', deleteMemberPreferenceInfo);

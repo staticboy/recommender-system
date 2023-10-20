@@ -6,6 +6,7 @@ import categoryRoutes from './src/routes/categoryRoutes';
 import businessRoutes from './src/routes/businessRoutes';
 import productRoutes from './src/routes/productRoutes';
 import enquiryRoutes from './src/routes/enquiryRoutes';
+import userRoutes from './src/routes/userRoutes';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/business', businessRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/user', userRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);

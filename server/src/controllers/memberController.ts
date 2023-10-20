@@ -227,28 +227,6 @@ export async function updateMemberProfileInfo(req: Request, res: Response) {
     }
 }
 
-// LOGIM
-
-export async function memberLogin(req: Request, res: Response) {
-    try {
-        const result = await db.one(
-            'SELECT * FROM mem_check_credentials($1)', [req.body]);
-
-        if (result === 1) {
-            res.status(200).json({ message: 'Welcome to Sportify.' });
-        } else if (result === -1) {
-            res.status(500).json({ error: 'Please check user input.' });
-        } else {
-            res.status(500).json({ error: 'Internal server error.' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Oops, something broke.' });
-    }
-}
-
-
-
 //Purchase 
 export async function memberSendTransaction(req: Request, res: Response) {
     try {
@@ -267,10 +245,3 @@ export async function memberSendTransaction(req: Request, res: Response) {
         res.status(500).json({ error: 'Oops, something broke.' });
     }
 }
-
-
-
-
-
-
-
