@@ -4,7 +4,9 @@ import { ref } from "vue";
 import { List } from "postcss/lib/list";
 
 export const useAdminStore = defineStore("administrator", () => {
-
+  const selectedCatId = ref({
+    cat_id : ''
+  });
 
     const selectedEnqId = ref({
         enq_id : ''
@@ -16,6 +18,7 @@ export const useAdminStore = defineStore("administrator", () => {
 
 
   return {
+    selectedCatId,
     selectedEnqId,
     selectedBizId
 

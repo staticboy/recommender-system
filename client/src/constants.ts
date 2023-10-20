@@ -123,36 +123,36 @@ export const DEMO_PRODUCT_LIST = [
 
 export const DEMO_CUSTOMER_LIST = [
   {
-    user_id: 'CUST0001',
-    user_name: 'Aneh neh',
+    user_id: 'Mxxxx',
+    user_name: 'Alfonso Camera',
     last_login_date: '2023-09-01',
     last_login_time: '13:45:30',
     status: 'Approved',
   },
   {
-    user_id: 'CUST0002',
-    user_name: 'Bhenchod',
+    user_id: 'Mxxxx',
+    user_name: 'Natan BN Chod',
     last_login_date: '2023-09-02',
     last_login_time: '13:45:30',
     status: 'Approved',
   },
   {
     user_id: 'CUST0003',
-    user_name: 'Pinecone',
+    user_name: 'Elijah M.C',
     last_login_date: '2023-09-03',
     last_login_time: '13:45:30',
     status: 'Pending',
   },
   {
     user_id: 'CUST0004',
-    user_name: 'Ravi',
+    user_name: 'Heather GD Hall\'nd',
     last_login_date: '2023-09-04',
     last_login_time: '13:45:30',
     status: 'Approved',
   },
   {
     user_id: 'CUST0005',
-    user_name: 'Elias',
+    user_name: 'P Leigh',
     last_login_date: '2023-09-05',
     last_login_time: '13:45:30',
     status: 'Approved',

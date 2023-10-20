@@ -1,251 +1,264 @@
-<script setup lang="ts"></script>
 <template>
-  <div class=" text-center q-pa-md flex flex-center">
-    <div class="">
-      <header>
-        <h1>Admin : Categories List</h1>
-        <!-- <div class="q-mt-xl fl">
-          <router-link to="/admin/home" class="btn">Return Home</router-link>
-          <router-link to="/admin/cat-new" class="btn"
-            >New Category</router-link
-          >
-        </div> -->
-        <div class="btngrp flex flex-row">
-          <div class="q-mt-xl form-group">
-            <label for="name">Category Name :</label>
-            <input id="name" type="text" placeholder="Enter category" />
-          </div>
+  <div>
+    <q-page>
+      <div class="q-pa-md">
+        <h1>Categories List</h1>
+      </div>
+      <q-form @submit="submitForm" @reset="resetForm">
+        <q-card class="q-mb-md">
+          <q-card-section>
+            <q-form>
+              <div class="row q-gutter-md mb-4">
+                <div class="col-3">
+                  <q-input v-model="userName" label="Category" outlined placeholder="Enter user name"></q-input>
+                </div>
 
-          <div class="q-mt-xl date-pickers">
-            <label for="startDate">From:</label>
+                <div class="col-3">
+                  <q-select v-model="status" label="Status" outlined :options="statusOptions"></q-select>
+                </div>
 
-            <input type="date" id="startDate" placeholder="Start Date" />
-            <label for="startDate">To:</label>
+              </div>
 
-            <input type="date" id="endDate" placeholder="End Date" />
-          </div>
-        </div>
-      </header>
+              <div class="date-pickers ">
+                <div class="date-picker" @click="toggleDatePicker('startDate')">
+                  <label for="startDate">From:</label>
+                  <span v-if="!showStartDatePicker">
+                    <q-icon name="event" size="24px" />
+                  </span>
+                  <q-date v-model="startDate" label="From" ref="startDatePicker" @blur="onDatePickerBlur('startDate')"
+                    @input="onDatePickerInput('startDate')" v-show="showStartDatePicker" />
+                </div>
+                <div class="date-picker" @click="toggleDatePicker('endDate')">
+                  <label for="endDate">To:</label>
+                  <span v-if="!showEndDatePicker">
+                    <q-icon name="event" size="24px" />
+                  </span>
+                  <q-date v-model="endDate" label="To" ref="endDatePicker" @blur="onDatePickerBlur('endDate')"
+                    @input="onDatePickerInput('endDate')" v-show="showEndDatePicker" />
+                </div>
+              </div>
+            </q-form>
+          </q-card-section>
+          <q-card-actions align="right">
+            <!-- <q-btn label="Search" color="primary" type="submit" /> -->
+            <q-btn label="Reset" color="primary" type="reset" />
+          </q-card-actions>
+        </q-card>
+      </q-form>
 
-      <table class="q-mt-lg">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Sports</th>
-            <th>Category Name</th>
-            <th>Products Registered</th>
-            <th>Date Created</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Basketball</td>
-            <td>Basketball Mouthpiece</td>
-            <td>50</td>
-            <td>2023-09-12</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Football</td>
-            <td>Football Helmet</td>
-            <td>60</td>
-            <td>2023-09-13</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Running</td>
-            <td>Running Shoes</td>
-            <td>70</td>
-            <td>2023-09-14</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Hockey</td>
-            <td>Hockey Stick</td>
-            <td>80</td>
-            <td>2023-09-15</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Tennis</td>
-            <td>Tennis Racket</td>
-            <td>90</td>
-            <td>2023-09-16</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>Basketball</td>
-            <td>Basketball Jersey</td>
-            <td>100</td>
-            <td>2023-09-17</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td>Football</td>
-            <td>Football Shoulder Pads</td>
-            <td>110</td>
-            <td>2023-09-18</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>Running</td>
-            <td>Running Shorts</td>
-            <td>120</td>
-            <td>2023-09-19</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>9</td>
-            <td>Hockey</td>
-            <td>Hockey Gloves</td>
-            <td>125</td>
-            <td>2023-09-20</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>10</td>
-            <td>Tennis</td>
-            <td>Tennis Balls</td>
-            <td>130</td>
-            <td>2023-09-21</td>
-            <td>
-              <router-link to="/admin/cat-profile" class="btn"
-                >Open Profile</router-link
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <q-table :rows="filteredList" :columns="columns">
+        <template v-slot:body="props">
+         <q-tr :props="props">
+          
+            <q-td key="cat_id" :props="props">
+              {{ props.row.cat_id }}
+            </q-td>
+            <q-td key="cat_name" :props="props">
+              {{ props.row.cat_name }}
+            </q-td>
+            <q-td key="cat_status" :props="props">
+              {{ props.row.cat_status }}
+            </q-td>
+
+        
+          
+           
+            <q-td>
+              <q-btn color="primary" label="View" @click="viewRow(props.row)" />
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+
+    </q-page>
   </div>
 </template>
 
+
+<script setup lang="ts">
+import { ref, computed, watch ,onMounted} from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+import { useStore } from './../../stores';
+const store = useStore();
+const { selectedCatId } = store.adm;
+
+
+const router = useRouter();
+
+const userName = ref('');
+
+const status = ref('');
+const userType = ref('');
+const startDate = ref('');
+const endDate = ref('');
+
+const showStartDatePicker = ref(false);
+const showEndDatePicker = ref(false);
+
+const toggleDatePicker = (datePicker: 'startDate' | 'endDate') => {
+  if (datePicker === 'startDate') {
+    showStartDatePicker.value = !showStartDatePicker.value;
+  } else if (datePicker === 'endDate') {
+    showEndDatePicker.value = !showEndDatePicker.value;
+  }
+};
+
+const onDatePickerBlur = (datePicker: 'startDate' | 'endDate') => {
+  if (datePicker === 'startDate') {
+    showStartDatePicker.value = false;
+  } else if (datePicker === 'endDate') {
+    showEndDatePicker.value = false;
+  }
+};
+
+const onDatePickerInput = (datePicker: 'startDate' | 'endDate') => {
+  // Handle date selection here if needed
+  console.log(datePicker);
+};
+
+const statusOptions = [
+  { label: 'ACTIVE', value: 'ACTIVE' },
+  { label: 'INACTIVE', value: 'INACTIVE' },
+  { label: 'Default', value: '' }
+];
+
+const userTypeOptions = [
+  { label: 'Business Owner', value: 'B' },
+  { label: 'Member', value: 'M' },
+];
+
+const submitForm = () => {
+  // Handle form submission
+};
+
+const resetForm = () => {
+  // Reset form fields
+};
+
+//Items
+const tableData = ref([
+  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,userType: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
+
+]);
+
+const columns = computed(() => [
+  {
+    name: 'cat_id',
+    required: true,
+    label: 'ID',
+    align: 'left',
+    field: 'cat_id',
+    sortable: true,
+  },
+  {
+    name: 'cat_name',
+    required: true,
+    label: 'Category',
+    align: 'left',
+    field: 'cat_name',
+    sortable: true,
+  },
+
+  {
+    name: 'cat_status',
+    label: 'Status',
+    align: 'left',
+    field: 'cat_status',
+    sortable: true,
+  },
+
+
+  {
+    name: 'action',
+    label: '',
+    align: 'right',
+    field: '',
+    sortable: false,
+  }
+]);
+
+const tableColumns = ref([
+  { name: 'id', required: true, label: 'ID', align: 'left', field: 'cat_id', sortable: true },
+  { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'cat_name', sortable: true },
+  { name: 'enq_status', label: 'Status', align: 'left', field: 'cat_status', sortable: true }
+]);
+
+//not sure why i have the red underline but it works
+const viewRow = (row) => {
+  router.push({path : '/admin/cat-profile'});  
+  selectedCatId.cat_id = row.cat_id;
+
+};
+
+
+
+const filteredList = computed(() => {  //filtering not working
+  return tableData.value.filter((item) => {
+    return (
+      (!userName.value || item.cat_name.toLowerCase().includes(userName.value.toLowerCase())) &&
+      (!status.value || item.cat_status === status.value) 
+    );
+  });
+});
+
+// Watch for changes in filter inputs and update the filtered list
+watch([userName, status, userType, startDate, endDate], () => {
+  // The computed property `filteredList` will automatically update here
+});
+
+
+
+
+
+//API Fetch
+const fetchCategoryData = async () => {
+  try {
+    
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getCatAll`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+
+      tableData.value = response.data;
+    
+      console.log(tableData);
+      console.log(tableData.value);
+      
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+onMounted(() => {
+  fetchCategoryData()
+});
+</script>
+
+
 <style scoped lang="scss">
-* {
-  text-align: left;
+.date-pickers {
+  display: flex;
+  flex-direction: row;
 }
 
-table * {
-  padding: 8px;
-}
-
-select, input{
-  border: 1px solid black;
-
-}
-
-.btn,
-button {
-  border-radius: 8px;
-  border: 1px solid black;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: white;
+.date-picker {
+  display: inline-block;
+  margin-right: 10px;
+  /* Adjust as needed */
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-.btn:hover,
-button:hover {
-  border-color: #646cff;
-}
-.btn:focus,
-.btn:focus-visible,
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.3s ease;
+  /* Smooth transition */
 }
 
-* {
-  text-align: left;
+.date-picker:hover,
+.date-picker:focus-within {
+  transform: scale(1.05);
+  /* Scale up on hover or when focused within */
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
-}
-
-/***********
-Structure start
-************/
-.l-body {
-  width: 960px;
-  height: 90vh;
-}
-
-.fl > *:nth-child(2) {
-  margin-left: 420px;
-}
-
-/***********
-Structure end
-************/
-
-/***********
-Content Start
-************/
-input,
-label,
-select {
-  min-height: 27px;
-  height: 27px;
-  margin-left: 10px;
-}
-
-.btngrp > div {
-  margin-left: 10px;
-}
-/***********
-Content end
-************/
 </style>
