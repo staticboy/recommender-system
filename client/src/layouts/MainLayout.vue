@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed } from "vue";
+import { computed, onBeforeMount } from "vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -21,6 +21,13 @@ const logout = () => {
   localStorage.removeItem("userId");
   router.push({ name: "LoginPage" });
 };
+
+onBeforeMount(() => {
+  const role = localStorage.getItem("userRole");
+  if (!role) {
+    router.push({ name: "LoginPage" });
+  }
+});
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">
