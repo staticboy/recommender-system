@@ -112,7 +112,7 @@ export async function bizAccountVerify(req: Request, res: Response) {
             'SELECT * FROM biz_verify_account($1)', [req.body]);
 
         if (result.biz_verify_account === 1) {
-            res.status(200).json({ message: 'New business account approved successfully.' });
+            res.status(200).json({ message: 'Business account approved successfully.' });
         } else if (result.biz_verify_account === -1) {
             res.status(500).json({ error: 'DB error: business account update failed.' });
         } else {

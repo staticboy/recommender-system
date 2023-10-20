@@ -10,8 +10,10 @@
           <div class="form-group q-mt-xl">
             <q-btn to="/admin/customer-list" class="btn" id="back" color="primary" @click="goBack()" label="Go Back" />
 
-            <q-btn class="btn" id="reject" color="negative" @click="deleteProfile()"
-              label="Deactivate Profile" />
+            <q-btn v-if="profile.user_status === 'ACTIVE'" class="btn" id="reject" color="negative" @click="deleteProfile()" label="Deactivate Profile" />
+            <q-btn v-else class="btn" id="reject" color="positive" @click="activateProfile()" label="Activate Profile" />
+
+ 
           </div>
         </div>
 
@@ -205,7 +207,7 @@ const profile = ref({
     user_address: "",
     user_country: "",
     user_gender: "",
-    user_status: "",
+    user_status: "INACTIVE",
     user_regdate: ""
 
 });
@@ -218,6 +220,17 @@ const deleteProfile = async () => {
   //removal isnt actually invoke deletion, its just deactivating a profile
 
   profile.value.user_status = 'INACTIVE';
+  console.log('inactive');
+  await setInactiveMember();
+  console.log(profile.value);
+
+  router.push({ path: '../admin/customer-list' });
+};
+
+const activateProfile = async () => {
+  //removal isnt actually invoke deletion, its just deactivating a profile
+
+  profile.value.user_status = 'ACTIVE';
   console.log('inactive');
   await setInactiveMember();
   console.log(profile.value);

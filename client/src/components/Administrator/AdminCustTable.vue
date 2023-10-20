@@ -33,10 +33,12 @@
                         <q-btn type="submit" color="primary" label="View Profile" @click="viewProfile(props.row)"
                             class="q-mt-md q-mr-md" dense />
                     </q-td>
+                    <!--
                     <q-td auto-width>
                         <q-btn type="submit" color="red" label="Delete" @click="deleteRow(props.row)"
                             class="q-mt-md q-mr-md" dense />
                     </q-td>
+                    -->
                 </q-tr>
             </template>
         </q-table>

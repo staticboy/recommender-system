@@ -42,6 +42,8 @@
           <q-card-actions align="right">
             <!-- <q-btn label="Search" color="primary" type="submit" /> -->
             <q-btn label="Reset" color="primary" type="reset" />
+            <q-btn label="Add Product" color="secondary" to="../admin/cat-new"/>
+
           </q-card-actions>
         </q-card>
       </q-form>

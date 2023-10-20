@@ -15,7 +15,7 @@
             <q-btn type="button"   label="Update" id="approve" class="btn" dense @click="submitForm()"></q-btn>
 
 
-            <q-btn type="button"  label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
+            <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
 
           </div>
         </div>
@@ -220,6 +220,7 @@ const submitForm = async () => {
   await updateCatInfo();
   await fetchCategoryData();
   console.log(category.value.cat_status);
+  router.back();
 };
 
 
@@ -229,6 +230,8 @@ const deactivateCategory = async () => {
   await updateCatInfo();
   await fetchCategoryData();
   console.log(category.value.cat_status);
+  router.back();
+
 }
 
 
