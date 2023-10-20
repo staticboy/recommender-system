@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Dialog, Notify, Quasar } from 'quasar'
+import { Dialog, Notify, Loading, Quasar } from 'quasar'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from './router/routes'
 import './index.css'
@@ -28,7 +28,7 @@ let router = createRouter({
 app.use(router)
 app.use(pinia)
 app.use(Quasar, {
-  plugins: { Notify, Dialog },
+  plugins: { Notify, Dialog, Loading },
   config: { notify: { position: 'bottom' } },
 })
 app.mount('#app')

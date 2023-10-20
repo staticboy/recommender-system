@@ -1,90 +1,93 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-// import { useAuthStore } from "src/stores/auth";
+import { useQuasar } from "quasar";
+import { useUserStore } from "../../stores/user";
+import { LoginCredentials } from "../../stores/user/types";
+
+const router = useRouter();
+const q = useQuasar();
+const userStore = useUserStore();
 
 const rules = {
   email: [(val: string) => !!val || "Please enter your email."],
   password: [(val: string) => !!val || "Password cannot be empty."],
 };
-const router = useRouter();
-// const authStore = useAuthStore();
-// const q = useQuasar();
 
-const form = ref({
+const form = ref<LoginCredentials>({
   email: "",
   password: "",
-  loginRole: "admin",
 });
 
-const errorMessage = ref("");
-const loginToggle = ref("member");
-
 const onSubmit = async () => {
-  // q.loading.show();
-  // await login();
-  // q.loading.hide();
-  // if (authStore.user) {
-  //   router.push({ name: "HomePage" });
-  // } else {
-  //   q.notify({
-  //     icon: "report_problem",
-  //     message: `Login failed, ${errorMessage.value}`,
-  //     color: "negative",
-  //   });
-  // }
-  if (form.value.email.includes("admin")) {
+  q.loading.show();
+  await login();
+  q.loading.hide();
+};
+
+const login = async () => {
+  try {
+    const resp = await userStore.login(form.value);
+    console.log(resp);
+    if (resp) {
+      localStorage.setItem("userRole", resp.role);
+      localStorage.setItem("userId", resp.id);
+      redirect(resp.role);
+    }
+  } catch (error) {
+    console.log(error);
+    q.notify({
+      icon: "report_problem",
+      message: "Invalid email or password",
+      color: "negative",
+    });
+    // if (axios.isAxiosError(error)) {
+    //   if (error.response?.status == 401) {
+    //     errorMessage.value = error.response?.data.error?.includes("disabled")
+    //       ? "Your account has been deactivated"
+    //       : "Invalid username or password";
+    //   } else if (error.response?.status == 400) {
+    //     errorMessage.value = "Invalid role";
+    //   }
+    // } else {
+    //   errorMessage.value = error as string;
+    // }
+  }
+};
+
+const redirect = (role: string) => {
+  if (role.toLowerCase() === "admin") {
     router.push({ name: "AdminHome" });
-  } else if (form.value.email.includes("mem")) {
+  } else if (role.toLowerCase() === "member") {
     router.push({ name: "HomePage" });
   } else {
     router.push({ name: "BizOwnerHome" });
   }
 };
 
-// const login = async () => {
-// try {
-//   await authStore.login(form.value);
-// } catch (error) {
-//   if (axios.isAxiosError(error)) {
-//     if (error.response?.status == 401) {
-//       errorMessage.value = error.response?.data.error?.includes("disabled")
-//         ? "Your account has been deactivated"
-//         : "Invalid username or password";
-//     } else if (error.response?.status == 400) {
-//       errorMessage.value = "Invalid role";
-//     }
-//   } else {
-//     errorMessage.value = error as string;
-//   }
-// }
-// };
-
-onMounted(() => {
-  // if (authStore.isAuthenticated && authStore.user?.login_role === "admin") {
-  //   router.push({ name: "HomePage" });
-  // }
+onBeforeMount(() => {
+  const role = localStorage.getItem("userRole");
+  if (role && localStorage.getItem("userId")) {
+    q.loading.show();
+    q.notify({
+      icon: "info",
+      message: "You are already logged in. Redirecting...",
+      color: "positive",
+      timeout: 2000,
+    });
+    setTimeout(() => {
+      redirect(role);
+      q.loading.hide();
+    }, 2000);
+    q.loading.hide();
+  }
 });
 </script>
 
 <template>
   <q-card class="absolute-center" style="width: 35vw">
-    <q-card-section>
-      <h4 class="q-ma-none text-xl">Log In</h4>
-    </q-card-section>
-    <q-card-section class="w-full">
-      <q-btn-toggle
-        flat
-        spread
-        no-caps
-        size="lg"
-        toggle-color="primary"
-        v-model="loginToggle"
-        :options="[
-          { label: 'Member', value: 'member' },
-          { label: 'Business Owner', value: 'biz' },
-        ]"
-      />
+    <q-card-section class="text-center mt-6">
+      <h5 class="q-ma-none text-xl">Log In</h5>
     </q-card-section>
     <q-card-section class="px-7">
       <q-form @submit.prevent.stop="onSubmit">
@@ -124,9 +127,6 @@ onMounted(() => {
           unelevated
           @click="onSubmit"
         />
-        <div class="text-bold text-center text-white">
-          {{ errorMessage }}
-        </div>
       </q-form>
     </q-card-section>
     <q-card-section>

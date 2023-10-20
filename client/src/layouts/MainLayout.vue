@@ -1,31 +1,11 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { computed } from "vue";
 
 const route = useRoute();
+const router = useRouter();
 const fullPath = route.fullPath;
 
-// TODO: uncomment once user table and user accounts has been set up
-// const router = useRouter();
-// const userRole = ref("");
-
-// onBeforeMount(() => {
-//   userRole.value = localStorage.getItem('userRole') || "";
-//   if (!userRole.value || userRole.value == "") router.push('/login');
-//   else {
-//     switch (userRole.value) {
-//       case "user":
-//         router.push('/user');
-//         break;
-//       case "biz":
-//         router.push('/biz');
-//         break;
-//       case "admin":
-//         router.push('/admin');
-//         break;
-//     }
-//   }
-// });
 const navRoutes = computed(() => {
   if (fullPath.includes("biz")) {
     return "/biz";
@@ -35,6 +15,12 @@ const navRoutes = computed(() => {
     return "/user";
   }
 });
+
+const logout = () => {
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("userId");
+  router.push({ name: "LoginPage" });
+};
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">
@@ -102,7 +88,7 @@ const navRoutes = computed(() => {
             &nbsp;&nbsp;
           </template>
 
-          <q-btn flat round dense label="Log Out" to="/login" />
+          <q-btn flat round dense label="Log Out" @click="logout()" />
         </div>
       </q-toolbar>
     </q-header>
