@@ -147,6 +147,14 @@
             </label>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Responded By {{ enquiry.admin_id }}
+            </label>
+          </div>
+        </div>
         <div class="form-group">
 
           <q-input outlined  v-model="enquiry.enq_response"  type="textarea" :rows=4 dense required
@@ -191,7 +199,7 @@ const enquiry = ref({
   enq_subject: '',
   enq_message: '',
   enq_submitdate: '',
-  admin_id: 'admin.data',
+  admin_id: '',
   enq_response: '',
   enq_responsedate: '',
   enq_status: ''
@@ -232,7 +240,7 @@ const updateEnquiryData = async () => {
 
     var param = {"enq_id": enquiry.value.enq_id, 
                   "enq_response" : enquiry.value.enq_response, 
-                  "admin_id" : enquiry.value.admin_id} 
+                  "admin_id" : localStorage.getItem("userId")} 
     console.log(param);
     const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/enquiries/updateEnqByAdm`, param);
     console.log(response)
