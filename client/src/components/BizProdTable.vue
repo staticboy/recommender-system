@@ -104,7 +104,8 @@ const updatedProfile = ref({
   updated_description: '',
   updated_price: 0,
   updated_stockqty: 0,
-  updated_modelnum: ''
+  updated_modelnum: '',
+  updated_status: '',
 });
 
 const updateRow = (row) => {
@@ -115,6 +116,8 @@ const updateRow = (row) => {
   updatedProfile._rawValue.updated_price = row.prod_price;
   updatedProfile._rawValue.updated_modelnum = row.prod_modelnum;
   updatedProfile._rawValue.updated_stockqty = row.prod_stockqty;
+  updatedProfile._rawValue.updated_status = row.prod_status;
+
 
 
   toggleRowExpansion(row);
@@ -147,8 +150,8 @@ const subCategoryOptions = computed(() => [
 ]);
 
 const availabilityOptions = computed(() => [
-  'Available',
-  'Not Available',
+  'AVAILABLE',
+  'UNAVAILABLE',
 ]);
 
 const columns = computed(() => [
@@ -246,7 +249,7 @@ const toggleRowExpansion = (row) => {
 const fetchProductData = async () => {
   try {
     //change biz id value to the id of current login biz owner
-    var param = {"biz_id": 'B0038'} 
+    var param = {"biz_id": localStorage.getItem("userId")} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
     console.log(response)
     if (response.statusText === "OK") {

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    {{ bizProfileDetails }}
+    <!-- {{ bizProfileDetails }} -->
     <div class="q-pa-md">
       <div class="row">
         <div class="col-9">

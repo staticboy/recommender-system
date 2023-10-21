@@ -178,7 +178,7 @@ const viewItemsInTransaction = (transaction) => {
 //API Fetch transaction list
 const fetchBizData = async () => {
   try {
-    var param = {"biz_id" : "B0014"};
+    var param = {"biz_id" : localStorage.getItem("userId")};
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/bizGetTxn`, param);
     
     console.log(response);
@@ -216,6 +216,7 @@ const fetchProdData = async () => {
 
 onMounted(async () => {
   console.log(store.adm);
+  console.log(localStorage.getItem("userId"))
   await fetchProdData();
   await fetchBizData();
 });

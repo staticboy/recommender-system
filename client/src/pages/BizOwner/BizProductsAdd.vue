@@ -147,7 +147,9 @@ const addProduct = () => {
   //add product to database
   product._rawValue.prod_price = Number(product._rawValue.prod_price);
   product._rawValue.prod_stockqty = Number(product._rawValue.prod_stockqty);
-  product._rawValue.biz_id = "B0038";
+  product._rawValue.prod_status = Number(product._rawValue.prod_status);
+
+  product._rawValue.biz_id = localStorage.getItem("userId");
 
 
 
