@@ -24,9 +24,9 @@ export default {
       component: () => import("../pages/BizOwner/BizOwnerProductLists.vue"),
     },
     {
-      name: "BizOwnerChart",
-      path: "chart",
-      component: () => import("../pages/BizOwner/BizOwnerChart.vue"),
+      name: "BizOwnerInsights",
+      path: "insights",
+      component: () => import("../pages/BizOwner/BizOwnerInsights.vue"),
     },
     {
       name: "BizProfile",

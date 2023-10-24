@@ -141,3 +141,14 @@ export async function bizAccountDisable(req: Request, res: Response) {
         res.status(500).json({ error: 'Oops, something broke.' });
     }
 }
+
+export async function getBusinessInsights(req: Request, res: Response) {
+    try 
+    {
+        const insight = await db.any('SELECT * FROM biz_get_insights($1)', [req.body]);
+        res.status(200).json(insight);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
