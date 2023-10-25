@@ -21,7 +21,8 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     prod_description: "",
     prod_price: 0,
     prod_stockqty: 0,
-    prod_modelnum: 0,
+    prod_modelnum: "",
+    prod_status: "",
     cat_id: "",
     sub_cat: "",
     biz_id: ""

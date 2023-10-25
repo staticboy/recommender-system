@@ -4,6 +4,10 @@ import { getCategoryAll,
   registerCategory,
   updateCategoryDetails,
   deleteCategory,
+  getSubCategoryAll,
+  getSubCategoryActive,
+  upsertSubCategory,
+  deleteSubCategory,
   deactivateCategory
 } from '../controllers/categoryController';
 
@@ -13,7 +17,6 @@ router.get('/getCatAll', getCategoryAll);
 router.post('/getCatById', getCategoryById);
 router.post('/registerCategory', registerCategory);
 router.put('/updateCategory', updateCategoryDetails);
-router.put('/deactivateCategory', deactivateCategory);
-router.patch('/deleteCategory', deleteCategory)
+router.delete('/deleteCategory', deleteCategory)
 
 export default router;

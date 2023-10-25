@@ -125,15 +125,3 @@ export async function deleteProduct(req: Request, res: Response) {
 
 
 }
-/**********PRODUCT CATEGORY */
-/**get all prod cat */
-export async function getProdCatAll(req: Request, res: Response) {
-    try 
-    {
-        const product = await db.any('SELECT * FROM cat_get_all()');
-        res.json(product);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error.' });
-    } 
-}

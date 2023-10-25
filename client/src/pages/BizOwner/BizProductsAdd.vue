@@ -14,7 +14,7 @@
         
         <div v-if="selectedTab === 'tab1'">
           <div class="col-3">
-            <q-uploader label="Product Image" accept=".jpg,.jpeg,.png" v-model="product.image" multiple:max-files="9"
+            <q-uploader label="Product Image" accept=".jpg,.jpeg,.png" multiple:max-files="9"
               class="q-mt-md"></q-uploader>
           </div>
           <div class="row">
@@ -39,15 +39,15 @@
                 class="q-mr-md q-mt-md"></q-input>
             </div>
             <div class="col-4">
-              <q-select v-model="product.cat_id" :options="categoryOptions" label="Category" dense
+              <q-select v-model="product.cat_id" :options="categoryOptions" label="Category" dense emit-value map-options
                 class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
-              <q-select v-model="product.sub_cat" :options="subCategoryOptions" label="Sub-category" dense
+              <q-select v-model="product.sub_cat" :options="subCategoryOptions" label="Sub-Category" dense emit-value map-options
                 class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
-              <q-select v-model="product.prod_status" :options="availabilityOptions" label="Available?" dense
+              <q-select v-model="product.prod_status" :options="availabilityOptions" label="Available?" dense emit-value map-options
                 class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
@@ -76,16 +76,22 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
 import axios from 'axios';
-
+import { BizProductDetails } from "../../stores/biz/types";
 
 const router = useRouter();
+const q = useQuasar();
 const selectedTab = ref('tab1');
-const categoryOptions = ref([]);
+const categoryOptions = ref();
+const subCategoryOptions = ref();
 
-const product = ref(
-  {
-    prod_id: '',
+interface Category {
+  cat_id: number;
+  cat_name: string;
+}
+
+const product = ref<BizProductDetails>({
     prod_name: '',
     prod_description: '.',
     prod_stockqty: 0,
@@ -94,27 +100,13 @@ const product = ref(
     cat_id: '',
     sub_cat: '',
     prod_status: '',
-    image: '',
+    // image: '',
     biz_id : ''
   });
 
-// const categoryOptions = computed(() => [
-//   'Golf',
-//   'Tennis',
-//   'Basketball',
-//   'Soccer',
-// ]);
-
-const subCategoryOptions = computed(() => [
-  'Equipment',
-  'Apparel',
-  'Accesories',
-  'Footwear',
-]);
-
 const availabilityOptions = computed(() => [
-  'Available',
-  'Not Available',
+  {value: 'AVAILABLE', label: 'Yes'},
+  {value: 'UNAVAILABLE', label: 'No'},
 ]);
 
 const uploadUrl = ref('')
@@ -130,30 +122,12 @@ const onFileRemoved = (file: any) => {
   console.log('File removed:', file);
 };
 
-// const uploadFiles = () => {
-//   // File upload logic here
-//   uploading.value = true;
-// };
-
-// const cancelUpload = () => {
-//   uploading.value = false;
-// };
-
-// const removeFile = (index) => {
-//   uploadedFiles.value.splice(index, 1);
-// };
-
 const addProduct = () => {
-  //add product to database
-  product._rawValue.prod_price = Number(product._rawValue.prod_price);
-  product._rawValue.prod_stockqty = Number(product._rawValue.prod_stockqty);
-
+  q.loading.show();
   product._rawValue.biz_id = localStorage.getItem("userId");
-
-
-
   postRowProduct();
-  router.push('/biz/home');
+  q.loading.hide();
+  // router.push('/biz/home');
 
 };
 
@@ -167,33 +141,67 @@ const postRowProduct = async () => {
     console.log(response)
     if (response.statusText === "OK") {
       console.log("item added")
+      q.notify({
+          type: 'positive',
+          message: 'New product added successfully'
+        })
     } else {
       console.error('Failed to fetch product data');
+      q.notify({
+          type: 'negative',
+          message: 'Failed to add new product'
+        })
     }
   } catch (error) {
     console.error('Error while fetching product data:', error);
+    q.notify({
+          type: 'negative',
+          message: 'Something went wrong.'
+        })
   }
 };
 
 const getAllCategrories = async () => {
   try {
-    //change biz id value to the id of current login biz owner
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getCatAll`);
-    console.log(response)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getCatAll`);
+    // console.log(response)
     if (response.statusText === "OK") {
-      console.log(response.data);
+      // console.log(response.data);
       //populate Category droplist
-      categoryOptions.value = response.data.map((category: { cat_name: any; }) => category.cat_name);
+      const mappedCategories = response.data.map((category: Category) => ({
+        value: category.cat_id,
+        label: category.cat_name
+      }));
+      categoryOptions.value = [ 
+        ...mappedCategories
+      ];
     } else {
-      console.error('Failed to fetch product data');
+      console.error('Failed to fetch category data');
     }
   } catch (error) {
-    console.error('Error while fetching product data:', error);
+    console.error('Error while fetching category data:', error);
+  }
+};
+
+const getAllSubCategories = async () => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getSubCatActive`);
+    // console.log(response)
+    if (response.statusText === "OK") {
+      // console.log(response.data);
+      //populate sub category droplist
+      subCategoryOptions.value = response.data.map((subcategory: { subcat_name: any; }) => subcategory.subcat_name);
+    } else {
+      console.error('Failed to fetch sub category data');
+    }
+  } catch (error) {
+    console.error('Error while fetching sub category data:', error);
   }
 };
 
 onMounted(() => {
   getAllCategrories()
+  getAllSubCategories()
 });
 </script>
 

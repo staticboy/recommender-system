@@ -48,21 +48,21 @@ onBeforeMount(() => {
 
         <!-- BUSINESS OWNER -->
         <template v-else-if="navRoutes === '/biz'">
-          <q-btn stretch flat to="/biz/products-all" label="Add Products" />
-          <q-btn stretch flat to="/biz/products" label="View All Products" />
+          <!-- <q-btn stretch flat to="/biz/products-all" label="Add Products" /> -->
+          <q-btn stretch flat to="/biz/products" label="Products" />
           <q-btn stretch flat to="/biz/prod-lists" label="View Product List" />
-          <q-btn stretch flat to="/biz/chart" label="View Charts" />
-          <q-btn stretch flat to="/biz/trans-hist" label="View Transaction History" />
-          <q-btn stretch flat to="/biz/submit-enq" label="Submit Enquiry" />
+          <q-btn stretch flat to="/biz/insights" label="Data Insights" />
+          <q-btn stretch flat to="/biz/trans-hist" label="Transaction History" />
+          <q-btn stretch flat to="/biz/submit-enq" label="Enquiry" />
         </template>
 
         <!-- ADMIN -->
         <template v-else-if="navRoutes === '/admin'">
-          <q-btn stretch flat to="/admin/customer-list" label="Manage Customers" />
-          <q-btn stretch flat to="/admin/enquiry-list" label="Manage Enquiries" />
-          <q-btn stretch flat to="/admin/business-list" label="Manage Businesses" />
-          <q-btn stretch flat to="/admin/cat-list" label="Manage Categories" />
-          <q-btn stretch flat to="/admin/performance-dashboard" label="View Performance" />
+          <q-btn stretch flat to="/admin/customer-list" label="Customers" />
+          <q-btn stretch flat to="/admin/enquiry-list" label="Enquiries" />
+          <q-btn stretch flat to="/admin/business-list" label="Businesses" />
+          <q-btn stretch flat to="/admin/cat-list" label="Categories" />
+          <q-btn stretch flat to="/admin/performance-dashboard" label="Performance" />
         </template>
 
         <q-space />

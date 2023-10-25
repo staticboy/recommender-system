@@ -20,7 +20,8 @@ export interface BizProductDetails {
   prod_description: string;
   prod_price: number;
   prod_stockqty: number;
-  prod_modelnum: number;
+  prod_modelnum: string;
+  prod_status: string;
   cat_id: string;
   sub_cat: string;
   biz_id: string;
