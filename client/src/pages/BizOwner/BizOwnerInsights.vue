@@ -63,13 +63,22 @@
       </div>
       <div class="grid grid-cols-2 gap-4 w-full mt-4">
         <div class="col-span-1">
-          <q-card class="fit">
-            <h4>User visits</h4>
+          <q-card class="fit" v-if="dataAvailable">
+            <AvgReviewsChart :data="avgReviews" />
           </q-card>
         </div>
         <div class="col-span-1">
-          <q-card class="fit">
-            <h4>Latest ratings</h4>
+          <q-card class="fit" v-if="dataAvailable">
+            <h6>Product Ratings (Raw)</h6>
+            <q-table :rows="rawReviews" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns">
+              <template v-slot:header="props">
+                <q-tr :props="props">
+                  <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                    {{ col.label }}
+                  </q-th>
+                </q-tr>
+              </template>
+            </q-table>
           </q-card>
         </div>
       </div>
@@ -85,6 +94,7 @@ import axios from 'axios';
 import { useStore } from './../../stores';
 import SalesLineChart from './../../components/Charts/SalesLineChart.vue';
 import ProductSalesBarChart from './../../components/Charts/ProductSalesBarChart.vue';
+import AvgReviewsChart from './../../components/Charts/AvgReviewsChart.vue';
 
 const router = useRouter();
 const q = useQuasar();
@@ -94,9 +104,44 @@ const avgTransactionAmt = ref(null);
 const cntTransaction = ref(null);
 const totalSales = ref(null);
 const topProduct = ref(null);
+const avgReviews = ref(null);
+const rawReviews = ref(null);
 const dataAvailable = ref(false);
 const dateAvailable = ref(false);
 const fromDate = ref('');
+
+const columns = computed(() => [
+  {
+    name: 'prod_id',
+    required: true,
+    label: 'ID',
+    align: 'left',
+    field: 'prod_id',
+    sortable: true,
+  },
+  {
+    name: 'prod_name',
+    required: true,
+    label: 'Product Name',
+    align: 'left',
+    field: 'prod_name',
+    sortable: true,
+  },
+  {
+    name: 'rating',
+    label: 'Rating',
+    align: 'left',
+    field: 'rating',
+    sortable: true,
+  },
+  {
+    name: 'remarks',
+    label: 'Remarks',
+    align: 'left',
+    field: 'remarks',
+    sortable: true,
+  },
+]);
 
 const save = () => {
   dateAvailable.value = true;
@@ -134,7 +179,9 @@ const getInsight = async () => {
       cntTransaction.value = response.data[0].biz_get_insights.total_sales[0].count_transaction;
       totalSales.value = response.data[0].biz_get_insights.total_sales[0].total_revenue;
       topProduct.value = response.data[0].biz_get_insights.top_product[0].prod_list;
-    } 
+      avgReviews.value = response.data[0].biz_get_insights.review_avg;
+      rawReviews.value = response.data[0].biz_get_insights.raw_review;
+    }
     else {
       q.notify({
         icon: "report_problem",
@@ -157,7 +204,8 @@ h6 {
   font-weight: bolder;
 }
 
-h3, h5 {
+h3,
+h5 {
   color: #bb5e00;
   font-size: 40px;
   text-align: center;
