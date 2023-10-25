@@ -18,7 +18,7 @@ router.post('/registerCategory', registerCategory);
 router.put('/updateCategory', updateCategoryDetails);
 router.delete('/deleteCategory', deleteCategory);
 router.get('/getSubCatAll', getSubCategoryAll);
-router.get('/getSubCatAcstive', getSubCategoryAll);
+router.get('/getSubCatActive', getSubCategoryActive);
 router.post('/upsertSubcat', upsertSubCategory);
 router.delete('/deleteSubCat', deleteSubCategory);
 
