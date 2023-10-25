@@ -142,7 +142,7 @@ const uploadProfileImage = (file: any) => {
 const fetchBizProfile = async () => {
   try {
     //change biz id value to the id of current login biz owner
-    var param = {"biz_id": 'B0031'} 
+    var param = {"biz_id": localStorage.getItem("userId")} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getById`, param);
     console.log(response)
     if (response.statusText === "OK") {

@@ -2,7 +2,7 @@
   <div>
     <SearchBar v-model="searchQuery" class="q-mb-md" />
 
-    <q-table :rows="filteredProducts" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns"
+    <q-table :rows="filteredProducts" :rows-per-page-options="[10, 20, 30]" :columns="columns"
       :row-key="row => row.id">
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -22,7 +22,7 @@
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <template v-if="col.name === 'prod_status'">
-              <q-badge :color="props.row.prod_status === 'Available' ? 'green' : 'red'" :label="props.row.prod_status" />
+              <q-badge :color="props.row.prod_status === 'AVAILABLE' ? 'green' : 'red'" :label="props.row.prod_status" />
             </template>
             <template v-else-if="col.name === 'prod_stockqty'">
               <span :style="stockQtyStyle(props.row.prod_stockqty)">
@@ -85,17 +85,17 @@
 import { ref, computed, watch, reactive, onMounted } from 'vue';
 import SearchBar from './SearchBar.vue';
 import axios from 'axios';
-import { DEMO_PRODUCT_LIST } from '../constants.ts'
+import { date, useQuasar } from "quasar";
+// import { DEMO_PRODUCT_LIST } from '../constants.ts'
 
-
-
-const filteredProductsRef = ref([...DEMO_PRODUCT_LIST]);
+const q = useQuasar();
+const filteredProductsRef = ref([]);
 const searchQuery = ref('');
 const pagination = ref({
   sortBy: 'prod_name',
   descending: false,
   page: 1,
-  rowsPerPage: 5,
+  rowsPerPage: 10,
 });
 
 const updatedProfile = ref({
@@ -110,6 +110,7 @@ const updatedProfile = ref({
 
 const updateRow = (row) => {
   //jsonb in backend function accepts different key names
+  //sorry :'(
   updatedProfile._rawValue.prod_id = row.prod_id;
   updatedProfile._rawValue.updated_name = row.prod_name;
   updatedProfile._rawValue.updated_description = row.prod_description;
@@ -279,7 +280,9 @@ const updateRowProduct = async () => {
 };
 
 onMounted(() => {
+  q.loading.show();
   fetchProductData();
+  q.loading.hide();
 });
 
 </script>

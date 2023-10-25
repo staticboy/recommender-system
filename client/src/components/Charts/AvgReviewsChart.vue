@@ -2,7 +2,7 @@
   <div>
     <VueApexCharts
       type="bar"
-      height="300"
+      height="350"
       :options="chartOptions"
       :series="chartSeries"
     />
