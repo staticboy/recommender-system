@@ -84,3 +84,50 @@ export async function deleteCategory(req: Request, res: Response) {
         res.status(500).json({ error: 'Shit happen.' });
     }
 }
+
+
+// =================== SUB CAT =====================
+
+export async function getSubCategoryAll(req: Request, res: Response) {
+    try 
+    {
+        const category = await db.any('SELECT * FROM subcat_get_all()');
+        res.json(category);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}
+
+export async function getSubCategoryActive(req: Request, res: Response) {
+    try 
+    {
+        const category = await db.any('SELECT * FROM subcat_get_all_active()');
+        res.json(category);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}
+
+export async function upsertSubCategory(req: Request, res: Response) {
+    try 
+    {
+        const result = await db.one('SELECT * FROM subcat_upsert($1)', [req.body]);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}
+
+export async function deleteSubCategory(req: Request, res: Response) {
+    try 
+    {
+        const result = await db.one('SELECT * FROM subcat_delete($1)', [req.body]);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}

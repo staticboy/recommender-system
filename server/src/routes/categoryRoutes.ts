@@ -3,7 +3,11 @@ import { getCategoryAll,
   getCategoryById,
   registerCategory,
   updateCategoryDetails,
-  deleteCategory
+  deleteCategory,
+  getSubCategoryAll,
+  getSubCategoryActive,
+  upsertSubCategory,
+  deleteSubCategory
 } from '../controllers/categoryController';
 
 const router = Router();
@@ -12,6 +16,11 @@ router.get('/getCatAll', getCategoryAll);
 router.post('/getCatById', getCategoryById);
 router.post('/registerCategory', registerCategory);
 router.put('/updateCategory', updateCategoryDetails);
-router.delete('/deleteCategory', deleteCategory)
+router.delete('/deleteCategory', deleteCategory);
+router.get('/getSubCatAll', getSubCategoryAll);
+router.get('/getSubCatAcstive', getSubCategoryAll);
+router.post('/upsertSubcat', upsertSubCategory);
+router.delete('/deleteSubCat', deleteSubCategory);
+
 
 export default router;
