@@ -12,10 +12,19 @@
             <q-btn type="button"  label="Back" id="fn" class="btn" dense to="/admin/cat-list"></q-btn>
 
 
-            <q-btn type="button"   label="Update" id="approve" class="btn" dense @click="submitForm()"></q-btn>
+            <q-btn v-if="category.cat_status === 'ACTIVE'"  type="button"   label="Update" id="approve" class="btn"
+             dense @click="submitForm()"></q-btn>
 
 
-            <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
+
+
+            <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  
+            label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
+
+            <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
+            label="Re-activate" id="approve" class="btn" dense @click="reactivateForm()"></q-btn>
+            <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
+            label="Delete" id="reject" class="btn" dense @click="deleteCategory()"></q-btn>
 
           </div>
         </div>
@@ -41,7 +50,8 @@
               >
                 Category Name
               </label>
-              <q-input   v-model="category.cat_name" dense required type="text"
+         
+              <q-input :readonly="category.cat_status == 'INACTIVE'" v-model="category.cat_name" dense required type="text"
               class="q-mr-md"></q-input>
               
             </div>
@@ -187,7 +197,7 @@
 </template>
 
 <script setup lang="ts">
-import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
+//import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 
 import { ref, onMounted} from 'vue';
 import { useRouter } from 'vue-router';
@@ -217,7 +227,19 @@ const submitForm = async () => {
   // Handle form submission
   category.value.cat_status = 'ACTIVE';
   console.warn(category.value);
-  await updateCatInfo();
+  
+  await updateCatInfo(1);
+  await fetchCategoryData();
+  console.log(category.value.cat_status);
+  router.back();
+};
+
+const reactivateForm = async () => {
+  // Handle form submission
+  category.value.cat_status = 'ACTIVE';
+  console.warn(category.value);
+ 
+  await updateCatInfo(-1);
   await fetchCategoryData();
   console.log(category.value.cat_status);
   router.back();
@@ -227,9 +249,17 @@ const submitForm = async () => {
 const deactivateCategory = async () => {
   category.value.cat_status = 'INACTIVE';
   console.warn(category.value);
-  await updateCatInfo();
+  await updateCatInfo(-1);
   await fetchCategoryData();
   console.log(category.value.cat_status);
+  router.back();
+
+}
+
+const deleteCategory = async () => {
+
+  await deleteCategoryData();
+
   router.back();
 
 }
@@ -244,6 +274,24 @@ const fetchCategoryData = async () => {
     if (response.statusText === "OK") {
       category.value = response.data;
       console.log(category.value);
+ 
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
+//API Fetch
+const deleteCategoryData = async () => {
+  try {
+    
+    const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/category/deleteCategory`,selectedCatId);
+    
+    if (response.statusText === "OK") {
+      
+      console.log(response);
  
     } else {
       console.error('Failed to fetch product data');
@@ -271,11 +319,14 @@ const fetchProductsInCategory = async () => {
   }
 };
 
-//updateCategory
-const updateCatInfo = async () => {
+//updateCategory or deactivate
+const updateCatInfo = async (row: any) => {
   try {
     
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/category/updateCategory`, category.value);
+    let link = row == 1 ? `${import.meta.env.VITE_API_URL}/api/category/updateCategory` : `${import.meta.env.VITE_API_URL}/api/category/deactivateCategory`;
+
+    console.warn(link); 
+    const response = await axios.put(link, category.value);
     
     if (response.statusText === "OK") {
       

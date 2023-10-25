@@ -65,6 +65,24 @@ export async function updateCategoryDetails(req: Request, res: Response) {
     } 
 }
 
+
+export async function deactivateCategory(req: Request, res: Response) {
+    try {
+        const result = await db.one('SELECT * FROM cat_change_status($1)', [req.body]);
+
+        if (result.cat_change_status === 1){
+            res.status(200).json({message: 'Category details updated'});
+        } else if (result.cat_change_status === -1){
+            res.status(404).json({ error: 'DB error: detail updates failed'})
+        } else {
+            res.status(500).json({ error: 'Internal server error.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Shit happen' });
+    } 
+}
+
 // DELETE
 
 export async function deleteCategory(req: Request, res: Response) {
