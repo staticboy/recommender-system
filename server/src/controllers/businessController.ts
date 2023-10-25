@@ -56,7 +56,7 @@ export async function insertNewBusiness(req: Request, res: Response) {
             'SELECT * FROM biz_register_acct($1)', [req.body]);
 
         if (result.result_code === 1) {
-            res.status(200).json({ message: 'New business owner added successfully.' });
+            res.status(200).json({ user_id: result.biz_id });
         } else if (result.result_code === -1) {
             res.status(500).json({ error: 'Duplicate business email found.' });
         } else {

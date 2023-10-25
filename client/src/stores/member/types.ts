@@ -11,3 +11,14 @@ export interface ProductDetails {
   prod_dateadded: Date,
   prod_status: string,
 }
+export interface MemberDetails {
+  user_id: string,
+  user_email: string,
+  user_password: string,
+  user_name: string,
+  user_dob: string,
+  user_phoneno: number,
+  user_address: string,
+  user_country: string,
+  user_gender: string,
+}

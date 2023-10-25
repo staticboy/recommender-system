@@ -24,7 +24,8 @@ const logout = () => {
 
 onBeforeMount(() => {
   const role = localStorage.getItem("userRole");
-  if (!role) {
+  const id = localStorage.getItem("userId");
+  if (!role || !id) {
     router.push({ name: "LoginPage" });
   }
 });

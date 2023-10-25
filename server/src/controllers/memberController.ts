@@ -177,7 +177,7 @@ export async function insertNewMember(req: Request, res: Response) {
             'SELECT * FROM mem_register_acct($1)', [req.body]);
 
         if (result.result_code === 1) {
-            res.status(200).json({ message: 'New member added successfully.' });
+            res.status(200).json({ user_id: result.user_id });
         } else if (result.result_code === -1) {
             res.status(500).json({ error: 'Duplicate member email found.' });
         } else {
