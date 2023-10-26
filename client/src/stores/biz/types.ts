@@ -27,12 +27,14 @@ export interface BizProductDetails {
   biz_id: string;
 }
 
-export interface ediProductDetails {
-
+export interface EditProductDetails {
   prod_id: string,
-  updated_name: string,
-  updated_description: string,
-  updated_price: number,
-  updated_stockqty: number,
-  updated_modelnum: string
+  cat_id: string,
+  sub_cat: string,
+  prod_name: string,
+  prod_description: string,
+  prod_price: number,
+  prod_stockqty: number,
+  prod_modelnum: string,
+  prod_status: string,
 }

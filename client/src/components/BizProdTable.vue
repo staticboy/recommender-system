@@ -38,34 +38,34 @@
           <q-td colspan="100%">
             <div class="row">
               <div class="col">
-                <q-input outlined v-model="props.row.prod_name" label="Name" dense required type="text"
+                <q-input outlined v-model="updatedProduct.prod_name" label="Name" dense required type="text"
                   class="q-mr-md"></q-input>
               </div>
               <div class="col">
-                <q-input outlined v-model="props.row.prod_description" label="Description" dense required type="text"
+                <q-input outlined v-model="updatedProduct.prod_description" label="Description" dense required type="text"
                   class="q-mr-md"></q-input>
               </div>
               <div class="col">
-                <q-input outlined v-model="props.row.prod_stockqty" label="Stock Qty" dense required type="number"
+                <q-input outlined v-model="updatedProduct.prod_stockqty" label="Stock Qty" dense required type="number"
                   class="q-mr-md"></q-input>
               </div>
               <div class="col">
-                <q-input outlined v-model="props.row.prod_price" label="Price" dense required type="number"
+                <q-input outlined v-model="updatedProduct.prod_price" label="Price" dense required type="number"
                   class="q-mr-md"></q-input>
               </div>
               <div class="col">
-                <q-input outlined v-model="props.row.prod_modelnum" label="Model Number" dense required type="text"
+                <q-input outlined v-model="updatedProduct.prod_modelnum" label="Model Number" dense required type="text"
                   class="q-mr-md"></q-input>
               </div>
               <div class="col">
-                <q-select v-model="props.row.cat_id" :options="categoryOptions" label="Category" dense class="q-mr-md" />
+                <q-select v-model="updatedProduct.cat_id" :options="categoryOptions" label="Category" dense class="q-mr-md" emit-value map-options/>
               </div>
               <div class="col">
-                <q-select v-model="props.row.sub_cat" :options="subCategoryOptions" label="Sub-category" dense
+                <q-select v-model="updatedProduct.sub_cat" :options="subCategoryOptions" label="Sub-category" dense emit-value map-options
                   class="q-mr-md" />
               </div>
               <div class="col">
-                <q-select v-model="props.row.prod_status" :options="availabilityOptions" label="Available?" dense
+                <q-select v-model="updatedProduct.prod_status" :options="availabilityOptions" label="Available?" dense emit-value map-options
                   class="q-mr-md" />
               </div>
               <div class="col">
@@ -81,78 +81,34 @@
 </template>
 
 
-<script setup>
-import { ref, computed, watch, reactive, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
 import SearchBar from './SearchBar.vue';
 import axios from 'axios';
-import { date, useQuasar } from "quasar";
-// import { DEMO_PRODUCT_LIST } from '../constants.ts'
+import { useQuasar } from "quasar";
+import { EditProductDetails } from "./../stores/biz/types";
 
 const q = useQuasar();
 const filteredProductsRef = ref([]);
 const searchQuery = ref('');
-const pagination = ref({
-  sortBy: 'prod_name',
-  descending: false,
-  page: 1,
-  rowsPerPage: 10,
-});
+const categoryOptions = ref();
+const subCategoryOptions = ref();
 
-const updatedProfile = ref({
+const updatedProduct = ref<EditProductDetails>({
   prod_id: '',
-  updated_name: '',
-  updated_description: '',
-  updated_price: 0,
-  updated_stockqty: 0,
-  updated_modelnum: '',
-  updated_status: '',
+  cat_id: '',
+  sub_cat: '',
+  prod_name: '',
+  prod_description: '',
+  prod_price: 0,
+  prod_stockqty: 0,
+  prod_modelnum: '',
+  prod_status: '',
 });
-
-const updateRow = (row) => {
-  //jsonb in backend function accepts different key names
-  //sorry :'(
-  updatedProfile._rawValue.prod_id = row.prod_id;
-  updatedProfile._rawValue.updated_name = row.prod_name;
-  updatedProfile._rawValue.updated_description = row.prod_description;
-  updatedProfile._rawValue.updated_price = row.prod_price;
-  updatedProfile._rawValue.updated_modelnum = row.prod_modelnum;
-  updatedProfile._rawValue.updated_stockqty = row.prod_stockqty;
-  updatedProfile._rawValue.updated_status = row.prod_status;
-
-
-
-  toggleRowExpansion(row);
-  console.warn(updatedProfile._rawValue);
-  updateRowProduct();
-};
-
-const deleteRow = (key) => {
-  //remove item via api
-  filteredProductsRef.value.splice(key, 1);
-  q.notify({
-    message: "Deleted from cart",
-    icon: "delete",
-    color: "positive",
-  });
-};
-
-const categoryOptions = computed(() => [
-  'Golf',
-  'Tennis',
-  'Basketball',
-  'Soccer',
-]);
-
-const subCategoryOptions = computed(() => [
-  'Equipment',
-  'Apparel',
-  'Accesories',
-  'Footwear',
-]);
 
 const availabilityOptions = computed(() => [
-  'AVAILABLE',
-  'UNAVAILABLE',
+  {value: 'AVAILABLE', label: 'Yes'},
+  {value: 'UNAVAILABLE', label: 'No'},
 ]);
 
 const columns = computed(() => [
@@ -223,6 +179,11 @@ const columns = computed(() => [
   },
 ]);
 
+interface Category {
+  cat_id: number;
+  cat_name: string;
+}
+
 const filteredProducts = computed(() => {
   return filteredProductsRef.value.filter((product) => {
     const searchString = searchQuery.value.toLowerCase();
@@ -244,8 +205,55 @@ const stockQtyStyle = ref((stockQty) => {
 
 const toggleRowExpansion = (row) => {
   row.expanded = !row.expanded;
-  console.log(row.prod_name);
+  // console.log(row)
+  updatedProduct.value = JSON.parse(JSON.stringify(row));
+  // console.log(updatedProduct)
 };
+
+
+const updateRow = (row) => {
+  console.log(updatedProduct)
+  updateRowProduct();
+  toggleRowExpansion(row);
+};
+
+const deleteRow = (key) => {
+  //remove item via api
+  filteredProductsRef.value.splice(key, 1);
+  q.notify({
+    message: "Deleted from cart",
+    icon: "delete",
+    color: "positive",
+  });
+};
+
+const updateRowProduct = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/product/editInfo`, updatedProduct._rawValue);
+    console.log(response)
+    if (response.statusText === "OK") {
+      // fetchProductData();
+      q.notify({
+        type: 'positive',
+        message: updatedProduct._rawValue.prod_name + ': updated successfully'
+      })
+    } else {
+      console.error('Failed to update product data');
+      q.notify({
+        type: 'negative',
+        message: updatedProduct._rawValue.prod_name + ': update failed'
+      })
+    }
+  } catch (error) {
+    console.error('Error while update product data:', error);
+    q.notify({
+        type: 'negative',
+        message: 'Something went wrong.'
+      })
+  }
+};
+
 
 const fetchProductData = async () => {
   try {
@@ -263,25 +271,50 @@ const fetchProductData = async () => {
   }
 };
 
-
-const updateRowProduct = async () => {
+const getAllCategrories = async () => {
   try {
-    //change biz id value to the id of current login biz owner
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/product/editInfo`, updatedProfile._rawValue);
-    console.log(response)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getCatAll`);
+    // console.log(response)
     if (response.statusText === "OK") {
-      fetchProductData();
+      // console.log(response.data);
+      //populate Category droplist
+      const mappedCategories = response.data.map((category: Category) => ({
+        value: category.cat_id,
+        label: category.cat_name
+      }));
+      categoryOptions.value = [ 
+        ...mappedCategories
+      ];
     } else {
-      console.error('Failed to fetch product data');
+      console.error('Failed to fetch category data');
     }
   } catch (error) {
-    console.error('Error while fetching product data:', error);
+    console.error('Error while fetching category data:', error);
   }
 };
+
+const getAllSubCategories = async () => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getSubCatActive`);
+    // console.log(response)
+    if (response.statusText === "OK") {
+      // console.log(response.data);
+      //populate sub category droplist
+      subCategoryOptions.value = response.data.map((subcategory: { subcat_name: any; }) => subcategory.subcat_name);
+    } else {
+      console.error('Failed to fetch sub category data');
+    }
+  } catch (error) {
+    console.error('Error while fetching sub category data:', error);
+  }
+};
+
 
 onMounted(() => {
   q.loading.show();
   fetchProductData();
+  getAllCategrories()
+  getAllSubCategories()
   q.loading.hide();
 });
 

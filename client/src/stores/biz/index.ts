@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { BizProductDetails, BizProfileDetails, InsertEnquiryRequest } from "./types";
+import { BizProductDetails, BizProfileDetails, InsertEnquiryRequest, EditProductDetails } from "./types";
 import { List } from "postcss/lib/list";
 
 export const useBizOwnerStore = defineStore("bizOwner", () => {
@@ -16,7 +16,6 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
   });
 
   const bizListProductDetails = ref<BizProductDetails>({
-
     prod_name: "",
     prod_description: "",
     prod_price: 0,
@@ -26,7 +25,18 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     cat_id: "",
     sub_cat: "",
     biz_id: ""
+  })
 
+  const editProdDetails = ref<EditProductDetails>({
+    prod_id: '',
+    cat_id: '',
+    sub_cat: '',
+    prod_name: '',
+    prod_description: '',
+    prod_price: 0,
+    prod_stockqty: 0,
+    prod_modelnum: '',
+    prod_status: '',
   })
 
 
@@ -47,6 +57,7 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     bizProfileDetails,
     getBizOwnerProfileDetails,
     insertEnquiry,
+    editProdDetails,
   };
 });
 
