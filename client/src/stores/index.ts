@@ -6,6 +6,7 @@ import { useAdminStore } from "./adm/index";
 import { useMemberStore } from "./member/index";
 import { useGuestStore } from "./guest/index";
 import { useUserStore } from "./user/index";
+import { useProductStore } from "./product/index";
 
 /*
  * When adding new properties to stores, you should also
@@ -42,4 +43,5 @@ export const useStore = () => ({
   member: useMemberStore(),
   guest: useGuestStore(),
   user: useUserStore(),
+  product: useProductStore(),
 });
