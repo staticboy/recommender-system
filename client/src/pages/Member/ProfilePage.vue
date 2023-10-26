@@ -1,44 +1,28 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
+import { useMemberStore } from "../../stores/member/index";
 
+const memberStore = useMemberStore();
+const { memberDetails, memberPreferences } = useMemberStore();
+const confirmPassword = ref();
 const editMode = ref({
   profile: false,
   preferences: false,
 });
-const date = new Date();
-const form = ref({
-  name: "User 1",
-  phoneNum: "98765432",
-  email: "userabc@abc.com",
-  dob: `${new Date(
-    date.getFullYear() - 25,
-    date.getMonth(),
-    date.getDate()
-  ).toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  })}`,
-  zipCode: "290385",
-  location: "Singapore",
-  password: "********",
-  confirmPassword: "",
-  gender: "Male",
-});
-const category = ref({
-  sports: [
-    "Basketball",
-    "Soccer",
-    "Tennis",
-    "Badminton",
-    "Swimming",
-    "Running",
-  ],
-  item: ["Shoes", "Clothes", "Bags", "Accessories"],
+
+onBeforeMount(async () => {
+  const userID = localStorage.getItem("userId");
+  if (userID) {
+    await Promise.all([
+      memberStore.getMemberProfileDetailsByID(userID),
+      memberStore.getMemberPreferencesByID(userID),
+    ]);
+  }
+  console.log(memberPreferences)
 });
 </script>
 <template>
-  <q-page>
+  <q-page v-if="memberDetails">
     <div
       class="flex flex-row items-center justify-between w-full"
       style="margin: 0px 15px"
@@ -62,7 +46,7 @@ const category = ref({
       <div style="width: 48%">
         <q-input
           outlined
-          v-model="form.name"
+          v-model="memberDetails.user_name"
           label="Name"
           lazy-rules
           :rules="[(val) => !!val || 'Name is required']"
@@ -70,14 +54,14 @@ const category = ref({
         />
         <q-input
           outlined
-          v-model="form.phoneNum"
+          v-model="memberDetails.user_phoneno"
           label="Phone Number"
           :disable="!editMode.profile"
           class="q-mb-md"
         />
         <q-input
           outlined
-          v-model="form.email"
+          v-model="memberDetails.user_email"
           label="Email"
           lazy-rules
           :rules="[(val) => !!val || 'Email is required']"
@@ -85,7 +69,7 @@ const category = ref({
         />
         <q-input
           outlined
-          v-model="form.dob"
+          v-model="memberDetails.user_dob"
           label="Date of Birth"
           lazy-rules
           :rules="[(val) => !!val || 'DOB is required']"
@@ -96,16 +80,7 @@ const category = ref({
         <div class="flex flex-row justify-between">
           <q-input
             outlined
-            v-model="form.zipCode"
-            label="Zipcode"
-            lazy-rules
-            :rules="[(val) => !!val || 'Zipcode is required']"
-            :disable="!editMode.profile"
-            style="width: 48%"
-          />
-          <q-input
-            outlined
-            v-model="form.location"
+            v-model="memberDetails.user_country"
             label="Location"
             :disable="!editMode.profile"
             style="width: 48%"
@@ -114,7 +89,7 @@ const category = ref({
           <q-select
           outlined
           use-chips
-          v-model="form.gender"
+          v-model="memberDetails.user_gender"
           label="Gender"
           :disable="!editMode.profile"
           style="width: 48%"
@@ -122,7 +97,7 @@ const category = ref({
         />
         <q-input
           outlined
-          v-model="form.password"
+          v-model="memberDetails.user_password"
           label="Password"
           lazy-rules
           :rules="[(val) => !!val || 'Password is required']"
@@ -130,7 +105,7 @@ const category = ref({
         />
         <q-input
           outlined
-          v-model="form.confirmPassword"
+          v-model="confirmPassword"
           label="Confirm Password"
           lazy-rules
           :rules="[(val) => !!val || 'Password is required']"
@@ -159,7 +134,7 @@ const category = ref({
       </div>
     </div>
     <div class="flex flex-row justify-between">
-      <q-select
+      <!-- <q-select
         outlined
         multiple
         use-chips
@@ -177,7 +152,7 @@ const category = ref({
         label="Item Categories"
         :disable="!editMode.preferences"
         style="width: 48%"
-      />
+      /> -->
     </div>
   </q-page>
 </template>

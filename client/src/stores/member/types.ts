@@ -22,3 +22,10 @@ export interface MemberDetails {
   user_country: string,
   user_gender: string,
 }
+export interface MemberPreferences {
+  preference_id: string,
+  user_id: string,
+  cat_id: string,
+  skill_level: string,
+  frequency: string,
+}
