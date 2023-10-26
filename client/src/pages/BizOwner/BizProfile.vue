@@ -1,24 +1,23 @@
 <template>
   <q-page>
-    <!-- {{ bizProfileDetails }} -->
     <div class="q-pa-md">
       <div class="row">
         <div class="col-9">
-          <h1 class="q-mb-md">Edit Business Profile :  {{ profile.biz_id }}</h1>
+          <h1 class="q-mb-md">Business Profile - {{ profile.biz_name }}</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-6 pb-4">
-          <div class="col-3">
+          <!-- <div class="col-3">
             <q-uploader v-model="profileImage" label="Profile Image" accept=".jpg, .jpeg, .png"
               @click="uploadProfileImage">
             </q-uploader>
             <div class="text-h6 q-mb-md" v-if="profileImage">
               Selected File: {{ profileImage }}
             </div>
-          </div>
+          </div> -->
         </div>
-        <div class="flex col-6 justify-end items-center">
+        <div class="flex col-6 justify-end items-center mb-4">
           <div> <!-- Create a flex container and align content to the end (right) -->
             <q-btn type="submit" color="primary" label="Edit" class="q-mt-md q-mr-md" dense v-show="isNotInEdit"
               @click="toggleDisabled"></q-btn>
@@ -78,30 +77,22 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-//import { postDataToApi } from './biz-service';
+import { useQuasar } from 'quasar';
 import axios from 'axios';
-import { useStore } from './../../stores';
+import { BizProfileDetails } from "../../stores/biz/types";
 
-const store = useStore();
-const { bizProfileDetails } = store.bizOwner;
-
-
-
-
-
-const router = useRouter();
+const q = useQuasar();
 const profileImage = ref(null);
 
-const profile = ref({
-  biz_id: 'Bxxxxx',
-  biz_name: 'Reg account',
-  biz_email: 'johndoe@example.com',
-  biz_phoneno: 13,
-  biz_yearest: '1911',
-  biz_address: '3 Bukit Batok Crescent 628553',
-  biz_country: 'Singapore',
-  biz_description: 'Our business has been around for very long... we sell golf equipment at a good price'
+const profile = ref<BizProfileDetails>({
+  biz_id: '',
+  biz_name: '',
+  biz_email: '',
+  biz_phoneno: 0,
+  biz_yearest: 0,
+  biz_address: '',
+  biz_country: '',
+  biz_description: ''
 });
 
 const isDisabled = ref(true);
@@ -114,19 +105,12 @@ const toggleDisabled = () => {
   isNotInEdit.value = !isNotInEdit.value;
 };
 
-const goToHome = () => {
-
-  router.push('/biz/home'); // Use router.push() to navigate to /biz/home
-
-
-};
-
 const updateProfile = () => {
-//update profile and show notification update successful
-  console.warn(profile._rawValue.biz_id) //check with anne/DH
+  q.loading.show();
   UpdateBizProfile();
   toggleDisabled();
-  goToHome();
+  q.loading.hide();
+  // goToHome();
 };
 
 const uploadProfileImage = (file: any) => {
@@ -144,15 +128,23 @@ const fetchBizProfile = async () => {
     //change biz id value to the id of current login biz owner
     var param = {"biz_id": localStorage.getItem("userId")} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getById`, param);
-    console.log(response)
+    // console.log(response)
     if (response.statusText === "OK") {
       profile.value = response.data;
-      console.warn(response.data);
+      // console.warn(response.data);
     } else {
-      console.error('Failed to fetch product data');
+      console.error('Failed to fetch biz profile data');
+      q.notify({
+          type: 'negative',
+          message: 'Failed to fetch biz profile data'
+        })
     }
   } catch (error) {
-    console.error('Error while fetching product data:', error);
+    console.error('Error while fetching profile data:', error);
+    q.notify({
+          type: 'negative',
+          message: 'Something went wrong.'
+        })
   }
 };
 
@@ -163,23 +155,32 @@ const UpdateBizProfile = async () => {
     //change biz id value to the id of current login biz owner
     var param = profile
     const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/business/editProfile`, param._rawValue);
-    console.log(response)
+    // console.log(response)
     if (response.statusText === "OK") {
-      fetchBizProfile(); //refresh values
-      console.warn(response.data);
+      q.notify({
+          type: 'positive',
+          message: response.data.message
+        })
+      fetchBizProfile();
     } else {
       console.error('Failed to fetch product data');
+      q.notify({
+          type: 'negative',
+          message: response.data.message
+        })
     }
   } catch (error) {
     console.error('Error while fetching product data:', error);
+    q.notify({
+          type: 'negative',
+          message: 'Something went wrong.'
+        })
   }
 };
 
 
 onMounted(async () => {
     try {
-      //await store.bizOwner.getBizOwnerProfileDetails("B0001");
-      //postDataToApi();
       fetchBizProfile();
     } catch (error) {
       // Handle the error

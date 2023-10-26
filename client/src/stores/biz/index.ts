@@ -5,14 +5,14 @@ import { List } from "postcss/lib/list";
 
 export const useBizOwnerStore = defineStore("bizOwner", () => {
   const bizProfileDetails = ref<BizProfileDetails>({
-    username: "",
-    biz_name: "",
+    biz_id: '',
+    biz_name: '',
+    biz_email: '',
     biz_phoneno: 0,
-    email: "",
-    yr_est: 0,
-    address: "",
-    country: "",
-    biz_desc: "",
+    biz_yearest: 0,
+    biz_address: '',
+    biz_country: '',
+    biz_description: ''
   });
 
   const bizListProductDetails = ref<BizProductDetails>({

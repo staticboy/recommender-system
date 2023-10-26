@@ -5,14 +5,14 @@ export interface InsertEnquiryRequest {
 }
 
 export interface BizProfileDetails {
-  username: string;
+  biz_id: string;
   biz_name: string;
+  biz_email: string;
   biz_phoneno: number;
-  email: string;
-  yr_est: number;
-  address: string;
-  country: string;
-  biz_desc: string;
+  biz_yearest: number;
+  biz_address: string;
+  biz_country: string;
+  biz_description: string;
 }
 
 export interface BizProductDetails {
