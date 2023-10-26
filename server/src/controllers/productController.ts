@@ -107,11 +107,10 @@ export async function deleteProduct(req: Request, res: Response) {
     try {
         const result = await db.one(
             'SELECT * FROM prod_delete_by_id($1)', [req.body]);
-
-        if (result === 1) {
-            res.status(200).json({ message: 'Product deleted successfully.' });
-        } else if (result === -1) {
-            res.status(404).json({ message: 'Product record not found.' });
+        if (result.prod_delete_by_id === 1) {
+            res.status(200).json({ message: 'deleted successfully.' });
+        } else if (result.prod_delete_by_id === -1) {
+            res.status(404).json({ message: 'record not found.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
         }

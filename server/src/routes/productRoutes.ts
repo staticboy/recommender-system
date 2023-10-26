@@ -9,6 +9,6 @@ router.post('/getByBizId', getProdByBizId);
 router.post('/getByCatId', getProdByCatId);
 router.post('/addNewProd', insertNewProduct);
 router.put('/editInfo', updateProductInfo);
-router.put('/deleteProd', deleteProduct);
+router.post('/deleteProd', deleteProduct);
 
 export default router;

@@ -70,13 +70,25 @@
               </div>
               <div class="col">
                 <q-btn type="submit" color="primary" label="Update" @click="updateRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
-                <q-btn type="submit" color="red" label="Delete" @click="deleteRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
+                <q-btn type="submit" color="red" label="Delete" @click="confirmDeleteRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
               </div>
             </div>
           </q-td>
         </q-tr>
       </template>
     </q-table>
+    <q-dialog v-model="confirmDelete" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="negative" text-color="white" />
+          <span class="q-ml-sm">Delete {{ selectedRow ? selectedRow.prod_name : '' }}? You won't be able to revert this</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Delete" color="negative" @click="deleteRow(selectedRow)" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -93,6 +105,13 @@ const filteredProductsRef = ref([]);
 const searchQuery = ref('');
 const categoryOptions = ref();
 const subCategoryOptions = ref();
+const selectedRow = ref(null);
+const confirmDelete = ref(false);
+
+const confirmDeleteRow = (row) => {
+  selectedRow.value = row;
+  confirmDelete.value = true;
+};
 
 const updatedProduct = ref<EditProductDetails>({
   prod_id: '',
@@ -217,16 +236,41 @@ const updateRow = (row) => {
   toggleRowExpansion(row);
 };
 
-const deleteRow = (key) => {
+const deleteRow = (row) => {
   //remove item via api
-  filteredProductsRef.value.splice(key, 1);
-  q.notify({
-    message: "Deleted from cart",
-    icon: "delete",
-    color: "positive",
-  });
+  console.log(row.prod_id)
+  deleteRowProduct(row)
 };
 
+// API delete
+const deleteRowProduct = async (param) => {
+  try {
+    var prod_id = {"prod_id": param.prod_id }
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/deleteProd`, prod_id);
+    // console.log(response)
+    if (response.statusText === "OK") {
+      q.notify({
+        type: 'positive',
+        message: param.prod_name + ': ' + response.data.message
+      })
+      fetchProductData()
+    } else {
+      console.error('Failed to delete product data');
+      q.notify({
+        type: 'negative',
+        message: param.prod_name + ': ' + response.data.message
+      })
+    }
+  } catch (error) {
+    console.error('Error while deleting product data:', error);
+    q.notify({
+        type: 'negative',
+        message: 'Something went wrong.'
+      })
+  }
+};
+
+// API update
 const updateRowProduct = async () => {
   try {
     //change biz id value to the id of current login biz owner
@@ -260,7 +304,7 @@ const fetchProductData = async () => {
     //change biz id value to the id of current login biz owner
     var param = {"biz_id": localStorage.getItem("userId")} 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
-    console.log(response)
+    // console.log(response)
     if (response.statusText === "OK") {
       filteredProductsRef.value = response.data;
     } else {
