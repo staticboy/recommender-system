@@ -189,6 +189,24 @@ export async function insertNewMember(req: Request, res: Response) {
     }
 }
 
+export async function insertMemberCartItem(req: Request, res: Response) {
+    try {
+        const result = await db.one(
+            'SELECT * FROM mem_insert_to_cart($1)', [req.body]);
+
+        if (result === 1) {
+            res.status(200).json({ message: 'Added to cart.' });
+        } else if (result === -1) {
+            res.status(404).json({ message: 'Item already added to cart.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
 // UPDATE
 
 export async function updateMemberPreferenceInfo(req: Request, res: Response) {

@@ -8,6 +8,7 @@ import { getMemberAll,
   insertPreferenceInfo,
   insertProdRating,
   insertProdWishlist,
+  insertMemberCartItem,
   memberSendTransaction,
   updateMemberPreferenceInfo,
   updateMemberProfileInfo,
@@ -26,6 +27,7 @@ router.post('/addNewMember', insertNewMember);
 router.post('/addNewPref', insertPreferenceInfo);
 router.post('/addNewRating', insertProdRating);
 router.post('/addNewWishlist', insertProdWishlist);
+router.post('/addToCart', insertMemberCartItem);
 router.post('/memberSendTransaction', memberSendTransaction); //purchase
 router.put('/editPref', updateMemberPreferenceInfo);
 router.put('/editProfile', updateMemberProfileInfo);
