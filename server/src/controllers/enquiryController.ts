@@ -26,6 +26,18 @@ export async function getEnquiryById(req: Request, res: Response) {
     } 
 }
 
+//GET BY SUBMIT ID
+export async function getEnquiryBySubmitId(req: Request, res: Response) {
+    try 
+    {
+        const enquiry = await db.any('SELECT * FROM enq_get_by_submitid($1)', [req.body]);
+        res.status(200).json(enquiry);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
+
 //GET BY Daterange sort by
 /*
 sample 
