@@ -15,23 +15,30 @@ const editMode = ref({
 
 const onCancelProfile = () => {
   curMemberDetails.value = memberDetails;
-  editMode.value.preferences = !editMode.value.preferences;
+  editMode.value.profile = !editMode.value.profile;
 };
 const onSaveProfile = async () => {
-  if (curMemberDetails.value) {
-    await memberStore.updateMemberProfile(curMemberDetails.value);
-    editMode.value.profile = !editMode.value.profile;
+  if (editMode.value.profile) {
+    if (curMemberDetails.value) {
+      await memberStore.updateMemberProfile(curMemberDetails.value);
+    }
   }
+  editMode.value.profile = !editMode.value.profile;
 };
 const onCancelPreferences = () => {
   curMemberPreferences.value = memberPreferences;
   editMode.value.preferences = !editMode.value.preferences;
 };
 const onSavePreferences = async () => {
-  if (curMemberPreferences.value && curMemberPreferences.value !== memberPreferences) {
-    await memberStore.updateMemberPreferences(curMemberPreferences.value);
-    editMode.value.preferences = !editMode.value.preferences;
+  if (editMode.value.preferences) {
+    if (
+      curMemberPreferences.value &&
+      curMemberPreferences.value !== memberPreferences
+    ) {
+      await memberStore.updateMemberPreferences(curMemberPreferences.value);
+    }
   }
+  editMode.value.preferences = !editMode.value.preferences;
 };
 onBeforeMount(async () => {
   const userID = localStorage.getItem("userId");
