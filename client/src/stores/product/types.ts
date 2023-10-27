@@ -11,3 +11,7 @@ export interface ProductDetails {
   prod_dateadded: Date,
   prod_status: string,
 }
+export interface ProductRecommendations {
+  recommendations_activity: ProductDetails[],
+  recommendations_pref: ProductDetails[],
+}

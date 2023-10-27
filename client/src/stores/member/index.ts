@@ -37,7 +37,7 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   };
-  const updateMemberPreference = async (req: MemberPreferences) => {
+  const updateMemberPreferences = async (req: MemberPreferences) => {
     const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/updateMemberPreferenceInfo`, {
       // 
     });
@@ -52,6 +52,8 @@ export const useMemberStore = defineStore("member", () => {
     memberDetails,
     memberPreferences,
     memberWishlist,
+    updateMemberProfile,
+    updateMemberPreferences,
     getMemberProfileDetailsByID,
     getMemberPreferencesByID,
   }
