@@ -238,7 +238,10 @@ const viewRow = (row) => {
 const filteredList = computed(() => {  //filtering not working
 
   tableData.value.forEach((item)=>{
-    item.enq_submitdate = item.enq_submitdate.slice(0,10);
+
+    let fullDate = item.enq_submitdate.slice(0,10);
+    
+    item.enq_submitdate = fullDate.slice(0,4) + "/" + fullDate.slice(5,7) + "/" +  fullDate.slice(8,10);
 
   })
 
@@ -256,6 +259,8 @@ const filteredList = computed(() => {  //filtering not working
 // Watch for changes in filter inputs and update the filtered list
 watch([userName, status, userType, startDate, endDate], () => {
   // The computed property `filteredList` will automatically update here
+
+  console.log(startDate);
 });
 
 

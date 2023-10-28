@@ -127,7 +127,7 @@ const addProduct = () => {
   product._rawValue.biz_id = localStorage.getItem("userId");
   postRowProduct();
   q.loading.hide();
-  // router.push('/biz/home');
+  router.push('/biz/home');
 
 };
 
