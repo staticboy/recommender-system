@@ -203,7 +203,7 @@ const fetchEnquiryData = async () => {
     console.log(param)
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiry/getEnquiryByMe`, param);
     console.log(response.data.length)
-    if (response.data.length > 1) {
+    if (response.data.length >= 1) {
       const data = response.data;
       openEnq.value = data.filter((record) => record.enq_status === "OPEN");
       closedEnq.value = data.filter((record) => record.enq_status === "RESPONDED");
