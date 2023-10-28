@@ -20,6 +20,7 @@
   </q-layout>
 </template>
 <script setup lang="ts">
+import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -29,5 +30,19 @@ const login = () => {
 const signup = () => {
   router.push({ name: "SignUpPage" });
 };
+
+onBeforeMount(async () => {
+  const userID = localStorage.getItem("userId");
+  const role = localStorage.getItem("userRole");
+  if (userID && role) {
+    if (role.toLowerCase() === "admin") {
+      router.push({ name: "AdminHome" });
+    } else if (role.toLowerCase() === "member") {
+      router.push({ name: "HomePage" });
+    } else {
+      router.push({ name: "BizOwnerHome" });
+    }
+  }
+});
 </script>
 <style scoped></style>
