@@ -65,13 +65,12 @@ const onSubmit = async () => {
         localStorage.setItem("userRole", "MEMBER");
         localStorage.setItem("userId", resp.user_id);
         // time wait 5s
-        setTimeout(() => {
-          q.notify({
-            message: `Successfully registered. Redirecting to home page.`,
-            color: "positive",
-            timeout: 5000,
-          });
-        }, 5000);
+        q.notify({
+          message: `Successfully registered. Redirecting to home page.`,
+          color: "positive",
+          timeout: 5000,
+        });
+        setTimeout(() => {}, 5000);
         router.push({ name: "HomePage" });
       } else {
         q.notify({
