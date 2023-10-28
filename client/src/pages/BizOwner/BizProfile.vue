@@ -21,8 +21,8 @@
           <div> <!-- Create a flex container and align content to the end (right) -->
             <q-btn type="submit" color="primary" label="Edit" class="q-mt-md q-mr-md" dense v-show="isNotInEdit"
               @click="toggleDisabled"></q-btn>
-            <q-btn type="submit" color="white" text-color="black" label="Cancel" class="q-mt-md" dense
-              @click="toggleDisabled"></q-btn>
+            <q-btn type="button" color="white" text-color="black" label="Cancel" class="q-mt-md" dense
+              @click="router.back()"></q-btn>
           </div>
         </div>
       </div>
@@ -78,8 +78,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { BizProfileDetails } from "../../stores/biz/types";
+
+const router = useRouter();
 
 const q = useQuasar();
 const profileImage = ref(null);
