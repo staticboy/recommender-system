@@ -44,15 +44,31 @@
           <p>Transaction ID: {{ selectedTransaction.id }}</p>
           <q-btn class="mb-4" type="button" color="primary" label="Close" @click="resetSteps" dense />
           <h3 class="text-lg font-semibold mb-2">Statement Date: {{ selectedTransaction.statementDate }}</h3>
-          <q-table :rows="selectedTransaction.settlementBreakdown" row-key="id">
+          <!-- <q-table :rows="selectedTransaction.settlementBreakdown" row-key="id">
             <q-tr>
               <q-td class="border px-4 py-2" label="Product ID" field="prod_id"></q-td>
               <q-td class="border px-4 py-2" label="Product Name">
                 {{ prodNameMapper(row.prod_id) }}
               </q-td>
-              <q-td class="border px-4 py-2" label="Quantity" field="quantity"></q-td>
+              <q-td class="border px-4 py-2" label="Quantity" field="quantity"></q-td> 
+              
+         
             </q-tr>
-          </q-table>
+
+          </q-table> -->
+          <q-table :rows="selectedTransaction.settlementBreakdown" >
+          <!-- Add a custom column for the button -->
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="biz_id" :props="props">{{ props.row.biz_id }}</q-td>
+              <q-td key="prod_id"  :props="props">{{ prodNameMapper(props.row.prod_id )}}</q-td>
+              <q-td key="quantity" :props="props">{{ props.row.quantity }}</q-td>
+              
+           
+            </q-tr>
+          </template>
+
+        </q-table>
         </div>
       </div>
 
@@ -164,6 +180,8 @@ const viewItemsInTransaction = (transaction) => {
     statementDate: transaction.purchase_date,
     settlementBreakdown: transaction.prod_quantity,
   }
+
+  console.log(selectedTransaction.value)
 };
 
 watch(updateFilteredTransactions);
