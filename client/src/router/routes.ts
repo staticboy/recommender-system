@@ -27,11 +27,19 @@ const routes: RouteRecordRaw[] = [
           noNav: true,
         },
       },
+      {
+        name: "GuestLandingPage",
+        path: "/",
+        component: () => import("../pages/Guest/GuestLandingPage.vue"),
+        meta: {
+          noNav: true,
+        },
+      }
     ],
   },
   {
-    path: "",
-    // meta: { requiresAuth: true },
+    path: "/",
+    meta: { requiresAuth: true },
     component: () => import("../layouts/MainLayout.vue"),
     children: [
       //Member Pages
