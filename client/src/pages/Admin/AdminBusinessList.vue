@@ -47,16 +47,11 @@
 import { ref, computed, onMounted } from 'vue';
 //import { DEMO_BUSINESS_LIST_ADMIN } from "../../constants.ts"
 import { useRouter } from 'vue-router';
-
-
 import axios from 'axios';
-
 import { useStore } from './../../stores';
+
 const store = useStore();
 const { selectedBizId } = store.adm;
-
-
-
 
 const router = useRouter();
 const bizList = ref([]);
@@ -114,8 +109,6 @@ const columns = computed(() => [
   },
 ]);
 
-
-
 const filteredList = computed(() => {
   return bizList.value.filter((b) => {
     return (
@@ -123,8 +116,6 @@ const filteredList = computed(() => {
     );
   });
 });
-
-
 
 
 //API Fetch
