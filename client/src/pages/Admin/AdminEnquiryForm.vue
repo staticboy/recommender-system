@@ -217,7 +217,7 @@ const fetchEnquiryData = async () => {
   try {
     var param = {"enq_id": selectedEnqId.enq_id} 
     console.log(param);
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries/getEnquiryById`, param);
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiry/getEnquiryById`, param);
     console.log(response)
     if (response.statusText === "OK") {
       console.log(response.data);
@@ -242,7 +242,7 @@ const updateEnquiryData = async () => {
                   "enq_response" : enquiry.value.enq_response, 
                   "admin_id" : localStorage.getItem("userId")} 
     console.log(param);
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/enquiries/updateEnqByAdm`, param);
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/enquiry/updateEnqByAdm`, param);
     console.log(response)
     if (response.statusText === "OK") {
       console.log(response.data);

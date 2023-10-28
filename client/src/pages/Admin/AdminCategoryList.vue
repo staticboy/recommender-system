@@ -218,7 +218,7 @@ watch([userName, status, userType, startDate, endDate], () => {
 const fetchCategoryData = async () => {
   try {
     
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getCatAll`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getCatAll`);
     
     console.log(response);
     if (response.statusText === "OK") {

@@ -90,8 +90,16 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 import { useStore } from './../../stores';
+
 const store = useStore();
+
 const { selectedEnqId } = store.adm;
+const { dateUtils } = store.user;
+
+
+
+
+
 
 
 const router = useRouter();
@@ -228,6 +236,12 @@ const viewRow = (row) => {
 
 
 const filteredList = computed(() => {  //filtering not working
+
+  tableData.value.forEach((item)=>{
+    item.enq_submitdate = item.enq_submitdate.slice(0,10);
+
+  })
+
   return tableData.value.filter((item) => {
     return (
       (!userName.value || item.enq_id.toLowerCase().includes(userName.value.toLowerCase())) &&
@@ -252,13 +266,13 @@ watch([userName, status, userType, startDate, endDate], () => {
 const fetchEnquiryData = async () => {
   try {
     
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enquiries/getAllEnquiries`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enquiry/getAllEnquiries`);
     
     console.log(response);
     if (response.statusText === "OK") {
 
       tableData.value = response.data;
-    
+      
       console.log(tableData);
       console.log(tableData.value);
       
@@ -271,8 +285,11 @@ const fetchEnquiryData = async () => {
   }
 };
 
+
+
 onMounted(() => {
-  fetchEnquiryData()
+  fetchEnquiryData();
+
 });
 </script>
 

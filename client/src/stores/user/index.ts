@@ -10,7 +10,13 @@ export const useUserStore = defineStore("guest", () => {
     return resp.data;
   }
 
+  const dateUtils = async (param : string) => {
+
+    return param ;
+  } 
+
   return {
     login,
+    dateUtils
   };
 });
