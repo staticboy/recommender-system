@@ -25,7 +25,9 @@ const form = ref<SignUpDetails>({
 });
 const rules = {
   name: [(val: string) => !!val || "Please enter your name."],
-  description: [(val: string) => !!val || "Please enter your business description."],
+  description: [
+    (val: string) => !!val || "Please enter your business description.",
+  ],
   email: [
     (val: string) => !!val || "Please enter your email.",
     (val: string) => EMAIL_REGEX.test(val) || "Invalid email.",
@@ -158,6 +160,26 @@ onMounted(() => {});
           lazy-rules
           :rules="rules.dateEst"
         />
+        <q-select
+          v-if="signupType === 'MEMBER'"
+          outlined
+          map-options
+          emit-value
+          v-model="form.gender"
+          :options="[
+            {
+              label: 'Male',
+              value: 'M',
+            },
+            {
+              label: 'Female',
+              value: 'F',
+            },
+          ]"
+          label="Gender"
+          lazy-rules
+          :rules="rules.gender"
+        />
         <q-input
           outlined
           clearable
@@ -181,26 +203,6 @@ onMounted(() => {});
           label="Country"
           lazy-rules
           :rules="rules.country"
-        />
-        <q-select
-          v-if="signupType === 'MEMBER'"
-          outlined
-          map-options
-          emit-value
-          v-model="form.gender"
-          :options="[
-            {
-              label: 'Male',
-              value: 'M',
-            },
-            {
-              label: 'Female',
-              value: 'F',
-            },
-          ]"
-          label="Gender"
-          lazy-rules
-          :rules="rules.gender"
         />
         <q-input
           outlined
