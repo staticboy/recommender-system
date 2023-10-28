@@ -1,20 +1,33 @@
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { DEMO_BUSINESS_LIST, DEMO_PRODUCT_LIST } from "../../constants.ts";
+import { ref, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
-import { useMemberStore } from "../../stores/member";
+import { useCategoryStore } from "../../stores/category";
+import { useProductStore } from "../../stores/product";
+import { DEMO_BUSINESS_LIST, DEMO_PRODUCT_LIST } from "../../constants.ts";
+import { CategoryDetails } from "../../stores/category/types";
+import { ProductDetails } from "../../stores/product/types";
 
 const q = useQuasar();
-const memberStore = useMemberStore();
+const router = useRouter();
+const categoryStore = useCategoryStore();
+const productStore = useProductStore();
+const selectedCategory = ref<CategoryDetails>({
+  cat_id: "",
+  cat_name: "",
+  cat_status: "",
+});
+const productList = ref<ProductDetails[]>([]);
 
 onBeforeMount(async () => {
-  const userID = localStorage.getItem("userId");
-  if (userID) {
-    await Promise.all([
-      memberStore.getMemberProfileDetailsByID(userID),
-      memberStore.getMemberPreferencesByID(userID),
-    ]);
-  }
+  await categoryStore.getAllCategories();
+  selectedCategory.value =
+    useCategoryStore().categoryList[
+      Math.floor(Math.random() * useCategoryStore().categoryList.length)
+    ];
+  productList.value = await productStore.getProductsByCategory(
+    selectedCategory.value.cat_id
+  );
 });
 </script>
 <template>
@@ -34,11 +47,10 @@ onBeforeMount(async () => {
           class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
         >
           <q-card-section>
-            <div class="text-h6">Business {{ DEMO_BUSINESS_LIST[0] }}</div>
+            <div class="text-h6 text-center">Check out our many deals for:</div>
           </q-card-section>
           <q-card-section>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <div class="text-h6 text-center">{{ selectedCategory.cat_name }}</div>
           </q-card-section>
         </q-card>
       </div>
@@ -46,7 +58,7 @@ onBeforeMount(async () => {
         <q-scroll-area style="height: 300px">
           <div class="flex flex-row no-wrap" style="height: 300px">
             <q-card
-              v-for="product in DEMO_PRODUCT_LIST"
+              v-for="product in productList"
               :key="product.prod_id"
               bordered
               class="rounded-xl q-px-sm q-py-lg"

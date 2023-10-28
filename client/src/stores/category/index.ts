@@ -1,27 +1,23 @@
 import { defineStore } from "pinia";
-import { Category, SubCategory } from "./types";
+import { CategoryDetails, SubCategoryDetails } from "./types";
 import axios, { AxiosResponse } from "axios";
 import { ref } from "vue";
 
 export const useCategoryStore = defineStore("category", () => {
-  const categoryList = ref<Category[]>([]);
-  const subCategoryList = ref<SubCategory[]>([]);
+  const categoryList = ref<CategoryDetails[]>([]);
+  const subCategoryList = ref<SubCategoryDetails[]>([]);
 
-  const getAllCategories = async (active: boolean) => {
-    const resp: AxiosResponse<Category[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getCatAll`, {
-      params: {
-        active: active
-      }
-    });
+  const getAllCategories = async () => {
+    const resp: AxiosResponse<CategoryDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getCatAll`);
     if (resp.status === 200) {
       categoryList.value = resp.data;
     } else {
-      categoryList.value = [];
+      return resp.data;
     }
     return categoryList.value;
   };
   const getAllSubCategories = async (active: boolean) => {
-    const resp: AxiosResponse<SubCategory[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getSubCatAll`, {
+    const resp: AxiosResponse<SubCategoryDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getSubCatAll`, {
       params: {
         active: active
       }
@@ -29,7 +25,7 @@ export const useCategoryStore = defineStore("category", () => {
     if (resp.status === 200) {
       subCategoryList.value = resp.data;
     } else {
-      subCategoryList.value = [];
+      return resp.data;
     }
     return subCategoryList.value;
   };
