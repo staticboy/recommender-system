@@ -44,7 +44,7 @@
           </q-card-section>
           <q-card-actions align="right">
             <!-- <q-btn label="Search" color="primary" type="submit" /> -->
-            <q-btn label="Reset" color="primary" type="reset" />
+            <q-btn label="Reset" color="primary" type="reset" @click="testClick" />
           </q-card-actions>
         </q-card>
       </q-form>
@@ -94,12 +94,6 @@ import { useStore } from './../../stores';
 const store = useStore();
 
 const { selectedEnqId } = store.adm;
-const { dateUtils } = store.user;
-
-
-
-
-
 
 
 const router = useRouter();
@@ -122,6 +116,16 @@ const toggleDatePicker = (datePicker: 'startDate' | 'endDate') => {
   }
 };
 
+const testClick = () =>{
+  
+  userName.value = '';
+  status.value = '';
+  userType.value = '';
+  startDate.value = '';
+  endDate.value = '';
+
+}
+
 const onDatePickerBlur = (datePicker: 'startDate' | 'endDate') => {
   if (datePicker === 'startDate') {
     showStartDatePicker.value = false;
@@ -136,10 +140,8 @@ const onDatePickerInput = (datePicker: 'startDate' | 'endDate') => {
 };
 
 const statusOptions = [
-  { label: 'Responded', value: 'Responded' },
-  { label: 'Open', value: 'Open' },
-  { label: 'Closed', value: 'Closed' },
-  { label: 'Default', value: '' },
+  { label: 'RESPONDED', value: 'RESPONDED' },
+  { label: 'OPEN', value: 'OPEN' }
 ];
 
 const userTypeOptions = [
@@ -239,16 +241,18 @@ const filteredList = computed(() => {  //filtering not working
 
   tableData.value.forEach((item)=>{
 
+    //2000-12-12
     let fullDate = item.enq_submitdate.slice(0,10);
     
+    //200/12/12
     item.enq_submitdate = fullDate.slice(0,4) + "/" + fullDate.slice(5,7) + "/" +  fullDate.slice(8,10);
 
   })
 
   return tableData.value.filter((item) => {
     return (
-      (!userName.value || item.enq_id.toLowerCase().includes(userName.value.toLowerCase())) &&
-      (!status.value || item.enq_status === status.value) &&
+      (!userName.value || item.enq_submitby.toLowerCase().includes(userName.value.toLowerCase())) &&
+      (!status.value.value || item.enq_status === status.value.value) &&
       (!userType.value || item.userType === userType.value) &&
       (!startDate.value || item.enq_submitdate >= startDate.value) &&
       (!endDate.value || item.enq_submitdate <= endDate.value)
@@ -261,6 +265,8 @@ watch([userName, status, userType, startDate, endDate], () => {
   // The computed property `filteredList` will automatically update here
 
   console.log(startDate);
+  console.log(status.value.value );
+
 });
 
 

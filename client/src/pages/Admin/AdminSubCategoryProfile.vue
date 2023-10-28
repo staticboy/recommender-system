@@ -193,12 +193,13 @@ const product_size = ref(0);
 const submitForm = async () => {
   // Handle form submission
   
+  category.value.subcat_name = category.value.subcat_name.toUpperCase();
   console.warn(category.value);
   
   await updateCatInfo();
   await fetchCategoryData();
 
-  router.back();
+  //router.back();
 };
 
 const reactivateForm = async () => {
