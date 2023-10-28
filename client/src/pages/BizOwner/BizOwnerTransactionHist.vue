@@ -1,100 +1,63 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-semibold mb-4">Transaction History</h1>
-
+  <q-page>
     <div>
-      <div class="">
-        <div class="mb-4">
-          <label for="fromDate">From Date:</label>
-          <input type="date" id="fromDate" v-model="fromDate"
-            class="w-full px-3 py-2 rounded-md border border-gray-300" />
+      <h1 class="text-2xl font-semibold mb-4">Transaction History</h1>
+
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <q-btn icon="event" round color="primary">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date v-model="fromDate" range>
+                <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
         </div>
-        <div class="mb-4">
-          <label for="toDate">To Date:</label>
-          <input type="date" id="toDate" v-model="toDate" class="w-full px-3 py-2 rounded-md border border-gray-300" />
+
+        <q-table :rows="updateFilteredTransactions" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns">
+          <!-- Add a custom column for the button -->
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="purchase_id" :props="props">{{ props.row.purchase_id }}</q-td>
+              <q-td key="user_id" :props="props">{{ props.row.user_id }}</q-td>
+              <q-td key="user_name" :props="props">{{ props.row.user_name }}</q-td>
+              <q-td key="total_quantity" :props="props">{{ calculateTotalQuantity(props.row.prod_quantity) }}</q-td>
+              <q-td key="total_amount" :props="props">{{ props.row.total_amount }}</q-td>
+              <q-td key="purchase_date" :props="props">{{ props.row.purchase_date }}</q-td>
+              <q-td auto-width key="action" :props="props">
+                <q-btn type="button" color="primary" label="View" @click="viewItemsInTransaction(props.row)" dense />
+              </q-td>
+            </q-tr>
+          </template>
+
+        </q-table>
+      </div>
+
+      <!-- Modal for Transaction Details -->
+      <div class="fixed inset-0 flex items-center justify-center z-50" v-if="selectedTransaction">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="bg-white p-4 rounded-md shadow-lg z-10">
+          <h2 class="text-xl font-semibold mb-2">Transaction Details</h2>
+          <p>Transaction ID: {{ selectedTransaction.id }}</p>
+          <q-btn class="mb-4" type="button" color="primary" label="Close" @click="resetSteps" dense />
+          <h3 class="text-lg font-semibold mb-2">Statement Date: {{ selectedTransaction.statementDate }}</h3>
+          <q-table :rows="selectedTransaction.settlementBreakdown" row-key="id">
+            <q-tr>
+              <q-td class="border px-4 py-2" label="Product ID" field="prod_id"></q-td>
+              <q-td class="border px-4 py-2" label="Product Name">
+                {{ prodNameMapper(row.prod_id) }}
+              </q-td>
+              <q-td class="border px-4 py-2" label="Quantity" field="quantity"></q-td>
+            </q-tr>
+          </q-table>
         </div>
       </div>
 
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold mb-2">Filtered Transaction History</h2>
-        <table class="min-w-full table-auto">
-          <thead>
-            <tr>
-              <th class="px-4 py-2">Purchase ID</th>
-              <th class="px-4 py-2">Customer ID</th>
-              <th class="px-4 py-2">Customer Name</th>
-              <th class="px-4 py-2">Customer Name</th>
-              <th class="px-4 py-2">Purchase Date</th>
-
-              <th class="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="transaction in filteredTransactions" :key="transaction.purchase_id">
-              <td class="border px-4 py-2">{{ transaction.purchase_id }}</td>
-              <td class="border px-4 py-2">{{ transaction.user_id }}</td>
-              <td class="border px-4 py-2">{{ transaction.user_name }}</td>
-              <td class="border px-4 py-2">{{ transaction.total_amount }}</td>
-              <td class="border px-4 py-2">{{ transaction.purchase_date }}</td>
-
-              <td class="border px-4 py-2">
-                <button @click="viewItemsInTransaction(transaction)"
-                  class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                  View Items
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-
-    <!-- Modal for Transaction Details -->
-    <div class="fixed inset-0 flex items-center justify-center z-50" v-if="selectedTransaction">
-      <div class="absolute inset-0 bg-black opacity-50"></div>
-      <div class="bg-white p-4 rounded-md shadow-lg z-10">
-        <h2 class="text-xl font-semibold mb-2">Transaction Details</h2>
-        <p>Transaction ID: {{ selectedTransaction.id }}</p>
-        <button @click="resetSteps" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Close
-        </button>
-        <table class="w-full mt-4">
-          <thead>
-            <tr>
-              <th class="px-4 py-2">Statement Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border px-4 py-2">{{ selectedTransaction.statementDate }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Settlement Breakdown Table -->
-        <table class="w-full mt-4">
-          <thead>
-            <tr>
-              
-              <th class="px-4 py-2">Product ID</th>
-              <th class="px-4 py-2">Product Name</th>
-              <th class="px-4 py-2">Quantity</th>
-             
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="order in selectedTransaction.settlementBreakdown" :key="order.id">
-              
-              <td class="border px-4 py-2">{{ order.prod_id }}</td>
-              <td class="border px-4 py-2">{{  prodNameMapper(order.prod_id) }}</td>
-              <td class="border px-4 py-2">{{ order.quantity }}</td>
-             
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  </q-page>
 </template>
   
 <script setup>
@@ -110,82 +73,110 @@ const router = useRouter(); // Create a router instance
 const selectedTransaction = ref(null);
 const fromDate = ref('');
 const toDate = ref('');
-
 const products = ref([]);
 
 
-const transactions = ref([
-  {
-    id: 1,
-    date: '2023-09-01',
-    customer: 'John Doe',
-    amount: 100.0,
-  },
-  {
-    id: 2,
-    date: '2023-09-02',
-    customer: 'Jane Smith',
-    amount: 75.5,
-  },
-  {
-    id: 3,
-    date: '2023-09-03',
-    customer: 'Bob Johnson',
-    amount: 50.0,
-  }
-]);
+const transactions = ref([]);
 
 function resetSteps() {
   selectedTransaction.value = null;
 };
 
-const filteredTransactions = computed(() => {
-  // Filter transactions based on fromDate and toDate
-  return transactions.value.filter((transaction) => {
-    return (
-      (!fromDate.value || transaction.date >= fromDate.value) &&
-      (!toDate.value || transaction.date <= toDate.value)
-    );
-  });
-});
-
 //filters prodid then map result to retrieve the values
 const prodNameMapper = (product_id) => {
-  
+
   let k = products.value.filter(x => x.prod_id === product_id);
   let product_name = k.map(item => item.prod_name);
   console.log(product_name[0]);
   return product_name[0];
 };
 
-const updateFilteredTransactions = () => {
-  // This function is called whenever fromDate or toDate changes
-  // Fetch data from an API here
-};
+const columns = computed(() => [
+  {
+    name: 'purchase_id',
+    required: true,
+    label: 'Purchase ID',
+    align: 'left',
+    field: 'purchase_id',
+    sortable: true,
+  },
+  {
+    name: 'user_id',
+    label: 'User ID',
+    align: 'left',
+    field: 'user_id',
+    sortable: true,
+  },
+  {
+    name: 'user_name',
+    label: 'User Name',
+    align: 'left',
+    field: 'user_name',
+    sortable: true,
+  },
+  {
+    name: 'total_quantity',
+    label: 'Total Quantity',
+    align: 'left',
+    field: 'total_quantity',
+    sortable: true,
+  },
+  {
+    name: 'total_amount',
+    label: 'Total Amount',
+    align: 'left',
+    field: 'total_amount',
+    sortable: true,
+  },
+  {
+    name: 'purchase_date',
+    label: 'Purchase Date',
+    align: 'left',
+    field: 'purchase_date',
+    sortable: true,
+  },
+  {
+    name: 'action',
+    label: '',
+    align: 'right',
+    field: '',
+    sortable: false,
+  },
+]);
+
+const updateFilteredTransactions = computed(() => {
+  return transactions.value.filter((t) => {
+    return (
+      // (!transactions.value || t.prod_name.toLowerCase().includes(transactions.value.toLowerCase() ))
+      transactions.value
+    );
+  });
+});
+
+function calculateTotalQuantity(prodQuantity) {
+  return prodQuantity.reduce((total, item) => total + item.quantity, 0);
+}
 
 const viewItemsInTransaction = (transaction) => {
+  console.log("run View Items")
   selectedTransaction.value = {
     id: transaction.purchase_id,
     statementDate: transaction.purchase_date,
     settlementBreakdown: transaction.prod_quantity,
   }
-  };
+};
 
-  watch([fromDate, toDate], updateFilteredTransactions);
-
-
+watch(updateFilteredTransactions);
 
 //API Fetch transaction list
 const fetchBizData = async () => {
   try {
-    var param = {"biz_id" : localStorage.getItem("userId")};
+    var param = { "biz_id": localStorage.getItem("userId") };
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/bizGetTxn`, param);
-    
     console.log(response);
     if (response.statusText === "OK") {
       transactions.value = response.data;
       console.log(transactions.value);
-      
     } else {
       console.error('Failed to fetch product data');
     }
@@ -194,14 +185,10 @@ const fetchBizData = async () => {
   }
 };
 
-
-
 //API Fetch product list
 const fetchProdData = async () => {
   try {
-    
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getAll`);
-    
     console.log(response);
     if (response.statusText === "OK") {
       console.log(response.data);
@@ -220,7 +207,6 @@ onMounted(async () => {
   await fetchProdData();
   await fetchBizData();
 });
-
 
 </script>
   
