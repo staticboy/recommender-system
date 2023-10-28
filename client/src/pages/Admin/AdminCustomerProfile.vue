@@ -91,11 +91,12 @@
         <form class="q-mt-lg max-w-lg">
           <div class="mb-8">
             <div class="form-group">
+              <!--
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                 Preferences
               </label>
 
-              <div class="flex flex-row cat-liked " style="width: 800px;">
+               <div class="flex flex-row cat-liked " style="width: 800px;">
                 <q-item class="q-mt-md" clickable style="background-color: black; color: white; border-radius: 16px;">
                   <q-item-section>
                     <q-item-label color="white">Basketball</q-item-label>
@@ -116,12 +117,12 @@
                     <q-item-label color="white">Gym</q-item-label>
                   </q-item-section>
                 </q-item>
-              </div>
+              </div> -->
             </div>
 
             <!--Activity-->
 
-            <div class="form-group q-mt-xl">
+            <!-- <div class="form-group q-mt-xl">
               <h6><b>Activities</b></h6>
               <hr />
               <h6>Recent Purchase</h6>
@@ -173,7 +174,7 @@
               <div class="adm-graph">
                 <AdminLineGraph />
               </div>
-            </div>
+            </div> -->
           </div>
         </form>
       </header>
@@ -183,7 +184,7 @@
 
 
 <script setup lang="ts">
-import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
+//import AdminLineGraph from "../../components/Administrator/AdminLineGraph.vue";
 import  { ref, onMounted }  from 'vue';
 import axios from 'axios';
 

@@ -178,10 +178,12 @@ const viewItemsInTransaction = (transaction) => {
   selectedTransaction.value = {
     id: transaction.purchase_id,
     statementDate: transaction.purchase_date,
-    settlementBreakdown: transaction.prod_quantity,
+    settlementBreakdown: transaction.prod_quantity
   }
 
-  console.log(selectedTransaction.value)
+  selectedTransaction.value.settlementBreakdown.price[0] = 100
+
+  console.log(selectedTransaction.value);
 };
 
 watch(updateFilteredTransactions);
