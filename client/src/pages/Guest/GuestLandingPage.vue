@@ -50,7 +50,9 @@ onBeforeMount(async () => {
             <div class="text-h6 text-center">Check out our many deals for:</div>
           </q-card-section>
           <q-card-section>
-            <div class="text-h6 text-center">{{ selectedCategory.cat_name }}</div>
+            <div class="text-h6 text-center">
+              {{ selectedCategory.cat_name }}
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -62,16 +64,16 @@ onBeforeMount(async () => {
               :key="product.prod_id"
               bordered
               class="rounded-xl q-px-sm q-py-lg"
-              style="max-width: 50%; min-width: 20%"
+              style="width: 400px"
             >
-              <q-card-section>
-                <q-chip> ${{ product.prod_price }} </q-chip>
-              </q-card-section>
               <q-card-section>
                 <div class="text-h6">{{ product.prod_name }}</div>
               </q-card-section>
               <q-card-section class="w-full">
                 {{ product.prod_description }}
+              </q-card-section>
+              <q-card-section>
+                <q-chip> ${{ product.prod_price }} </q-chip>
               </q-card-section>
               <q-card-section class="w-full">
                 <span v-if="product.prod_status == 'Not Available'">
