@@ -10,7 +10,7 @@
             <q-form>
               <div class="row q-gutter-md mb-4">
                 <div class="col-3">
-                  <q-input v-model="userName" label="User" outlined placeholder="Enter user name"></q-input>
+                  <q-input v-model="userName" label="User Id" outlined placeholder="Enter user Id"></q-input>
                 </div>
 
                 <div class="col-3">
@@ -145,8 +145,8 @@ const statusOptions = [
 ];
 
 const userTypeOptions = [
-  { label: 'Business Owner', value: 'B' },
-  { label: 'Member', value: 'M' },
+  { label: 'Business Owner', value: 'Business Owner' },
+  { label: 'Member', value: 'Member' },
 ];
 
 const submitForm = () => {
@@ -159,7 +159,7 @@ const resetForm = () => {
 
 //Items
 const tableData = ref([
-  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,userType: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
+  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,user_type: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
 
 ]);
 
@@ -223,7 +223,7 @@ const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'id', sortable: true },
   { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'name', sortable: true },
   { name: 'enq_status', label: 'Status', align: 'left', field: 'status', sortable: true },
-  { name: 'userType', label: 'User Type', align: 'left', field: 'userType', sortable: true },
+  { name: 'user_type', label: 'User Type', align: 'left', field: 'user_type', sortable: true },
   { name: 'enq_submitdate', label: 'Date', align: 'left', field: 'date', sortable: true },
 ]);
 
@@ -253,7 +253,7 @@ const filteredList = computed(() => {  //filtering not working
     return (
       (!userName.value || item.enq_submitby.toLowerCase().includes(userName.value.toLowerCase())) &&
       (!status.value.value || item.enq_status === status.value.value) &&
-      (!userType.value || item.userType === userType.value) &&
+      (!userType.value.value || item.user_type === userType.value.value) &&
       (!startDate.value || item.enq_submitdate >= startDate.value) &&
       (!endDate.value || item.enq_submitdate <= endDate.value)
     );
@@ -261,11 +261,15 @@ const filteredList = computed(() => {  //filtering not working
 });
 
 // Watch for changes in filter inputs and update the filtered list
-watch([userName, status, userType, startDate, endDate], () => {
+watch([userName, status, userType, startDate, endDate, filteredList], () => {
   // The computed property `filteredList` will automatically update here
 
   console.log(startDate);
   console.log(status.value.value );
+  console.log(userType.value.value );
+
+  console.log(filteredList);
+
 
 });
 

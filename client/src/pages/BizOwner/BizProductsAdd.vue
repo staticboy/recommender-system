@@ -168,13 +168,17 @@ const getAllCategrories = async () => {
     if (response.statusText === "OK") {
       // console.log(response.data);
       //populate Category droplist
-      const mappedCategories = response.data.map((category: Category) => ({
-        value: category.cat_id,
-        label: category.cat_name
-      }));
+      const mappedCategories = response.data
+                                        .filter((x: Category) => x.cat_status === 'ACTIVE')
+                                        .map((category: Category) => ({
+                                          value: category.cat_id,
+                                          label: category.cat_name
+                                        }));
       categoryOptions.value = [ 
         ...mappedCategories
       ];
+
+      
     } else {
       console.error('Failed to fetch category data');
     }
