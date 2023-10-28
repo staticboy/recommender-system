@@ -286,7 +286,7 @@ const fetchCategoryData = async () => {
 //API Fetch
 const deleteCategoryData = async () => {
   try {
-    
+    console.warn('hi')
     const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/category/deleteCategory`,selectedCatId);
     
     if (response.statusText === "OK") {
