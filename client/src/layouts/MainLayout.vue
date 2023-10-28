@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, onBeforeMount } from "vue";
+import { useMemberStore } from "../stores/member/index";
 
 const route = useRoute();
 const router = useRouter();
+const memberStore = useMemberStore();
 const fullPath = route.fullPath;
 
 const navRoutes = computed(() => {
@@ -22,11 +24,16 @@ const logout = () => {
   router.push({ name: "LoginPage" });
 };
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   const role = localStorage.getItem("userRole");
   const id = localStorage.getItem("userId");
   if (!role || !id) {
     router.push({ name: "LoginPage" });
+  } else {
+    await Promise.all([
+      memberStore.getMemberProfileDetailsByID(id),
+      memberStore.getMemberPreferencesByID(id),
+    ]);
   }
 });
 </script>

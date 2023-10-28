@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onBeforeMount } from "vue";
 import { DEMO_BUSINESS_LIST, DEMO_PRODUCT_LIST } from "../../constants.ts";
 import { useQuasar } from "quasar";
 import { useMemberStore } from "../../stores/member";
@@ -7,7 +7,7 @@ import { useMemberStore } from "../../stores/member";
 const q = useQuasar();
 const memberStore = useMemberStore();
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const userID = localStorage.getItem("userId");
   if (userID) {
     await Promise.all([

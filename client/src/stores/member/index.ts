@@ -4,7 +4,17 @@ import { MemberDetails, MemberPreferences } from "./types";
 import axios, { AxiosResponse } from "axios";
 
 export const useMemberStore = defineStore("member", () => {
-  const memberDetails = ref<MemberDetails>();
+  const memberDetails = ref<MemberDetails>({
+    user_id: "",
+    user_email: "",
+    user_password: "",
+    user_name: "",
+    user_dob: "",
+    user_phoneno: 0,
+    user_address: "",
+    user_country: "",
+    user_gender: "",
+  });
   const memberPreferences = ref<MemberPreferences[]>([]);
   const memberWishlist = ref();
 
@@ -22,7 +32,8 @@ export const useMemberStore = defineStore("member", () => {
     memberPreferences.value = response.data;
   };
   const updateMemberProfile = async (req: MemberDetails) => {
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/updateMemberProfileInfo`, {
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/editProfile`, {
+      "user_id": req.user_id,
       "user_email": req.user_email,
       "user_dob": req.user_dob,
       "user_phoneno": req.user_phoneno,
@@ -38,7 +49,7 @@ export const useMemberStore = defineStore("member", () => {
     }
   };
   const updateMemberPreferences = async (req: MemberPreferences) => {
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/updateMemberPreferenceInfo`, {
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/editPref`, {
       // 
     });
     if (response.status === 200) {

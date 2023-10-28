@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
+import { useQuasar } from "quasar";
 import { useMemberStore } from "../../stores/member/index";
 import { MemberDetails, MemberPreferences } from "../../stores/member/types";
 
+const q = useQuasar();
 const memberStore = useMemberStore();
-const curMemberDetails = ref<MemberDetails>();
-const curMemberPreferences = ref<MemberPreferences[]>();
-const { memberDetails, memberPreferences } = useMemberStore();
+const curMemberDetails = computed({
+  get: () => memberStore.memberDetails,
+  set: (val: MemberDetails) => {
+    memberDetails.value = val;
+  },
+});
+const curMemberPreferences = computed({
+  get: () => memberStore.memberPreferences,
+  set: (val: MemberPreferences[]) => {
+    memberPreferences.value = val;
+  },
+});
+const memberDetails = ref();
+const memberPreferences = ref<MemberPreferences[]>([]);
 const confirmPassword = ref();
 const editMode = ref({
   profile: false,
@@ -14,28 +27,54 @@ const editMode = ref({
 });
 
 const onCancelProfile = () => {
-  curMemberDetails.value = memberDetails;
+  curMemberDetails.value = memberDetails.value;
   editMode.value.profile = !editMode.value.profile;
 };
 const onSaveProfile = async () => {
   if (editMode.value.profile) {
     if (curMemberDetails.value) {
-      await memberStore.updateMemberProfile(curMemberDetails.value);
+      const success = await memberStore.updateMemberProfile(
+        curMemberDetails.value
+      );
+      if (success) {
+        q.notify({
+          type: "positive",
+          message: "Profile updated successfully",
+        });
+      } else {
+        q.notify({
+          type: "negative",
+          message: "Profile update failed",
+        });
+      }
     }
   }
   editMode.value.profile = !editMode.value.profile;
 };
 const onCancelPreferences = () => {
-  curMemberPreferences.value = memberPreferences;
+  curMemberPreferences.value = memberPreferences.value;
   editMode.value.preferences = !editMode.value.preferences;
 };
 const onSavePreferences = async () => {
   if (editMode.value.preferences) {
     if (
       curMemberPreferences.value &&
-      curMemberPreferences.value !== memberPreferences
+      curMemberPreferences.value !== memberPreferences.value
     ) {
-      await memberStore.updateMemberPreferences(curMemberPreferences.value);
+      const success = await memberStore.updateMemberPreferences(
+        curMemberPreferences.value
+      );
+      if (success) {
+        q.notify({
+          type: "positive",
+          message: "Preferences updated successfully",
+        });
+      } else {
+        q.notify({
+          type: "negative",
+          message: "Preferences update failed",
+        });
+      }
     }
   }
   editMode.value.preferences = !editMode.value.preferences;
@@ -48,8 +87,8 @@ onBeforeMount(async () => {
       memberStore.getMemberPreferencesByID(userID),
     ]);
   }
-  curMemberDetails.value = memberDetails;
-  curMemberPreferences.value = memberPreferences;
+  memberDetails.value = memberStore.memberDetails;
+  memberPreferences.value = memberStore.memberPreferences;
 });
 </script>
 <template>
@@ -74,6 +113,7 @@ onBeforeMount(async () => {
           />
         </div>
       </div>
+      {{ curMemberDetails }}
       <div class="flex justify-between">
         <div style="width: 48%">
           <q-input
