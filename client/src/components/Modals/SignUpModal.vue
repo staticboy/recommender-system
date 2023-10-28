@@ -92,14 +92,15 @@ onMounted(() => {});
 </script>
 
 <template>
-  <q-card class="absolute-center" style="width: 35vw">
+  <q-card class="absolute-center" style="width: 60vw">
     <q-card-section>
-      <h4 class="q-ma-none text-xl mb-4">Sign Up</h4>
+      <h4 class="q-ma-none text-3xl mb-4 text-center">Sign Up</h4>
     </q-card-section>
     <q-card-section class="px-7">
       <q-form @submit.prevent.stop="onSubmit">
-        <div class="flex justify-around">
+        <div class="flex justify-center mb-4">
           <q-radio dense v-model="signupType" val="MEMBER" label="Member" />
+          &nbsp;&nbsp;&nbsp;
           <q-radio
             dense
             v-model="signupType"
@@ -107,140 +108,152 @@ onMounted(() => {});
             label="Business Owner"
           />
         </div>
-        <q-input
-          outlined
-          clearable
-          v-model="form.name"
-          :label="signupType === 'MEMBER' ? 'Full Name' : 'Business Name'"
-          lazy-rules
-          :rules="rules.name"
-        />
-        <q-input
-          v-if="signupType === 'BUSINESS'"
-          outlined
-          clearable
-          v-model="form.description"
-          label="Business Description"
-          lazy-rules
-          :rules="rules.description"
-        />
-        <q-input
-          v-if="signupType === 'MEMBER'"
-          outlined
-          v-model="form.dob"
-          label="Date of Birth"
-          :rules="rules.dob"
-          input-class="cursor-pointer"
-          mask="####-##-##"
-        >
-          <q-popup-proxy ref="qDateProxy" :breakpoint="0" behavior="menu">
-            <q-date
+        <div class="row justify-evenly">
+          <div>
+            <q-input
+              outlined
+              clearable
+              v-model="form.name"
+              :label="signupType === 'MEMBER' ? 'Full Name' : 'Business Name'"
+              lazy-rules
+              :rules="rules.name"
+            />
+            <q-input
+              v-if="signupType === 'BUSINESS'"
+              outlined
+              clearable
+              v-model="form.description"
+              label="Business Description"
+              lazy-rules
+              :rules="rules.description"
+            />
+            <q-input
+              v-if="signupType === 'MEMBER'"
+              outlined
               v-model="form.dob"
-              minimal
-              no-unset
-              mask="YYYY-MM-DD"
-              @update:model-value="() => $refs.qDateProxy.hide()"
+              label="Date of Birth"
+              :rules="rules.dob"
+              input-class="cursor-pointer"
+              mask="####-##-##"
             >
-              <div class="row items-center justify-end">
-                <q-btn v-close-popup label="Close" color="primary" flat></q-btn>
-              </div>
-            </q-date>
-          </q-popup-proxy>
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer"></q-icon>
-          </template>
-        </q-input>
-        <q-input
-          v-else
-          outlined
-          clearable
-          v-model="form.dateEst"
-          label="Year Established"
-          lazy-rules
-          :rules="rules.dateEst"
-        />
-        <q-select
-          v-if="signupType === 'MEMBER'"
-          outlined
-          map-options
-          emit-value
-          v-model="form.gender"
-          :options="[
-            {
-              label: 'Male',
-              value: 'M',
-            },
-            {
-              label: 'Female',
-              value: 'F',
-            },
-          ]"
-          label="Gender"
-          lazy-rules
-          :rules="rules.gender"
-        />
-        <q-input
-          outlined
-          clearable
-          v-model="form.phoneno"
-          label="Phone Number"
-          lazy-rules
-          :rules="rules.phoneno"
-        />
-        <q-input
-          outlined
-          clearable
-          v-model="form.address"
-          label="Address"
-          lazy-rules
-          :rules="rules.address"
-        />
-        <q-input
-          outlined
-          clearable
-          v-model="form.country"
-          label="Country"
-          lazy-rules
-          :rules="rules.country"
-        />
-        <q-input
-          outlined
-          clearable
-          v-model="form.email"
-          label="Email"
-          lazy-rules
-          :rules="rules.email"
-        >
-          <template v-slot:prepend>
-            <q-icon name="account_circle" />
-          </template>
-        </q-input>
-        <q-input
-          outlined
-          clearable
-          v-model="form.password"
-          type="password"
-          label="Password"
-          lazy-rules
-          :rules="rules.password"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
-        <q-input
-          outlined
-          clearable
-          v-model="confirmPassword"
-          type="password"
-          label="Confirm Password"
-          lazy-rules
-          :rules="rules.confirmPassword"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
+              <q-popup-proxy ref="qDateProxy" :breakpoint="0" behavior="menu">
+                <q-date
+                  v-model="form.dob"
+                  minimal
+                  no-unset
+                  mask="YYYY-MM-DD"
+                  @update:model-value="() => $refs.qDateProxy.hide()"
+                >
+                  <div class="row items-center justify-end">
+                    <q-btn
+                      v-close-popup
+                      label="Close"
+                      color="primary"
+                      flat
+                    ></q-btn>
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer"></q-icon>
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              clearable
+              v-model="form.email"
+              label="Email"
+              lazy-rules
+              :rules="rules.email"
+            >
+              <template v-slot:prepend>
+                <q-icon name="account_circle" />
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              clearable
+              v-model="form.password"
+              type="password"
+              label="Password"
+              lazy-rules
+              :rules="rules.password"
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              clearable
+              v-model="confirmPassword"
+              type="password"
+              label="Confirm Password"
+              lazy-rules
+              :rules="rules.confirmPassword"
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+            </q-input>
+          </div>
+          <div>
+            <q-input
+              v-if="signupType === 'BUSINESS'"
+              outlined
+              clearable
+              v-model="form.dateEst"
+              label="Year Established"
+              lazy-rules
+              :rules="rules.dateEst"
+            />
+            <q-select
+              v-if="signupType === 'MEMBER'"
+              outlined
+              map-options
+              emit-value
+              v-model="form.gender"
+              :options="[
+                {
+                  label: 'Male',
+                  value: 'M',
+                },
+                {
+                  label: 'Female',
+                  value: 'F',
+                },
+              ]"
+              label="Gender"
+              lazy-rules
+              :rules="rules.gender"
+            />
+            <q-input
+              outlined
+              clearable
+              v-model="form.phoneno"
+              label="Phone Number"
+              lazy-rules
+              :rules="rules.phoneno"
+            />
+            <q-input
+              outlined
+              clearable
+              v-model="form.address"
+              label="Address"
+              lazy-rules
+              :rules="rules.address"
+            />
+            <q-input
+              outlined
+              clearable
+              v-model="form.country"
+              label="Country"
+              lazy-rules
+              :rules="rules.country"
+            />
+          </div>
+        </div>
+
         <div class="flex justify-between">
           <q-btn
             size="md"
