@@ -29,9 +29,19 @@ export default {
       component: () => import("../pages/Admin/AdminCategoryProfile.vue"),
     },
     {
+      name: "AdminSubCategoryProfile",
+      path: "subcat-profile",
+      component: () => import("../pages/Admin/AdminSubCategoryProfile.vue"),
+    },
+    {
       name: "AdminCategoryNewProfile",
       path: "cat-new",
       component: () => import("../pages/Admin/AdminCategoryNewProfile.vue"),
+    },
+    {
+      name: "AdminSubCategoryNewProfile",
+      path: "subcat-new",
+      component: () => import("../pages/Admin/AdminSubCategoryNewProfile.vue"),
     },
     {
       name: "AdminPerformanceDashboard",

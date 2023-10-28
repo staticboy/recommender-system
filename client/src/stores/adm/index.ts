@@ -8,6 +8,10 @@ export const useAdminStore = defineStore("administrator", () => {
     cat_id : ''
   });
 
+  const selectedSubCat = ref({
+    subcat_name : ''
+  });
+
     const selectedEnqId = ref({
         enq_id : ''
       });
@@ -19,6 +23,7 @@ export const useAdminStore = defineStore("administrator", () => {
 
   return {
     selectedCatId,
+    selectedSubCat,
     selectedEnqId,
     selectedBizId
 

@@ -6,6 +6,7 @@ import { getCategoryAll,
   deleteCategory,
   getSubCategoryAll,
   getSubCategoryActive,
+  getOneSubCategoryByName,
   upsertSubCategory,
   deleteSubCategory,
   deactivateCategory
@@ -21,7 +22,8 @@ router.patch('/deleteCategory', deleteCategory);
 router.put('/deactivateCategory', deactivateCategory);
 router.get('/getSubCatAll', getSubCategoryAll);
 router.get('/getSubCatActive', getSubCategoryActive);
+router.post('/getOneSubCategoryByName', getOneSubCategoryByName);
 router.post('/upsertSubcat', upsertSubCategory);
-router.delete('/deleteSubCat', deleteSubCategory);
+router.patch('/deleteSubCat', deleteSubCategory);
 
 export default router;

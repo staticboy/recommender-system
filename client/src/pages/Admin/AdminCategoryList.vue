@@ -2,9 +2,18 @@
   <div>
     <q-page>
       <div class="q-pa-md">
-        <h1>Categories List</h1>
+        <h1>Admin Category Management</h1>
       </div>
-      <q-form @submit="submitForm" @reset="resetForm">
+
+      <q-tabs v-model="selectedTab">
+          <q-tab name="tab1" label="Categories">
+          </q-tab>
+          <q-tab name="tab2" label="Sub Categories">
+          </q-tab>
+        </q-tabs>
+
+      <div v-if="selectedTab === 'tab1'"> 
+        <q-form @submit="submitForm" @reset="resetForm">
         <q-card class="q-mb-md">
           <q-card-section>
             <q-form>
@@ -42,7 +51,7 @@
           <q-card-actions align="right">
             <!-- <q-btn label="Search" color="primary" type="submit" /> -->
             <q-btn label="Reset" color="primary" type="reset" />
-            <q-btn label="Add Product" color="secondary" to="../admin/cat-new"/>
+            <q-btn label="Add Category" color="secondary" to="../admin/cat-new"/>
 
           </q-card-actions>
         </q-card>
@@ -72,6 +81,62 @@
         </template>
       </q-table>
 
+
+      </div>
+        <div v-if="selectedTab === 'tab2'"> 
+        <q-form @submit="submitForm" @reset="resetForm">
+        <q-card class="q-mb-md">
+          <q-card-section>
+            <q-form>
+              <div class="row q-gutter-md mb-4">
+                <div class="col-3">
+                  <q-input v-model="userName" label="Sub Category" outlined placeholder="Enter Sub Category"></q-input>
+                </div>
+
+                <div class="col-3">
+                  <q-select v-model="status" label="Status" outlined :options="statusOptions"></q-select>
+                </div>
+
+              </div>
+
+           
+            </q-form>
+          </q-card-section>
+          <q-card-actions align="right">
+            <!-- <q-btn label="Search" color="primary" type="submit" /> -->
+            <q-btn label="Reset" color="primary" type="reset" />
+            <q-btn label="Add Sub Category" color="secondary" to="../admin/subcat-new"/>
+
+          </q-card-actions>
+        </q-card>
+      </q-form>
+
+      <q-table :rows="filteredSubCatList" :columns="columnsSubCat">
+        <template v-slot:body="props">
+         <q-tr :props="props">
+          
+            <q-td key="subcat_name" :props="props">
+              {{ props.row.subcat_name }}
+            </q-td>
+
+            <q-td key="subcat_status" :props="props">
+              {{ props.row.subcat_status == 'Y' ? 'Active' : 'Inactive'}}
+            </q-td>
+
+        
+          
+           
+            <q-td>
+              <q-btn color="primary" label="View" @click="viewSubCatRow(props.row)" />
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+
+
+      </div>
+
+
     </q-page>
   </div>
 </template>
@@ -84,7 +149,10 @@ import axios from 'axios';
 
 import { useStore } from './../../stores';
 const store = useStore();
-const { selectedCatId } = store.adm;
+const { selectedCatId, selectedSubCat } = store.adm;
+
+const selectedTab = ref('tab1');
+
 
 
 const router = useRouter();
@@ -145,6 +213,14 @@ const tableData = ref([
 
 ]);
 
+const tableSubData = ref([
+  { date_updated : "2023-10-25T02:35:06.799Z",
+    subcat_name : "EQUIPMENT",
+    subcat_status : "Y"
+  }
+
+]);
+
 const columns = computed(() => [
   {
     name: 'cat_id',
@@ -181,6 +257,38 @@ const columns = computed(() => [
   }
 ]);
 
+const columnsSubCat = computed(() => [
+
+  {
+    name: 'subcat_name',
+    required: true,
+    label: 'Sub Category',
+    align: 'left',
+    field: 'subcat_name',
+    sortable: true,
+  },
+
+  {
+    name: 'subcat_status',
+    label: 'Status',
+    align: 'left',
+    field: 'cat_status',
+    sortable: true,
+  },
+
+
+  {
+    name: 'action',
+    label: '',
+    align: 'right',
+    field: '',
+    sortable: false,
+  }
+]);
+
+
+
+
 const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'cat_id', sortable: true },
   { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'cat_name', sortable: true },
@@ -191,6 +299,14 @@ const tableColumns = ref([
 const viewRow = (row) => {
   router.push({path : '/admin/cat-profile'});  
   selectedCatId.cat_id = row.cat_id;
+
+};
+
+const viewSubCatRow = (row : any) => {
+
+  selectedSubCat.subcat_name = row.subcat_name;
+
+  router.push({path : '/admin/subcat-profile'});  
 
 };
 
@@ -205,6 +321,15 @@ const filteredList = computed(() => {  //filtering not working
   });
 });
 
+const filteredSubCatList = computed(() => {  //filtering not working
+  return tableSubData.value.filter((item) => {
+    return (
+      (!userName.value || item.subcat_name.toLowerCase().includes(userName.value.toLowerCase())) &&
+      (!status.value || item.subcat_status === status.value) 
+    );
+  });
+});
+
 // Watch for changes in filter inputs and update the filtered list
 watch([userName, status, userType, startDate, endDate], () => {
   // The computed property `filteredList` will automatically update here
@@ -214,7 +339,7 @@ watch([userName, status, userType, startDate, endDate], () => {
 
 
 
-//API Fetch
+//API Fetch category
 const fetchCategoryData = async () => {
   try {
     
@@ -237,8 +362,30 @@ const fetchCategoryData = async () => {
   }
 };
 
+//Api fetch subcategory
+const fetchSubCategoryData = async () => {
+  try {
+    
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/category/getSubCatAll`);
+    
+    console.log(response);
+    if (response.statusText === "OK") {
+
+    console.log(response.data);
+    tableSubData.value = response.data;
+      
+      
+    } else {
+      console.error('Failed to fetch product data');
+    }
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
 onMounted(() => {
-  fetchCategoryData()
+  fetchCategoryData();
+  fetchSubCategoryData();
 });
 </script>
 
