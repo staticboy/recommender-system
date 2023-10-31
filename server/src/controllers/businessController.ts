@@ -152,3 +152,14 @@ export async function getBusinessInsights(req: Request, res: Response) {
         res.status(500).json({ error: 'Internal server error' });
     } 
 }
+
+export async function getAdminPerformance(req: Request, res: Response) {
+    try 
+    {
+        const perf = await db.any('SELECT * FROM admin_performance($1)', [req.body]);
+        res.status(200).json(perf);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}

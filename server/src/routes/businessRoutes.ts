@@ -8,7 +8,8 @@ import { getBusinessAll,
   bizAccountDisable,
   getBusinessTxn,
   insertNewBusiness,
-  getBusinessInsights } from '../controllers/businessController';
+  getBusinessInsights,
+  getAdminPerformance } from '../controllers/businessController';
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.put('/verifyBiz', bizAccountVerify);
 router.put('/disableBiz', bizAccountDisable);
 router.post('/bizGetTxn', getBusinessTxn);
 router.post('/getBizInsight', getBusinessInsights);
+router.post('/getPerformance', getAdminPerformance);
 
 
 
