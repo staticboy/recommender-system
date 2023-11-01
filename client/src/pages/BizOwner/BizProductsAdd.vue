@@ -13,10 +13,6 @@
         </q-tabs>
         
         <div v-if="selectedTab === 'tab1'">
-          <div class="col-3">
-            <q-uploader label="Product Image" accept=".jpg,.jpeg,.png" multiple:max-files="9"
-              class="q-mt-md"></q-uploader>
-          </div>
           <div class="row">
             <div class="col-6">
               <q-input outlined v-model="product.prod_name" label="Name" dense required type="text"
@@ -50,10 +46,16 @@
               <q-select v-model="product.prod_status" :options="availabilityOptions" label="Available?" dense emit-value map-options
                 class="q-mr-md q-mt-md" />
             </div>
-            <div class="col-4">
+          </div>
+          <div class="col-3">
+              <label for="fileInput" class="mt-8">
+                Select Image(s) (up to 5)
+              </label>
+            <input ref="fileInput" class="mt-8" type="file" @change="handleFileChange" accept="image/*" multiple/>
+          </div>
+          <div class="col-4 mt-8">
               <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
             </div>
-          </div>
         </div>
         <div v-if="selectedTab === 'tab2'" class="col-12">
             <div class="col">
@@ -86,6 +88,21 @@ const selectedTab = ref('tab1');
 const categoryOptions = ref();
 const subCategoryOptions = ref();
 
+const fileInput = ref<HTMLInputElement | null>(null)
+const files = ref()
+
+function handleFileChange() {
+    files.value = fileInput.value?.files
+    console.log(files.value.length)
+    if (files.value.length > 5) {
+      files.value = null;
+      q.notify({
+          type: 'negative',
+          message: 'Only up to 5 images allowed!'
+        })
+    }
+}
+
 interface Category {
   cat_id: number;
   cat_name: string;
@@ -93,7 +110,7 @@ interface Category {
 
 const product = ref<BizProductDetails>({
     prod_name: '',
-    prod_description: '.',
+    prod_description: '',
     prod_stockqty: 0,
     prod_price: 0,
     prod_modelnum: '',
@@ -124,11 +141,11 @@ const onFileRemoved = (file: any) => {
 
 const addProduct = () => {
   q.loading.show();
+  // uploadImages("P0652", files.value)
   product._rawValue.biz_id = localStorage.getItem("userId");
   postRowProduct();
   q.loading.hide();
-  router.push('/biz/home');
-
+  router.push('/biz/products');
 };
 
 
@@ -139,8 +156,8 @@ const postRowProduct = async () => {
     //change biz id value to the id of current login biz owner
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/addNewProd`, product._rawValue);
     console.log(response)
-    if (response.statusText === "OK") {
-      console.log("item added")
+    if (response.data.result.result_code === 1) {
+      uploadImages(response.data.result.prod_id, files.value)
       q.notify({
           type: 'positive',
           message: 'New product added successfully'
@@ -158,6 +175,28 @@ const postRowProduct = async () => {
           type: 'negative',
           message: 'Something went wrong.'
         })
+  }
+};
+
+const uploadImages = async (prod_id: any, imageFiles: any) => {
+  const formData = new FormData();
+  for (let i = 0; i < imageFiles.length; i++) {
+    formData.append('images', imageFiles[i]);
+  }
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/uploadImages/${prod_id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    if (response.data.message === 'Images uploaded successfully.') {
+      console.log('Images uploaded successfully');
+    } else {
+      console.error('Failed to upload images');
+    }
+    return response
+  } catch (error) {
+    console.error('Error while uploading images:', error);
   }
 };
 

@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 import { db } from '../../db';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
 // GET 
-
 export async function getProdAll(req: Request, res: Response) {
     try 
     {
@@ -66,15 +68,8 @@ export async function getProdByCatId(req: Request, res: Response) {
 export async function insertNewProduct(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM prod_insert_new($1)', [req.body]);
-
-        if (result.prod_insert_new === 1) {
-            res.status(200).json({ message: 'New product added successfully.' });
-        } else if (result.prod_insert_new  === -1) {
-            res.status(500).json({ error: 'Db error: Create product failed.' });
-        } else {
-            res.status(500).json({ error: 'Internal server error.' });
-        }
+            'SELECT * FROM prod_insert_new2($1)', [req.body]);
+        res.json({result})
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Oops, something broke.' });
@@ -118,9 +113,61 @@ export async function deleteProduct(req: Request, res: Response) {
         console.error(error);
         res.status(500).json({ error: 'Oops, something broke.' });
     }
-
-
-
-
-
 }
+
+// POST - IMAGES
+export const uploadImages = async (req: Request, res: Response) => {
+    try {
+      const prod_id = req.params.prod_id;
+      if (!prod_id) {
+        return res.status(400).json({ error: 'prod_id is missing.' });
+      }
+  
+      const destination = path.join(`${process.env.IMAGE_URL}`, prod_id);
+  
+      const multerStorage = multer.diskStorage({
+        destination: destination,
+        filename: (req: Request, file: any, callback: any) => {
+          const fileName = file.originalname;
+          callback(null, fileName);
+        },
+      });
+  
+      const upload = multer({ storage: multerStorage }).array('images', 5);
+  
+      upload(req, res, (err: any) => {
+        if (err) {
+          return res.status(500).json({ error: 'Failed to upload images.' });
+        }
+        return res.status(200).json({ message: 'Images uploaded successfully.' });
+      });
+    } catch (error) {
+        console.error('Error while uploading images:', error);
+        res.status(500).json({ error: 'Something went wrong.' });
+    }
+};
+
+// GET - IMAGES
+export const getImages = async (req: Request, res: Response) => {
+    try {
+      const prod_id = req.params.prod_id;
+      if (!prod_id) {
+        return res.status(400).json({ error: 'prod_id is missing.' });
+      }
+  
+      const imageFolder = path.join(`${process.env.IMAGE_URL}`, prod_id);
+  
+      if (!fs.existsSync(imageFolder)) {
+        return res.status(404).json({ error: 'No images found for this product.' });
+      }
+  
+      const imageFiles = fs.readdirSync(imageFolder);
+
+      return res.status(200).json({ imageFiles });
+    } catch (error) {
+      console.error('Error while getting images:', error);
+      res.status(500).json({ error: 'Something went wrong.' });
+    }
+  };
+
+
