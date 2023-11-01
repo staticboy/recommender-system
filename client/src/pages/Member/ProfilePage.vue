@@ -92,7 +92,6 @@ onBeforeMount(async () => {
           />
         </div>
       </div>
-      {{ curMemberPreferences }}
       <div class="flex justify-between">
         <div style="width: 48%">
           <q-input

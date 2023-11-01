@@ -26,7 +26,6 @@ const loading = ref(false);
 const memberStore = useMemberStore();
 const { memberDetails } = useMemberStore();
 const categoryStore = useCategoryStore();
-const { categoryList } = useCategoryStore();
 const columns = computed<QTableColumn[]>(() => [
   {
     name: "user_id",
@@ -62,7 +61,7 @@ const columns = computed<QTableColumn[]>(() => [
   },
 ]);
 const getCategoryName = (id: string) => {
-  return categoryList.find((cat) => cat.cat_id === id)?.cat_name;
+  return categoryStore.categoryList.find((cat) => cat.cat_id === id)?.cat_name;
 };
 const addRow = () => {
   loading.value = true;
@@ -70,7 +69,7 @@ const addRow = () => {
     preferences.value.push({
       preference_id: "",
       user_id: memberDetails.user_id,
-      cat_id: categoryList[0].cat_id,
+      cat_id: categoryStore.categoryList[0].cat_id,
       skill_level: SkillLevel.BEGINNER,
       frequency: Frequency.DAILY,
       draft: true,
@@ -126,7 +125,7 @@ const addEntry = async (entry: MemberPreferences) => {
   loading.value = false;
 };
 onBeforeMount(async () => {
-  if (categoryList.length === 0) {
+  if (categoryStore.categoryList.length === 0) {
     await categoryStore.getAllCategories();
   }
 });
@@ -176,7 +175,7 @@ onBeforeMount(async () => {
               map-options
               v-model="props.row.cat_id"
               :options="
-                categoryList.map((cat) => {
+                categoryStore.categoryList.map((cat) => {
                   return {
                     label: cat.cat_name,
                     value: cat.cat_id,
