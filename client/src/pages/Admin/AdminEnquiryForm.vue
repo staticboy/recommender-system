@@ -202,7 +202,10 @@ const enquiry = ref({
   admin_id: '',
   enq_response: '',
   enq_responsedate: '',
-  enq_status: ''
+  enq_status: '',
+  enq_priority : '',
+  enq_type : ''
+
 
 
 });

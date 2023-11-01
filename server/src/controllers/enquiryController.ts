@@ -38,6 +38,18 @@ export async function getEnquiryBySubmitId(req: Request, res: Response) {
     } 
 }
 
+//GET BY enquiry types
+export async function getEnquiryTypes(req: Request, res: Response) {
+    try 
+    {
+        const enquiry = await db.any('select * from enq_get_enq_types()');
+        res.status(200).json(enquiry);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
+
 //GET BY Daterange sort by
 /*
 sample 
