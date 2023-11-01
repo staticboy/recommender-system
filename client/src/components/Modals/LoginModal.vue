@@ -28,10 +28,10 @@ const onSubmit = async () => {
 const login = async () => {
   try {
     const resp = await userStore.login(form.value);
-    console.log(resp);
     if (resp) {
       localStorage.setItem("userRole", resp.role);
       localStorage.setItem("userId", resp.id);
+      localStorage.setItem("pref_count", `${resp.pref_count}`);
       redirect(resp.role);
     }
   } catch (error) {

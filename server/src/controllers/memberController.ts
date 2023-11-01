@@ -64,14 +64,12 @@ export async function getMemberTransactions(req: Request, res: Response) {
 export async function deleteMemberPreferenceInfo(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM mem_delete_preference_info($1)', [req.body]);
+            'SELECT * FROM mem_delete_preference_info($1)', [req.query]);
 
-        if (result === 1) {
+        if (result.mem_delete_preference_info === 1) {
             res.status(200).json({ message: 'Preference deleted successfully.' });
-        } else if (result === -1) {
-            res.status(404).json({ message: 'Preference record not found.' });
         } else {
-            res.status(500).json({ error: 'Internal server error.' });
+            res.status(404).json({ message: 'Preference record not found.' });
         }
     } catch (error) {
         console.error(error);
@@ -120,11 +118,11 @@ export async function deleteMemberWishItem(req: Request, res: Response) {
 export async function insertPreferenceInfo(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM mem_insert_preference_info($1)', [req.body]);
+            'SELECT * FROM mem_insert_preference_info2($1)', [req.body]);
 
-        if (result === 1) {
-            res.status(200).json({ message: 'Preference inserted successfully.' });
-        } else if (result === -1) {
+        if (result.result_code === 1) {
+            res.status(200).json({ preference_id: result.preference_id_text  });
+        } else if (result.result_code === -1) {
             res.status(500).json({ error: 'DB error: Preference insertion failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

@@ -1,27 +1,43 @@
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { DEMO_BUSINESS_LIST, DEMO_PRODUCT_LIST } from "../../constants.ts";
+import { ref, onBeforeMount } from "vue";
 import { useQuasar } from "quasar";
-import { useMemberStore } from "../../stores/member";
+import { useRouter } from "vue-router";
+import { DEMO_BUSINESS_LIST } from "../../constants.ts";
+import { useCategoryStore } from "../../stores/category";
+import { useProductStore } from "../../stores/product";
+import { CategoryDetails } from "../../stores/category/types";
+import { ProductDetails } from "../../stores/product/types";
+import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 
 const q = useQuasar();
-const memberStore = useMemberStore();
+const router = useRouter();
+const preferenceDialog = ref(false);
+const categoryStore = useCategoryStore();
+const productStore = useProductStore();
+const selectedCategory = ref<CategoryDetails>({
+  cat_id: "",
+  cat_name: "",
+  cat_status: "",
+});
+const productList = ref<ProductDetails[]>([]);
 
 onBeforeMount(async () => {
-  const userID = localStorage.getItem("userId");
-  if (userID) {
-    await Promise.all([
-      memberStore.getMemberProfileDetailsByID(userID),
-      memberStore.getMemberPreferencesByID(userID),
-    ]);
-  }
+  await categoryStore.getAllCategories();
+  selectedCategory.value =
+    useCategoryStore().categoryList[
+      Math.floor(Math.random() * useCategoryStore().categoryList.length)
+    ];
+  productList.value = await productStore.getProductsByCategory(
+    selectedCategory.value.cat_id
+  );
+  preferenceDialog.value = localStorage.getItem("pref_count") === "0" ? true : false;
 });
 </script>
 <template>
   <q-page>
     <div class="flex flex-col gap-5 items-center q-px-lg q-pb-xl">
       <div class="w-full mt-10">
-        <h1>Welcome</h1>
+        <h1>Welcome to Sportify!</h1>
       </div>
     </div>
     <!-- Products -->
@@ -34,11 +50,12 @@ onBeforeMount(async () => {
           class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
         >
           <q-card-section>
-            <div class="text-h6">Business {{ DEMO_BUSINESS_LIST[0] }}</div>
+            <div class="text-h6 text-center">Check out our many deals for:</div>
           </q-card-section>
           <q-card-section>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <div class="text-h6 text-center">
+              {{ selectedCategory.cat_name }}
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -46,20 +63,20 @@ onBeforeMount(async () => {
         <q-scroll-area style="height: 300px">
           <div class="flex flex-row no-wrap" style="height: 300px">
             <q-card
-              v-for="product in DEMO_PRODUCT_LIST"
+              v-for="product in productList"
               :key="product.prod_id"
               bordered
               class="rounded-xl q-px-sm q-py-lg"
-              style="max-width: 50%; min-width: 20%"
+              style="width: 400px"
             >
-              <q-card-section>
-                <q-chip> ${{ product.prod_price }} </q-chip>
-              </q-card-section>
               <q-card-section>
                 <div class="text-h6">{{ product.prod_name }}</div>
               </q-card-section>
               <q-card-section class="w-full">
                 {{ product.prod_description }}
+              </q-card-section>
+              <q-card-section>
+                <q-chip> ${{ product.prod_price }} </q-chip>
               </q-card-section>
               <q-card-section class="w-full">
                 <span v-if="product.prod_status == 'Not Available'">
@@ -102,5 +119,12 @@ onBeforeMount(async () => {
       </template>
     </div>
   </q-page>
+  <q-dialog v-model="preferenceDialog">
+    <q-card>
+      <EditPreferenceModal
+        :preferences="[]"
+      />
+    </q-card>
+  </q-dialog>
 </template>
 <style scoped lang="scss"></style>

@@ -25,7 +25,6 @@ export const useMemberStore = defineStore("member", () => {
     memberDetails.value = response.data;
   };
   const getMemberPreferencesByID = async (id: string) => {
-    // getPreference
     const response: AxiosResponse<MemberPreferences[]> = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/getPreference`, {
       user_id: id
     });
@@ -48,23 +47,35 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   };
-  const updateMemberPreferences = async (req: MemberPreferences) => {
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/member/editPref`, {
-      // 
+  const insertNewMemberPreferences = async (req: MemberPreferences) => {
+    const response: AxiosResponse<{ preference_id: string }> = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/addNewPref`, {
+      "user_id": req.user_id,
+      "cat_id": req.cat_id,
+      "skill_level": req.skill_level,
+      "frequency": req.frequency,
+    });
+    return response.data;
+  }
+  const deleteMemberPreferences = async (id: string) => {
+    const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/member/delPref`, {
+      params: {
+        "preference_id": id
+      }
     });
     if (response.status === 200) {
       return true;
     } else {
       return false;
     }
-  };
+  }
 
   return {
     memberDetails,
     memberPreferences,
     memberWishlist,
     updateMemberProfile,
-    updateMemberPreferences,
+    insertNewMemberPreferences,
+    deleteMemberPreferences,
     getMemberProfileDetailsByID,
     getMemberPreferencesByID,
   }

@@ -6,4 +6,5 @@ export interface LoginCredentials {
 export interface LoginResponse {
   id: string;
   role: string;
+  pref_count: number;
 }

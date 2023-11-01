@@ -26,6 +26,17 @@ export interface MemberPreferences {
   preference_id: string,
   user_id: string,
   cat_id: string,
-  skill_level: string,
-  frequency: string,
+  skill_level: SkillLevel,
+  frequency: Frequency,
+  draft?: boolean,
+}
+export enum SkillLevel {
+  BEGINNER = "BEGINNER",
+  INTERMEDIATE = "INTERMEDIATE",
+  ADVANCED = "ADVANCED",
+}
+export enum Frequency {
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  MONTHLY = "MONTHLY",
 }

@@ -2,10 +2,14 @@
 import { ref, onBeforeMount, computed } from "vue";
 import { useQuasar } from "quasar";
 import { useMemberStore } from "../../stores/member/index";
+import { useCategoryStore } from "../../stores/category";
 import { MemberDetails, MemberPreferences } from "../../stores/member/types";
+import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 
 const q = useQuasar();
 const memberStore = useMemberStore();
+const categoryStore = useCategoryStore();
+const { categoryList } = useCategoryStore();
 const curMemberDetails = computed({
   get: () => memberStore.memberDetails,
   set: (val: MemberDetails) => {
@@ -51,35 +55,10 @@ const onSaveProfile = async () => {
   }
   editMode.value.profile = !editMode.value.profile;
 };
-const onCancelPreferences = () => {
-  curMemberPreferences.value = memberPreferences.value;
-  editMode.value.preferences = !editMode.value.preferences;
-};
-const onSavePreferences = async () => {
-  if (editMode.value.preferences) {
-    if (
-      curMemberPreferences.value &&
-      curMemberPreferences.value !== memberPreferences.value
-    ) {
-      const success = await memberStore.updateMemberPreferences(
-        curMemberPreferences.value
-      );
-      if (success) {
-        q.notify({
-          type: "positive",
-          message: "Preferences updated successfully",
-        });
-      } else {
-        q.notify({
-          type: "negative",
-          message: "Preferences update failed",
-        });
-      }
-    }
-  }
-  editMode.value.preferences = !editMode.value.preferences;
-};
 onBeforeMount(async () => {
+  if (categoryList.length === 0) {
+    await categoryStore.getAllCategories();
+  }
   const userID = localStorage.getItem("userId");
   if (userID && !memberDetails && !memberPreferences) {
     await Promise.all([
@@ -113,7 +92,7 @@ onBeforeMount(async () => {
           />
         </div>
       </div>
-      {{ curMemberDetails }}
+      {{ curMemberPreferences }}
       <div class="flex justify-between">
         <div style="width: 48%">
           <q-input
@@ -201,42 +180,9 @@ onBeforeMount(async () => {
         class="flex flex-row items-center justify-between w-full"
         style="margin: 0px 15px"
       >
-        <h1>Preferences</h1>
-        <div>
-          <q-btn
-            v-if="editMode.preferences"
-            label="Cancel"
-            class="q-pr-sm"
-            @click="onCancelPreferences"
-          />
-          <q-btn
-            color="primary"
-            :label="editMode.preferences ? 'Save' : 'Edit'"
-            @click="onSavePreferences"
-          />
-        </div>
+        <h1 class="mb-4">Preferences</h1>
       </div>
-      <div class="flex flex-row justify-between">
-        <!-- <q-select
-        outlined
-        multiple
-        use-chips
-        v-model="category.sports"
-        label="Sport Categories"
-        :disable="!editMode.preferences"
-        style="width: 48%"
-      >
-      </q-select>
-      <q-select
-        outlined
-        multiple
-        use-chips
-        v-model="category.item"
-        label="Item Categories"
-        :disable="!editMode.preferences"
-        style="width: 48%"
-      /> -->
-      </div>
+      <EditPreferenceModal :preferences="curMemberPreferences" />
     </template>
   </q-page>
 </template>
