@@ -52,11 +52,61 @@
         </q-card>
       </div>
     </div>
+    <div class="q-mb-sm flex justify-between items-center mt-6">
+        <h1>Number of Interactions</h1>
+    </div>
+    <div class="grid grid-cols-5 gap-4 w-full mb-6 mt-4">
+      <div class="col-span-1 smoler">
+        <q-card class="fit" v-if="dataAvailable">
+          <div class="mid-icon">
+            <q-icon name="favorite" color="red" size="100px" />
+          </div>
+          <h3>{{ totalWishlist }}</h3>
+          <h6><b>Wishlist Additions</b></h6>
+        </q-card>
+      </div>
+      <div class="col-span-1 smoler">
+        <q-card class="fit" v-if="dataAvailable">
+          <div class="mid-icon">
+            <q-icon name="shopping_cart" color="teal" size="100px" />
+          </div>
+          <h3>{{ totalCart }}</h3>
+          <h6><b>Cart Additions</b></h6>
+        </q-card>
+      </div>
+      <div class="col-span-1 smoler">
+        <q-card class="fit" v-if="dataAvailable">
+          <div class="mid-icon">
+            <q-icon name="wallet" color="orange" size="100px" />
+          </div>
+          <h3>{{ totalPurchases }}</h3>
+          <h6><b>Purchases</b></h6>
+        </q-card>
+      </div>
+      <div class="col-span-1 smoler">
+        <q-card class="fit" v-if="dataAvailable">
+          <div class="mid-icon">
+            <q-icon name="star" color="primary" size="100px" />
+          </div>
+          <h3>{{ totalRate }}</h3>
+          <h6><b>Ratings</b></h6>
+        </q-card>
+      </div>
+      <div class="col-span-1 smoler">
+        <q-card class="fit" v-if="dataAvailable">
+          <div class="mid-icon">
+            <q-icon name="visibility" color="teal" size="100px" />
+          </div>
+          <h3>{{ totalViewed }}</h3>
+          <h6><b>Total Views</b></h6>
+        </q-card>
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
 import { date, useQuasar } from "quasar";
 import axios from 'axios';
@@ -77,6 +127,9 @@ const purchaseSeries = ref([]);
 const recoViewed = ref(null);
 const totalViewed = ref(null);
 const viewedSeries = ref([]);
+const totalWishlist = ref(null);
+const totalCart = ref(null);
+const totalRate = ref(null);
 
 
 const dataAvailable = ref(false);
@@ -141,7 +194,7 @@ const getInsight = async () => {
     }
     var param = { "start_date": fromDate.value.from, "end_date": fromDate.value.to };
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getPerformance`, param);
-    console.log(response);
+    // console.log(response);
     if (response.data[0].admin_performance.recommended_count[0].rec_count != null) {
       if (response.data[0].admin_performance.success == "true") {
         dataAvailable.value = true;
@@ -152,7 +205,9 @@ const getInsight = async () => {
       totalPurchases.value = response.data[0].admin_performance.total_purchased[0].p_count;
       recoViewed.value = response.data[0].admin_performance.recommended_view_count[0].rec_v_count;
       totalViewed.value = response.data[0].admin_performance.total_viewed[0].v_count;
-
+      totalWishlist.value = response.data[0].admin_performance.total_wishlist[0].w_count;
+      totalCart.value = response.data[0].admin_performance.total_cart[0].c_count;
+      totalRate.value = response.data[0].admin_performance.total_rating[0].r_count;
     }
     else {
       q.notify({
@@ -185,6 +240,32 @@ watch([recoViewed, totalViewed], () => {
   }
   // console.log(purchaseSeries)
 });
+
+const formatDate = (date) =>  {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}/${month}/${day}`;
+};
+
+onBeforeMount(() => {
+  const today = new Date();
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+
+  const firstDayFormatted = formatDate(firstDayOfYear);
+  const currentDayFormatted = formatDate(today);
+  fromDate.value = {
+      from: firstDayFormatted,
+      to: currentDayFormatted,
+    };
+});
+
+onMounted(() => {
+  q.loading.show();
+  save();
+  getInsight();
+  q.loading.hide();
+});
 </script>
 
 <style>
@@ -210,6 +291,11 @@ h5 {
   padding: 10px;
   text-align: center;
 }
+
+.smoler {
+  height: 220px;
+}
+
 </style>
 
 

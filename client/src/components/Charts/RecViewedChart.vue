@@ -42,7 +42,6 @@ const chartSeries = ref([
 
 // Function to update chart data
 const updateChartData = () => {
-  console.log(data)
   if (data) {
     chartSeries.value = data;
   }
