@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
 import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
 import { DEMO_BUSINESS_LIST } from "../../constants.ts";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
 import { CategoryDetails } from "../../stores/category/types";
 import { ProductDetails } from "../../stores/product/types";
+import { MemberPreferences } from "../../stores/member/types";
 import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 
 const q = useQuasar();
-const router = useRouter();
 const preferenceDialog = ref(false);
+const preferences = ref<MemberPreferences[]>([]);
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
 const selectedCategory = ref<CategoryDetails>({
@@ -30,7 +30,8 @@ onBeforeMount(async () => {
   productList.value = await productStore.getProductsByCategory(
     selectedCategory.value.cat_id
   );
-  preferenceDialog.value = localStorage.getItem("pref_count") === "0" ? true : false;
+  preferenceDialog.value =
+    localStorage.getItem("pref_count") === "0" ? true : false;
 });
 </script>
 <template>
@@ -119,11 +120,20 @@ onBeforeMount(async () => {
       </template>
     </div>
   </q-page>
-  <q-dialog v-model="preferenceDialog">
-    <q-card>
-      <EditPreferenceModal
-        :preferences="[]"
-      />
+  <q-dialog persistent v-model="preferenceDialog">
+    <q-card class="px-4 pt-6 pb-2" style="width: 700px; max-width: 80vw;">
+      <q-card-section>
+        <div class="text-h4 text-center">Welcome to Sportify!</div>
+        <div class="text-h6 text-center">
+          Before we continue, please indicate your preferences below!
+        </div>
+      </q-card-section>
+      <q-card-section>
+        <EditPreferenceModal :preferences="preferences"/>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn v-if="preferences.length > 0 && preferences[0].draft === false" flat label="Close" v-close-popup />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, computed } from "vue";
+import { useVModel } from "@vueuse/core";
 import { useQuasar, QTableColumn } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useMemberStore } from "../../stores/member";
@@ -12,12 +13,18 @@ import {
 const props = defineProps({
   preferences: {
     type: Array as PropType<MemberPreferences[]>,
-    required: true,
+    required: false,
+    default: [] as MemberPreferences[],
   },
 });
+const emit = defineEmits<{
+  (e: "update:preferences", value: MemberPreferences[]): void;
+}>();
+const preferences = useVModel(props, "preferences", emit);
 const q = useQuasar();
 const loading = ref(false);
 const memberStore = useMemberStore();
+const { memberDetails } = useMemberStore();
 const categoryStore = useCategoryStore();
 const { categoryList } = useCategoryStore();
 const columns = computed<QTableColumn[]>(() => [
@@ -60,27 +67,26 @@ const getCategoryName = (id: string) => {
 const addRow = () => {
   loading.value = true;
   setTimeout(() => {
-    props.preferences.push({
+    preferences.value.push({
       preference_id: "",
-      user_id: props.preferences[0].user_id,
+      user_id: memberDetails.user_id,
       cat_id: categoryList[0].cat_id,
       skill_level: SkillLevel.BEGINNER,
       frequency: Frequency.DAILY,
       draft: true,
     });
-    loading.value = false;
   }, 1000);
   loading.value = false;
 };
 const deleteEntry = async (entry: MemberPreferences) => {
   loading.value = true;
-  const index = props.preferences.findIndex(
+  const index = preferences.value.findIndex(
     (pref) => pref.cat_id === entry.cat_id
   );
   if (index !== -1) {
     const resp = await memberStore.deleteMemberPreferences(entry.preference_id);
     if (resp) {
-      props.preferences.splice(index, 1);
+      preferences.value.splice(index, 1);
       q.notify({
         type: "positive",
         message: "Entry deleted successfully",
@@ -92,18 +98,19 @@ const deleteEntry = async (entry: MemberPreferences) => {
       });
     }
   }
+  localStorage.setItem("pref_count", preferences.value.length.toString())
   loading.value = false;
 };
 const addEntry = async (entry: MemberPreferences) => {
   loading.value = true;
   const resp = await memberStore.insertNewMemberPreferences(entry);
   if (resp.preference_id) {
-    const index = props.preferences.findIndex(
+    const index = preferences.value.findIndex(
       (pref) => pref.cat_id === entry.cat_id
     );
     if (index !== -1) {
-      props.preferences[index].draft = false;
-      props.preferences[index].preference_id = resp.preference_id;
+      preferences.value[index].draft = false;
+      preferences.value[index].preference_id = resp.preference_id;
     }
     q.notify({
       type: "positive",
@@ -115,6 +122,7 @@ const addEntry = async (entry: MemberPreferences) => {
       message: "Entry could not be added",
     });
   }
+  localStorage.setItem("pref_count", preferences.value.length.toString())
   loading.value = false;
 };
 onBeforeMount(async () => {

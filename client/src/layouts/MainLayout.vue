@@ -21,6 +21,7 @@ const navRoutes = computed(() => {
 const logout = () => {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userId");
+  localStorage.removeItem("pref_count");
   router.push({ name: "LoginPage" });
 };
 
