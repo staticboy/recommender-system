@@ -4,6 +4,7 @@ import { useVModel } from "@vueuse/core";
 import { useQuasar, QTableColumn } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useMemberStore } from "../../stores/member";
+import { useProductStore } from "../../stores/product";
 import {
   MemberPreferences,
   SkillLevel,
@@ -26,6 +27,7 @@ const loading = ref(false);
 const memberStore = useMemberStore();
 const { memberDetails } = useMemberStore();
 const categoryStore = useCategoryStore();
+const productStore = useProductStore();
 const columns = computed<QTableColumn[]>(() => [
   {
     name: "user_id",
@@ -86,6 +88,7 @@ const deleteEntry = async (entry: MemberPreferences) => {
     const resp = await memberStore.deleteMemberPreferences(entry.preference_id);
     if (resp) {
       preferences.value.splice(index, 1);
+      await getOrRefreshProductRecommendations(memberDetails.user_id);
       q.notify({
         type: "positive",
         message: "Entry deleted successfully",
@@ -97,7 +100,7 @@ const deleteEntry = async (entry: MemberPreferences) => {
       });
     }
   }
-  localStorage.setItem("pref_count", preferences.value.length.toString())
+  localStorage.setItem("pref_count", preferences.value.length.toString());
   loading.value = false;
 };
 const addEntry = async (entry: MemberPreferences) => {
@@ -111,6 +114,7 @@ const addEntry = async (entry: MemberPreferences) => {
       preferences.value[index].draft = false;
       preferences.value[index].preference_id = resp.preference_id;
     }
+    await getOrRefreshProductRecommendations(memberDetails.user_id);
     q.notify({
       type: "positive",
       message: "Entry added successfully",
@@ -121,8 +125,11 @@ const addEntry = async (entry: MemberPreferences) => {
       message: "Entry could not be added",
     });
   }
-  localStorage.setItem("pref_count", preferences.value.length.toString())
+  localStorage.setItem("pref_count", preferences.value.length.toString());
   loading.value = false;
+};
+const getOrRefreshProductRecommendations = async (userid: string) => {
+  await productStore.getProductRecommendations(userid);
 };
 onBeforeMount(async () => {
   if (categoryStore.categoryList.length === 0) {

@@ -32,6 +32,15 @@ onBeforeMount(async () => {
   );
   preferenceDialog.value =
     localStorage.getItem("pref_count") === "0" ? true : false;
+  if (
+    !preferenceDialog.value &&
+    productStore.activityProductRecommendations.length === 0 &&
+    productStore.preferenceProductRecommendations.length === 0
+  ) {
+    await productStore.getProductRecommendations(
+      localStorage.getItem("userId")!
+    );
+  }
 });
 </script>
 <template>
@@ -121,7 +130,7 @@ onBeforeMount(async () => {
     </div>
   </q-page>
   <q-dialog persistent v-model="preferenceDialog">
-    <q-card class="px-4 pt-6 pb-2" style="width: 700px; max-width: 80vw;">
+    <q-card class="px-4 pt-6 pb-2" style="width: 700px; max-width: 80vw">
       <q-card-section>
         <div class="text-h4 text-center">Welcome to Sportify!</div>
         <div class="text-h6 text-center">
@@ -129,10 +138,15 @@ onBeforeMount(async () => {
         </div>
       </q-card-section>
       <q-card-section>
-        <EditPreferenceModal :preferences="preferences"/>
+        <EditPreferenceModal :preferences="preferences" />
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn v-if="preferences.length > 0 && preferences[0].draft === false" flat label="Close" v-close-popup />
+        <q-btn
+          v-if="preferences.length > 0 && preferences[0].draft === false"
+          flat
+          label="Close"
+          v-close-popup
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>

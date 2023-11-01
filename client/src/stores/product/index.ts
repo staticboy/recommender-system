@@ -6,6 +6,8 @@ import axios, { AxiosResponse } from "axios";
 export const useProductStore = defineStore("product", () => {
   // stores all initialised products
   const productList = ref<ProductDetails[]>([]);
+  const activityProductRecommendations = ref<ProductDetails[]>([]);
+  const preferenceProductRecommendations = ref<ProductDetails[]>([]);
 
   const getProductDetail = async (id: string) => {
     const res = productList.value.find((product) => product.prod_id === id);
@@ -68,10 +70,13 @@ export const useProductStore = defineStore("product", () => {
   };
   const getProductRecommendations = async (id: string) => {
     const resp: AxiosResponse<ProductRecommendations> = await axios.post(`http://104.128.64.150:8080/api/v1/recommendations?user_id=${id}`);
-    return resp.data;
+    activityProductRecommendations.value = resp.data.recommendations_activity;
+    preferenceProductRecommendations.value = resp.data.recommendations_pref;
   }
   return {
     productList,
+    activityProductRecommendations,
+    preferenceProductRecommendations,
     getProductDetail,
     getProductsByCategory,
     getProductsByBusiness,
