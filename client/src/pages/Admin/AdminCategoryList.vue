@@ -52,13 +52,28 @@
             </q-form>
           </q-card-section>
           <q-card-actions align="right">
-            <!-- <q-btn label="Search" color="primary" type="submit" /> -->
+            <!-- <q-btn label="Search" color="primary" type="submit" />   to="../admin/cat-new"-->
             <q-btn label="Reset" color="primary" type="reset" />
-            <q-btn label="Add Category" color="secondary" to="../admin/cat-new"/>
+            <q-btn label="Add Category" color="secondary" @click="toggleNewForm" />
 
           </q-card-actions>
         </q-card>
       </q-form>
+
+      <q-dialog v-model="viewClosedNew">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleNewForm" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+
+            <AdminCatNewProfile :exampleProp="somevar" :backBtn="toggleNewForm" :parentFetchCategoryData="fetchCategoryData"/>
+            <q-card-section>
+              
+
+            </q-card-section>
+
+          </q-card>
+      </q-dialog>
 
       <q-table :rows="filteredList" :columns="columns">
         <template v-slot:body="props">
@@ -84,7 +99,7 @@
         </template>
       </q-table>
       <q-dialog v-model="viewClosed">
-          <q-card style="width: 700px; max-width: 80vw;">
+          <q-card style="width: 960px; max-width: 80vw;">
             <q-card-actions align="right">
               <q-btn icon="close" size="md" flat @click="closeDialog" class="q-ml-md q-mt-md" />
             </q-card-actions>
@@ -96,7 +111,7 @@
             </q-card-section>
 
           </q-card>
-        </q-dialog>
+      </q-dialog>
 
 
       </div>
@@ -159,6 +174,8 @@
 
 <script setup lang="ts">
 import AdminCatProfile from "../../components/Administrator/AdminCatProfile.vue";
+import AdminCatNewProfile from "../../components/Administrator/AdminCatNewProfile.vue";
+
 
 import { ref, computed, watch ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
@@ -174,6 +191,7 @@ const selectedTab = ref('tab1');
 
 const viewClosed = ref(false);
 
+//For Update/Delete Cat
 const viewClosedEnq = (row) => {
   somevar.value = row.cat_id;
   console.log(somevar.value)
@@ -183,6 +201,21 @@ const viewClosedEnq = (row) => {
 const closeDialog = (row) => {
   viewClosed.value = false;
 };
+/********************* */
+
+
+//For New Cat
+/****************** */
+const viewClosedNew = ref(false);
+
+
+const toggleNewForm = () => {
+  
+  viewClosedNew.value = !viewClosedNew.value ;
+};
+
+
+/********************* */
 
 
 const router = useRouter();
