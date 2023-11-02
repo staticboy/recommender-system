@@ -76,6 +76,16 @@ export async function insertNewProduct(req: Request, res: Response) {
     }
 }
 
+export async function insertBatchProduct(req: Request, res: Response) {
+    try {
+        const batch = await db.any('SELECT prod_insert_new_batch($1::jsonb[])', [req.body]);
+        res.json({ batch });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
 // UPDATE
 
 export async function updateProductInfo(req: Request, res: Response) {

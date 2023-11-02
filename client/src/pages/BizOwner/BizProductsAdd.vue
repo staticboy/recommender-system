@@ -11,7 +11,6 @@
           <q-tab name="tab2" label="Import csv files">
           </q-tab>
         </q-tabs>
-
         <div v-if="selectedTab === 'tab1'">
           <div class="row">
             <div class="col-6">
@@ -53,22 +52,48 @@
             </label>
             <input ref="fileInput" class="mt-8 mb-4" type="file" @change="handleFileChange" accept="image/*" multiple />
             <div class="image-preview">
-              <img v-for="(file, index) in files" :key="index" :src="file.preview" alt="Selected Image" class="image-border">
+              <img v-for="(file, index) in files" :key="index" :src="file.preview" alt="Selected Image"
+                class="image-border">
             </div>
-            <q-btn @click="clear_images" label="Clear Images" class="q-mt-md q-mr-md" dense/>
+            <q-btn @click="clear_images" label="Clear Images" class="q-mt-md q-mr-md" dense />
           </div>
           <div class="col-4 mt-8">
-            <q-btn type="submit" color="primary" label="Save Product" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
+            <q-btn type="submit" color="primary" label="Save Product" class="q-mt-md q-mr-md" @click="addProduct"
+              dense></q-btn>
           </div>
         </div>
         <div v-if="selectedTab === 'tab2'" class="col-12">
-          <div class="col">
-            <q-uploader label="Drag and drop files here or click to choose" accept=".csv" v-model="uploadedFiles"
-              :url="uploadUrl" @added="onFileAdded" @removed="onFileRemoved" class="q-mt-md">
-            </q-uploader>
+          <q-banner class="bg-primary text-white mt-8">
+            Note: For product csv files, the required fields are: Product Name, Description, Price, Stock Quantity, Model Number,
+            Category and Sub-category
+          </q-banner>
+          <div>
+            <label for="csv_input" class="mt-8">
+              Select csv file
+            </label>
+            <input type="file" ref="csv_input" @change="csvFileChange" class="mt-8 mb-4">
+            <table v-if="csv_data.length > 0" class="csv-table">
+              <thead>
+                <tr>
+                  <th v-for="(header, index) in csv_data[0]" :key="index">{{ header }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, rowIndex) in csv_data.slice(1)" :key="rowIndex">
+                  <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+                  <td>
+                    <q-btn @click="deletecsv_row(rowIndex)" color="warning" label="Delete" dense />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <q-btn @click="clear_csv" label="Remove File" class="q-mt-md q-mr-md mb-8" dense />
+            </div>
           </div>
           <div class="col-4">
-            <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
+            <q-btn type="submit" color="primary" label="Import Product CSV" class="q-mt-md q-mr-md mt-8" @click="csv_save"
+              dense></q-btn>
           </div>
         </div>
       </div>
@@ -110,7 +135,7 @@ const handleFileChange = () => {
 };
 
 const clear_images = () => {
-  fileInput.value.value = ''; // Clear the input field
+  fileInput.value.value = null;
   files.value = [];
 };
 
@@ -137,17 +162,76 @@ const availabilityOptions = computed(() => [
   { value: 'UNAVAILABLE', label: 'No' },
 ]);
 
-const uploadUrl = ref('')
-const uploadedFiles = ref([]);
-// const uploading = ref(false);
+const csv_input = ref(null);
+const csv_data = ref([]);
 
-const onFileAdded = (files: any) => {
-  // Handle file added event
-  console.log('Files added:', files);
+const clear_csv = () => {
+  csv_input.value.value = null
+  csv_data.value = []
 };
 
-const onFileRemoved = (file: any) => {
-  console.log('File removed:', file);
+const csvFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    parse_csv(file);
+  }
+};
+
+const parse_csv = (file) => {
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    const contents = e.target.result;
+    const rows = contents.split('\n').map(row => row.split(','));
+    csv_data.value = rows;
+  };
+  reader.readAsText(file);
+};
+
+const deletecsv_row = (rowIndex) => {
+  csv_data.value.splice(rowIndex + 1, 1);
+
+};
+
+const csv_save = () => {
+  q.loading.show();
+  csvDataToDatabase();
+  q.loading.hide();
+  clear_csv()
+}
+const csvDataToDatabase = async () => {
+  console.log(csv_data)
+  const databaseData = csv_data.value.slice(1).map(row => {
+    const rowData = {};
+    for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+      const columnName = csv_data.value[0][cellIndex];
+      const cellValue = row[cellIndex];
+      rowData[columnName] = cellValue;
+    }
+    rowData['biz_id'] = localStorage.getItem("userId");
+
+    return rowData;
+  });
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/addNewProdBatch`, databaseData);
+    console.log(response)
+    if (response.data.batch[0].prod_insert_new_batch === '(1,success)') {
+      q.notify({
+        type: 'positive',
+        message: 'CSV imported successfully'
+      })
+    } else {
+      q.notify({
+        type: 'negative',
+        message: 'Failed to import csv'
+      })
+    }
+  } catch (error) {
+    q.notify({
+      type: 'negative',
+      message: 'Something went wrong.'
+    })
+  }
 };
 
 const addProduct = () => {
@@ -221,7 +305,7 @@ const getAllCategrories = async () => {
         .filter((x: Category) => x.cat_status === 'ACTIVE')
         .map((category: Category) => ({
           value: category.cat_id,
-          label: category.cat_name
+          label: category.cat_id + ' - ' + category.cat_name
         }));
       categoryOptions.value = [
         ...mappedCategories
@@ -271,6 +355,27 @@ onMounted(() => {
   border: 1px solid rgb(151, 151, 151);
   max-width: 100px;
   max-height: 100px;
+}
+
+.csv-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.csv-table th,
+.csv-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.csv-table th {
+  background-color: #f2f2f2;
+}
+
+.csv-table tr:nth-child(even) {
+  background-color: #efeded;
 }
 </style>
 
