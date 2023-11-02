@@ -120,3 +120,27 @@ export async function updateEnqByAdm(req: Request, res: Response) {
     }
 }
 
+//UPDATE Priority
+export async function updateEnqPriorityByAdm(req: Request, res: Response) {
+    try {
+
+
+        const result = await db.one(
+            'SELECT * FROM enq_update_priority_by_adm($1)', [req.body]);
+
+    
+        if (result.enq_update_priority_by_adm === 1) {
+            res.status(200).json({ message: 'Priority has been updated' });
+        } else if (result.enq_update_priority_by_adm === -1) {
+            res.status(500).json({ error: 'DB error: Enquiry no longer in OPEN state.' });
+        } else {
+        
+        res.status(500).json({ error: 'Internal server error.' });
+
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+

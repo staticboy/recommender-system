@@ -9,16 +9,24 @@
           <q-card-section>
             <q-form>
               <div class="row q-gutter-md mb-4">
-                <div class="col-3">
+                <div class="col-2">
                   <q-input v-model="userName" label="User Id" outlined placeholder="Enter user Id"></q-input>
                 </div>
 
-                <div class="col-3">
+                <div class="col-2">
                   <q-select v-model="status" label="Status" outlined :options="statusOptions"></q-select>
                 </div>
 
-                <div class="col-3">
+                <div class="col-2">
                   <q-select v-model="userType" label="User Type" outlined :options="userTypeOptions"></q-select>
+                </div>
+
+                <div class="col-2">
+                  <q-select v-model="priorityLevel" label="Priority" outlined :options="priorityOptions"></q-select>
+                </div>
+
+                <div class="col-2">
+                  <q-select v-model="enquiryType" label="Enquiry Type" outlined :options="enquiryTypeOptions"></q-select>
                 </div>
               </div>
 
@@ -58,6 +66,13 @@
             </q-td>
             <q-td key="enq_submitby" :props="props">
               {{ props.row.enq_submitby }}
+            </q-td>
+            <q-td key="enq_priority" :props="props">
+              {{ props.row.enq_priority }}
+            </q-td>
+
+            <q-td key="enq_type" :props="props">
+              {{ props.row.enq_type }}
             </q-td>
             <q-td key="enq_subject" :props="props">
               {{ props.row.enq_subject }}
@@ -104,6 +119,8 @@ const status = ref('');
 const userType = ref('');
 const startDate = ref('');
 const endDate = ref('');
+const enquiryType = ref('');
+const priorityLevel = ref('');
 
 const showStartDatePicker = ref(false);
 const showEndDatePicker = ref(false);
@@ -123,6 +140,9 @@ const testClick = () =>{
   userType.value = '';
   startDate.value = '';
   endDate.value = '';
+  enquiryType.value = '';
+  priorityLevel.value = '';
+
 
 }
 
@@ -149,6 +169,24 @@ const userTypeOptions = [
   { label: 'Member', value: 'Member' },
 ];
 
+const enquiryTypeOptions = [
+  { label: 'TRANSACTION', value: 'TRANSACTION' },
+  { label: 'SOFTWARE ISSUE', value: 'SOFTWARE ISSUE' },
+  { label: 'ENQUIRY', value: 'ENQUIRY' },
+  { label: 'SERVICE', value: 'SERVICE' },
+  { label: 'INCIDENT', value: 'INCIDENT' }
+];
+
+const priorityOptions = [
+  { label: '1', value: 1 },
+  { label: '2', value: 2 },
+  { label: '3', value: 3 },
+  { label: '4', value: 4 },
+  { label: '5', value: 5 }
+];
+
+
+
 const submitForm = () => {
   // Handle form submission
 };
@@ -159,7 +197,7 @@ const resetForm = () => {
 
 //Items
 const tableData = ref([
-  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,user_type: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
+  { enq_id: 'E0026', enq_submitby: 'User 1', enq_subject : '', enq_message: '' ,enq_priority : '',enq_type : '' ,user_type: '', enq_submitdate: '', enq_status : '' , admin_id : 'dev_user'}
 
 ]);
 
@@ -180,7 +218,20 @@ const columns = computed(() => [
     field: 'enq_submitby',
     sortable: true,
   },
-
+  {
+    name: 'enq_priority',
+    label: 'Priority',
+    align: 'left',
+    field: 'enq_priority',
+    sortable: true,
+  },
+  {
+    name: 'enq_type',
+    label: 'Enquiry Type',
+    align: 'left',
+    field: 'enq_type',
+    sortable: true,
+  },
   {
     name: 'enq_subject',
     label: 'Enquiry Subject',
@@ -222,6 +273,7 @@ const columns = computed(() => [
 const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'id', sortable: true },
   { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'name', sortable: true },
+  { name: 'enq_priority', required: true, label: 'Priority', align: 'left', field: 'Priority', sortable: true },
   { name: 'enq_status', label: 'Status', align: 'left', field: 'status', sortable: true },
   { name: 'user_type', label: 'User Type', align: 'left', field: 'user_type', sortable: true },
   { name: 'enq_submitdate', label: 'Date', align: 'left', field: 'date', sortable: true },
@@ -254,6 +306,9 @@ const filteredList = computed(() => {  //filtering not working
       (!userName.value || item.enq_submitby.toLowerCase().includes(userName.value.toLowerCase())) &&
       (!status.value.value || item.enq_status === status.value.value) &&
       (!userType.value.value || item.user_type === userType.value.value) &&
+      (!enquiryType.value.value || item.enq_type === enquiryType.value.value) &&
+      (!priorityLevel.value.value || item.enq_priority === priorityLevel.value.value) &&
+
       (!startDate.value || item.enq_submitdate >= startDate.value) &&
       (!endDate.value || item.enq_submitdate <= endDate.value)
     );

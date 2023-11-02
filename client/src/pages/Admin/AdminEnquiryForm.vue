@@ -117,6 +117,19 @@
         <div class="row">
           <div class="col-8">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+               Enquiry Type
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-input readonly  v-model="enquiry.enq_type"  type="text" :rows=4 dense required
+              class="q-mt-md width-100 ticket"></q-input>
+        </div>
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                Submitted Date
             </label>
           </div>
@@ -127,11 +140,29 @@
               class="q-mt-md width-100 ticket"></q-input>
         </div>
 
+
+        <div class="row">
+          <div class="col-8">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+               Priority
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <q-select  v-model="enquiry.enq_priority" :options="levels" label="Sub-category" dense emit-value map-options
+                  class="q-mr-md" />
+        <q-btn v-if="enquiry.enq_status === 'OPEN'" type="button" color="secondary" label="Update" class="q-mt-md" dense @click="updateEnquiryPriorityData"></q-btn>
+
+        </div>
+
         <div class="row">
           <div class="col-8">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
               Status
             </label>
+
+         
           </div>
         </div>
         <div class="form-group">
@@ -172,6 +203,7 @@
       <div class=" q-gutter-md">
         <q-btn type="button" color="outline" label="Cancel" class="q-mt-md" dense @click="goToEnquiryList"></q-btn>
         <q-btn v-bind:disable="enquiry.enq_status === 'RESPONDED'" type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="updateEnquiryData"></q-btn>
+
       </div>
 
 
@@ -205,10 +237,12 @@ const enquiry = ref({
   enq_status: '',
   enq_priority : '',
   enq_type : ''
-
-
-
 });
+
+
+const levels = Array.from({ length: 5 }, (_, index) => index + 1);
+
+
 
 
 const goToEnquiryList = () => {
@@ -256,6 +290,30 @@ const updateEnquiryData = async () => {
     }
   } catch (error) {
     console.error('Error while fetching product data:', error);
+  }
+};
+
+//Update priority
+const updateEnquiryPriorityData = async () => {
+  try {
+    enquiry.value.admin_id = 'adminuser'
+    
+
+    var param = {"enq_id": enquiry.value.enq_id, 
+                  "enq_priority" : enquiry.value.enq_priority, 
+                  "admin_id" : localStorage.getItem("userId")} 
+    console.log(param);
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/enquiry/updateEnqPriorityByAdm`, param);
+    console.log(response)
+    if (response.statusText === "OK") {
+      console.log(response.data);
+      goToEnquiryList();
+      
+    } else {
+      console.error('Failed to patch enquiry data');
+    }
+  } catch (error) {
+    console.error('Error while patching enquiry data:', error);
   }
 };
 

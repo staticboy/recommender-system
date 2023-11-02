@@ -18,6 +18,30 @@
             <q-input outlined v-model="enquiry.enq_message" label="Description" type="textarea" :rows=4 dense required
               class="q-mt-md width-100"></q-input>
           </div>
+
+        </div>
+        <div class="row">
+          <div class="col-6">
+        
+              <q-select v-model="enquiry.enq_types" :options="enq_types" label="Enquiry Type" dense emit-value map-options
+                class="q-mr-md q-mt-md" />
+            
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <!--
+            <h6>
+              Priority Level : {{ enquiry.enq_types === '' ? '' : enq_types.indexOf(enquiry.enq_types) + 1 }}
+            </h6>
+            -->
+            <q-input outlined v-model="enquiry.enq_priority" label="Priority" type="text"  dense 
+              readonly required :model-value="priorityMapper(enquiry.enq_types)"
+              class="q-mt-md width-100"></q-input>
+            
+          </div>
+          
         </div>
       </q-form>
       <q-btn type="submit" color="primary" label="Submit" class="q-mt-md" dense @click="submitEnquiry"></q-btn>
@@ -77,6 +101,7 @@
               <q-input label="Response" v-model="selectedRow.enq_response" readonly type="textarea" :rows="4" />
               <q-input label="Response Date" v-model="selectedRow.enq_responsedate" readonly />
             </q-card-section>
+
           </q-card>
         </q-dialog>
 
@@ -101,9 +126,14 @@ const selectedRow = ref(null);
 const enquiry = ref({
   enq_subject: '',
   enq_message: '',
-  enq_submitby: ''
+  enq_submitby: '',
+  enq_types : '',
+  enq_priority : 0
 
 });
+
+
+
 
 const viewClosedEnq = (row) => {
   selectedRow.value = row;
@@ -123,6 +153,18 @@ const clearEnquiryForm = () => {
   };
 };
 
+const enq_types = ref([
+    {
+        "enq_get_enq_types": "TRANSACTION"
+    }
+
+])
+
+const priorityMapper = (row) => {
+
+  return enq_types.value.indexOf(row) + 1 
+            
+}
 const columns = computed(() => [
   {
     name: 'enq_id',
@@ -156,12 +198,17 @@ const columns = computed(() => [
   },
 ]);
 
+//const updateFilteredTransactions = enq_types.value.map(item => item.enq_get_enq_types);
 
 
 
 const submitEnquiry = () => {
   //router.push('/biz/home');
   enquiry._rawValue.enq_submitby = localStorage.getItem("userId")
+  enquiry._rawValue.enq_priority = priorityMapper(enquiry.value.enq_types)
+
+  
+
   console.log(enquiry._rawValue);
   postRowEnquiry()
 };
@@ -215,9 +262,30 @@ const fetchEnquiryData = async () => {
   }
 };
 
+const fetchEnquiryTypes = async () => {
+  try {
+    //change biz id value to the id of current login biz owner
+    
+   
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enquiry/getEnquiryTypes`);
+    console.log(response.data.length);
+    //enq_types.value = response.data;
+    enq_types.value = response.data.map((enquiry_type: { enq_get_enq_types: any; }) =>  enquiry_type.enq_get_enq_types);
+    // enq_types.value = response.data.map((enq_get_enq_types, index) => {
+    //   return { key: index + 1, enq_get_enq_types };
+    // });
+    //console.log(enq_types.value.map(x => x.enq_get_enq_types));
+
+
+  } catch (error) {
+    console.error('Error while fetching product data:', error);
+  }
+};
+
 onMounted(() => {
   q.loading.show();
   fetchEnquiryData();
+  fetchEnquiryTypes();
   q.loading.hide();
 });
 
