@@ -37,6 +37,7 @@
                   <q-date v-model="startDate" label="From" ref="startDatePicker" @blur="onDatePickerBlur('startDate')"
                     @input="onDatePickerInput('startDate')" v-show="showStartDatePicker" />
                 </div>
+
                 <div class="date-picker" @click="toggleDatePicker('endDate')">
                   <label for="endDate">To:</label>
                   <span v-if="!showEndDatePicker">
@@ -46,6 +47,8 @@
                     @input="onDatePickerInput('endDate')" v-show="showEndDatePicker" />
                 </div>
               </div>
+
+
             </q-form>
           </q-card-section>
           <q-card-actions align="right">
@@ -75,11 +78,25 @@
           
            
             <q-td>
-              <q-btn color="primary" label="View" @click="viewRow(props.row)" />
+              <q-btn color="primary" label="View" @click="/*viewRow(props.row)*/viewClosedEnq(props.row)" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+      <q-dialog v-model="viewClosed">
+          <q-card style="width: 700px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="closeDialog" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+
+            <AdminCatProfile :exampleProp="somevar" :backBtn="closeDialog" :parentFetchCategoryData="fetchCategoryData"/>
+            <q-card-section>
+              
+
+            </q-card-section>
+
+          </q-card>
+        </q-dialog>
 
 
       </div>
@@ -89,6 +106,7 @@
           <q-card-section>
             <q-form>
               <div class="row q-gutter-md mb-4">
+
                 <div class="col-3">
                   <q-input v-model="userName" label="Sub Category" outlined placeholder="Enter Sub Category"></q-input>
                 </div>
@@ -123,9 +141,6 @@
               {{ props.row.subcat_status == 'Y' ? 'Active' : 'Inactive'}}
             </q-td>
 
-        
-          
-           
             <q-td>
               <q-btn color="primary" label="View" @click="viewSubCatRow(props.row)" />
             </q-td>
@@ -143,6 +158,8 @@
 
 
 <script setup lang="ts">
+import AdminCatProfile from "../../components/Administrator/AdminCatProfile.vue";
+
 import { ref, computed, watch ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -151,8 +168,21 @@ import { useStore } from './../../stores';
 const store = useStore();
 const { selectedCatId, selectedSubCat } = store.adm;
 
+
 const selectedTab = ref('tab1');
 
+
+const viewClosed = ref(false);
+
+const viewClosedEnq = (row) => {
+  somevar.value = row.cat_id;
+  console.log(somevar.value)
+  viewClosed.value = true;
+};
+
+const closeDialog = (row) => {
+  viewClosed.value = false;
+};
 
 
 const router = useRouter();
@@ -163,6 +193,8 @@ const status = ref('');
 const userType = ref('');
 const startDate = ref('');
 const endDate = ref('');
+const somevar = ref('');
+
 
 const showStartDatePicker = ref(false);
 const showEndDatePicker = ref(false);

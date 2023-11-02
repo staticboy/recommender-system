@@ -97,6 +97,7 @@
               <h4 class="q-mt-md q-ml-md">Response for Enquiry {{ selectedRow ? selectedRow.enq_id : '' }}</h4>
             </div>
             <q-card-section>
+              
               <q-input label="Responded By" v-model="selectedRow.admin_id" readonly />
               <q-input label="Response" v-model="selectedRow.enq_response" readonly type="textarea" :rows="4" />
               <q-input label="Response Date" v-model="selectedRow.enq_responsedate" readonly />
@@ -217,6 +218,7 @@ const submitEnquiry = () => {
 //product/addNewProd
 const postRowEnquiry = async () => {
   try {
+    
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiry/insertEnquiry`, enquiry._rawValue);
     console.log(response)
     if (response.statusText === "OK") {
