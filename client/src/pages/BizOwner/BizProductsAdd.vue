@@ -11,7 +11,7 @@
           <q-tab name="tab2" label="Import csv files">
           </q-tab>
         </q-tabs>
-        
+
         <div v-if="selectedTab === 'tab1'">
           <div class="row">
             <div class="col-6">
@@ -39,38 +39,39 @@
                 class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
-              <q-select v-model="product.sub_cat" :options="subCategoryOptions" label="Sub-Category" dense emit-value map-options
-                class="q-mr-md q-mt-md" />
+              <q-select v-model="product.sub_cat" :options="subCategoryOptions" label="Sub-Category" dense emit-value
+                map-options class="q-mr-md q-mt-md" />
             </div>
             <div class="col-4">
-              <q-select v-model="product.prod_status" :options="availabilityOptions" label="Available?" dense emit-value map-options
-                class="q-mr-md q-mt-md" />
+              <q-select v-model="product.prod_status" :options="availabilityOptions" label="Available?" dense emit-value
+                map-options class="q-mr-md q-mt-md" />
             </div>
           </div>
           <div class="col-3">
-              <label for="fileInput" class="mt-8">
-                Select Image(s) (up to 5)
-              </label>
-            <input ref="fileInput" class="mt-8" type="file" @change="handleFileChange" accept="image/*" multiple/>
+            <label for="fileInput" class="mt-8">
+              Select Image(s) (up to 5)
+            </label>
+            <input ref="fileInput" class="mt-8 mb-4" type="file" @change="handleFileChange" accept="image/*" multiple />
+            <div class="image-preview">
+              <img v-for="(file, index) in files" :key="index" :src="file.preview" alt="Selected Image" class="image-border">
+            </div>
+            <q-btn @click="clear_images" label="Clear Images" class="q-mt-md q-mr-md" dense/>
           </div>
           <div class="col-4 mt-8">
-              <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
-            </div>
+            <q-btn type="submit" color="primary" label="Save Product" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
+          </div>
         </div>
         <div v-if="selectedTab === 'tab2'" class="col-12">
-            <div class="col">
-              <q-uploader label="Drag and drop files here or click to choose" accept=".csv" v-model="uploadedFiles"
-                :url="uploadUrl" @added="onFileAdded" @removed="onFileRemoved" class="q-mt-md">
-              </q-uploader>
-            </div>
-            <div class="col-4">
-              <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
-            </div>
+          <div class="col">
+            <q-uploader label="Drag and drop files here or click to choose" accept=".csv" v-model="uploadedFiles"
+              :url="uploadUrl" @added="onFileAdded" @removed="onFileRemoved" class="q-mt-md">
+            </q-uploader>
+          </div>
+          <div class="col-4">
+            <q-btn type="submit" color="primary" label="Save" class="q-mt-md q-mr-md" @click="addProduct" dense></q-btn>
+          </div>
         </div>
-
-
       </div>
-      <!-- <ProductTable /> -->
     </div>
   </q-page>
 </template>
@@ -88,20 +89,30 @@ const selectedTab = ref('tab1');
 const categoryOptions = ref();
 const subCategoryOptions = ref();
 
-const fileInput = ref<HTMLInputElement | null>(null)
-const files = ref()
+const fileInput = ref(null);
+const files = ref([]);
 
-function handleFileChange() {
-    files.value = fileInput.value?.files
-    console.log(files.value.length)
-    if (files.value.length > 5) {
-      files.value = null;
-      q.notify({
-          type: 'negative',
-          message: 'Only up to 5 images allowed!'
-        })
-    }
-}
+const handleFileChange = () => {
+  files.value = Array.from(fileInput.value.files);
+
+  if (files.value.length > 5) {
+    files.value = [];
+    q.notify({
+      type: 'negative',
+      message: 'Only up to 5 images allowed!'
+    });
+  } else {
+    files.value.forEach((file, index) => {
+      const url = URL.createObjectURL(file);
+      files.value[index] = { file, preview: url };
+    });
+  }
+};
+
+const clear_images = () => {
+  fileInput.value.value = ''; // Clear the input field
+  files.value = [];
+};
 
 interface Category {
   cat_id: number;
@@ -109,21 +120,21 @@ interface Category {
 }
 
 const product = ref<BizProductDetails>({
-    prod_name: '',
-    prod_description: '',
-    prod_stockqty: 0,
-    prod_price: 0,
-    prod_modelnum: '',
-    cat_id: '',
-    sub_cat: '',
-    prod_status: '',
-    // image: '',
-    biz_id : ''
-  });
+  prod_name: '',
+  prod_description: '',
+  prod_stockqty: 0,
+  prod_price: 0,
+  prod_modelnum: '',
+  cat_id: '',
+  sub_cat: '',
+  prod_status: '',
+  // image: '',
+  biz_id: ''
+});
 
 const availabilityOptions = computed(() => [
-  {value: 'AVAILABLE', label: 'Yes'},
-  {value: 'UNAVAILABLE', label: 'No'},
+  { value: 'AVAILABLE', label: 'Yes' },
+  { value: 'UNAVAILABLE', label: 'No' },
 ]);
 
 const uploadUrl = ref('')
@@ -148,7 +159,6 @@ const addProduct = () => {
   router.push('/biz/products');
 };
 
-
 //API POST : New product row
 //product/addNewProd
 const postRowProduct = async () => {
@@ -159,22 +169,22 @@ const postRowProduct = async () => {
     if (response.data.result.result_code === 1) {
       uploadImages(response.data.result.prod_id, files.value)
       q.notify({
-          type: 'positive',
-          message: 'New product added successfully'
-        })
+        type: 'positive',
+        message: 'New product added successfully'
+      })
     } else {
       console.error('Failed to fetch product data');
       q.notify({
-          type: 'negative',
-          message: 'Failed to add new product'
-        })
+        type: 'negative',
+        message: 'Failed to add new product'
+      })
     }
   } catch (error) {
     console.error('Error while fetching product data:', error);
     q.notify({
-          type: 'negative',
-          message: 'Something went wrong.'
-        })
+      type: 'negative',
+      message: 'Something went wrong.'
+    })
   }
 };
 
@@ -208,16 +218,16 @@ const getAllCategrories = async () => {
       // console.log(response.data);
       //populate Category droplist
       const mappedCategories = response.data
-                                        .filter((x: Category) => x.cat_status === 'ACTIVE')
-                                        .map((category: Category) => ({
-                                          value: category.cat_id,
-                                          label: category.cat_name
-                                        }));
-      categoryOptions.value = [ 
+        .filter((x: Category) => x.cat_status === 'ACTIVE')
+        .map((category: Category) => ({
+          value: category.cat_id,
+          label: category.cat_name
+        }));
+      categoryOptions.value = [
         ...mappedCategories
       ];
 
-      
+
     } else {
       console.error('Failed to fetch category data');
     }
@@ -246,6 +256,22 @@ onMounted(() => {
   getAllCategrories()
   getAllSubCategories()
 });
+
+
 </script>
+
+<style>
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-border {
+  border: 1px solid rgb(151, 151, 151);
+  max-width: 100px;
+  max-height: 100px;
+}
+</style>
 
 
