@@ -75,7 +75,7 @@
           </q-card>
       </q-dialog>
 
-      <q-table :rows="filteredList" :columns="columns">
+      <q-table :rows="filteredList"  :rows-per-page-options="[10, 20, 30]" :columns="columns">
         <template v-slot:body="props">
          <q-tr :props="props">          
             <q-td key="cat_id" :props="props">
@@ -200,10 +200,6 @@ import AdminCatProfile from "../../components/Administrator/AdminCatProfile.vue"
 import AdminCatNewProfile from "../../components/Administrator/AdminCatNewProfile.vue";
 import AdminSubCategoryNewProfile from "../../components/Administrator/AdminSubCategoryNewProfile.vue";
 import AdminSubCategoryProfile from "../../components/Administrator/AdminSubCategoryProfile.vue";
-
-
-
-
 import { ref, computed, watch ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';

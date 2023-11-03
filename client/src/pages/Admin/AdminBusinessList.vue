@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <q-table :rows="filteredList" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns">
+      <q-table :rows="filteredList" :rows-per-page-options="[10, 20, 30]" :columns="columns">
         <!-- Add a custom column for the button -->
         <template v-slot:body="props">
           <q-tr :props="props">

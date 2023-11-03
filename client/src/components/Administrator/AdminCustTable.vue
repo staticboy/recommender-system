@@ -2,7 +2,7 @@
     <div>
         <SearchBar v-model="searchQuery" class="q-mb-md" />
 
-        <q-table :rows="filteredCustomers" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns"
+        <q-table :rows="filteredCustomers" :rows-per-page-options="[ 10, 30, 60, 100]" :columns="columns"
             :row-key="row => row.id">
             <template v-slot:header="props">
                 <q-tr :props="props">

@@ -57,7 +57,7 @@
         </q-card>
       </q-form>
 
-      <q-table :rows="filteredList" :columns="columns">
+      <q-table :rows="filteredList" :rows-per-page-options="[10, 20, 30]" :columns="columns">
         <template v-slot:body="props">
          <q-tr :props="props">
           

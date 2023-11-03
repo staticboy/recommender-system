@@ -70,7 +70,7 @@
               reverseInitConfirm()"></q-btn>
 
             </div>
-                        <!--Confirm Dialogue-->
+            <!--Confirm Dialogue-->
             <q-dialog v-model="initConfirm">
             <q-card style="width: 960px; max-width: 80vw;">
               <q-card-actions align="right">
