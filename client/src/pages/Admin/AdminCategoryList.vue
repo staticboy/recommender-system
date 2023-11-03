@@ -59,7 +59,7 @@
           </q-card-actions>
         </q-card>
       </q-form>
-
+      <!--Cat New-->
       <q-dialog v-model="viewClosedNew">
           <q-card style="width: 960px; max-width: 80vw;">
             <q-card-actions align="right">
@@ -77,8 +77,7 @@
 
       <q-table :rows="filteredList" :columns="columns">
         <template v-slot:body="props">
-         <q-tr :props="props">
-          
+         <q-tr :props="props">          
             <q-td key="cat_id" :props="props">
               {{ props.row.cat_id }}
             </q-td>
@@ -87,17 +86,14 @@
             </q-td>
             <q-td key="cat_status" :props="props">
               {{ props.row.cat_status }}
-            </q-td>
-
-        
-          
-           
+            </q-td>           
             <q-td>
               <q-btn color="primary" label="View" @click="/*viewRow(props.row)*/viewClosedEnq(props.row)" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+      <!--Cat Update/delete-->
       <q-dialog v-model="viewClosed">
           <q-card style="width: 960px; max-width: 80vw;">
             <q-card-actions align="right">
@@ -138,11 +134,29 @@
           <q-card-actions align="right">
             <!-- <q-btn label="Search" color="primary" type="submit" /> -->
             <q-btn label="Reset" color="primary" type="reset" />
-            <q-btn label="Add Sub Category" color="secondary" to="../admin/subcat-new"/>
+            <q-btn label="Add Sub Category" color="secondary" @click="toggleNewFormviewSubcatNew"/>
 
           </q-card-actions>
         </q-card>
       </q-form>
+
+      <q-dialog v-model="viewSubcatNew">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleNewFormviewSubcatNew" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+
+            <AdminSubCategoryNewProfile
+             :backBtn="toggleNewFormviewSubcatNew" 
+             :parentFetchCategoryData="fetchSubCategoryData"
+             />
+            <q-card-section>
+              
+
+            </q-card-section>
+
+          </q-card>
+      </q-dialog>
 
       <q-table :rows="filteredSubCatList" :columns="columnsSubCat">
         <template v-slot:body="props">
@@ -157,11 +171,26 @@
             </q-td>
 
             <q-td>
-              <q-btn color="primary" label="View" @click="viewSubCatRow(props.row)" />
+              <q-btn color="primary" label="View" @click="toggleExistingSubCat(props.row)" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+          <!--SubCat Update/delete-->
+          <q-dialog v-model="viewExistingSubCat">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleExistingSubCat" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+
+            <AdminSubCategoryProfile :selectedSubCatName="subcatForChild" :backBtn="toggleExistingSubCat" :parentFetchCategoryData="fetchSubCategoryData"/>
+            <q-card-section>
+              
+
+            </q-card-section>
+
+          </q-card>
+      </q-dialog>
 
 
       </div>
@@ -175,6 +204,10 @@
 <script setup lang="ts">
 import AdminCatProfile from "../../components/Administrator/AdminCatProfile.vue";
 import AdminCatNewProfile from "../../components/Administrator/AdminCatNewProfile.vue";
+import AdminSubCategoryNewProfile from "../../components/Administrator/AdminSubCategoryNewProfile.vue";
+import AdminSubCategoryProfile from "../../components/Administrator/AdminSubCategoryProfile.vue";
+
+
 
 
 import { ref, computed, watch ,onMounted} from 'vue';
@@ -188,35 +221,44 @@ const { selectedCatId, selectedSubCat } = store.adm;
 
 const selectedTab = ref('tab1');
 
-
-const viewClosed = ref(false);
-
 //For Update/Delete Cat
+/***************** */
+const viewClosed = ref(false);
 const viewClosedEnq = (row) => {
   somevar.value = row.cat_id;
   console.log(somevar.value)
   viewClosed.value = true;
 };
-
 const closeDialog = (row) => {
   viewClosed.value = false;
 };
 /********************* */
-
-
 //For New Cat
 /****************** */
 const viewClosedNew = ref(false);
-
-
 const toggleNewForm = () => {
-  
   viewClosedNew.value = !viewClosedNew.value ;
 };
-
-
 /********************* */
 
+//For New Sub Cat
+/****************** */
+const viewSubcatNew = ref(false);
+const toggleNewFormviewSubcatNew = () => {
+  viewSubcatNew.value = !viewSubcatNew.value ;
+};
+/**********************/
+
+//For Update/Delete Cat
+/******************/
+
+const viewExistingSubCat = ref(false);
+const toggleExistingSubCat = (row) => {
+  subcatForChild.value = row.subcat_name;
+  viewExistingSubCat.value = !viewExistingSubCat.value ;
+};
+
+/**********/
 
 const router = useRouter();
 
@@ -227,6 +269,8 @@ const userType = ref('');
 const startDate = ref('');
 const endDate = ref('');
 const somevar = ref('');
+const subcatForChild = ref('');
+
 
 
 const showStartDatePicker = ref(false);
