@@ -30,7 +30,7 @@
                         </template>
                     </q-td>
                     <q-td auto-width>
-                        <q-btn type="submit" color="primary" label="View Profile" @click="viewProfile(props.row)"
+                        <q-btn type="submit" color="primary" label="View Profile" @click="toggleExistingMem(props.row)"
                             class="q-mt-md q-mr-md" dense />
                     </q-td>
                     <!--
@@ -42,6 +42,20 @@
                 </q-tr>
             </template>
         </q-table>
+        <q-dialog v-model="viewExistingMem">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleExistingMem(idForChild)" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+            <AdminCustomerProfile
+            :selectedMemId="idForChild" 
+            :backBtn="toggleExistingMem" 
+            :parentFetchMemData="fetchMemberData"
+            
+            />
+           
+          </q-card>
+      </q-dialog>
     </div>
 </template>
 
@@ -49,6 +63,8 @@
 <script setup>
 import { ref, computed, watch, reactive, onMounted } from 'vue';
 import SearchBar from '../SearchBar.vue';
+import AdminCustomerProfile from "../../components/Administrator/AdminCustomerProfile.vue";
+
 import { DEMO_CUSTOMER_LIST } from '../../constants.ts'
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -66,6 +82,19 @@ const pagination = ref({
     page: 1,
     rowsPerPage: 5,
 });
+
+//For Update profile
+/******************/
+const idForChild = ref('');
+
+const viewExistingMem = ref(false);
+const toggleExistingMem = (row) => {
+  console.log(row.user_id)  
+  idForChild.value = row.user_id;
+  viewExistingMem.value = !viewExistingMem.value ;
+};
+
+/**********/
 
 const viewProfile = (row) => {
     router.push({ path: '../admin/customer-profile', query: { id: row.user_id } });

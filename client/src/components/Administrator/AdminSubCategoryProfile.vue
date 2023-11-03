@@ -165,7 +165,6 @@ const parentProps = defineProps({
 
 //another function to invoke parent prop function
 const invokeToggler = () =>{
-
   parentProps.backBtn(parentProps.selectedSubCatName);
 };
 
@@ -175,7 +174,6 @@ const actionName = ref(["","Update", "Deactivate","Reactivate","Delete"]);
 const requestAction = ref(0);
 const commitChanges = () => {
   console.log(requestAction.value);
-
   switch(requestAction.value) {
   case 1:
     submitForm();

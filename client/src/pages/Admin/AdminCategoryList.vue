@@ -178,9 +178,10 @@
               <q-btn icon="close" size="md" flat @click="toggleExistingSubCat" class="q-ml-md q-mt-md" />
             </q-card-actions>
 
-            <AdminSubCategoryProfile :selectedSubCatName="subcatForChild" :backBtn="toggleExistingSubCat" :parentFetchCategoryData="fetchSubCategoryData"/>
-
-
+            <AdminSubCategoryProfile 
+            :selectedSubCatName="subcatForChild" 
+            :backBtn="toggleExistingSubCat" 
+            :parentFetchCategoryData="fetchSubCategoryData"/>
           </q-card>
       </q-dialog>
 
