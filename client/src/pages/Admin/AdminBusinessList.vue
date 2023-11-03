@@ -11,17 +11,10 @@
         <div class="col-3">
           <q-select v-model="accStatus" label="Status" outlined :options="statusOptions"></q-select>
         </div>
-      </div>
-      <div class="row q-gutter-md">
-        <div class="mb-4 col-3">
-          <label for="fromDate">From Date:</label>
-          <input type="date" id="fromDate" v-model="fromDate"
-            class="w-full px-3 py-2 rounded-md border border-gray-300" />
-        </div>
-        <div class="mb-4 col-3">
-          <label for="toDate">To Date:</label>
-          <input type="date" id="toDate" v-model="toDate" class="w-full px-3 py-2 rounded-md border border-gray-300" />
-        </div>
+        <q-card-actions align="right">
+            <!-- <q-btn label="Search" color="primary" type="submit" /> -->
+            <q-btn label="Reset" color="primary" type="reset" @click="testClick" />
+          </q-card-actions>
       </div>
 
       <q-table :rows="filteredList" :rows-per-page-options="[10, 20, 30]" :columns="columns">
@@ -89,11 +82,14 @@ const toggleExistingBiz = (row) => {
 };
 
 const statusOptions = [
-  { label: 'Responded', value: 'Pending' },
-  { label: 'Open', value: 'Approved' },
-  { label: 'Closed', value: 'Rejected' },
-  { label: 'Default', value: '' },
+  { label: 'VERIFIED', value: 'VERIFIED' },
+  { label: 'DISABLED', value: 'DISABLED' },
 ];
+
+const testClick = () =>{
+  bizName.value = '';
+  accStatus.value = '';
+}
 
 const columns = computed(() => [
   {
@@ -139,7 +135,8 @@ const columns = computed(() => [
 const filteredList = computed(() => {
   return bizList.value.filter((b) => {
     return (
-      (!bizName.value || b.biz_name.toLowerCase().includes(bizName.value.toLowerCase() ))
+      (!bizName.value || b.biz_name.toLowerCase().includes(bizName.value.toLowerCase() )) &&
+      (!accStatus.value.value || b.biz_status.toLowerCase().includes(accStatus.value.value.toLowerCase() ))
     );
   });
 });
