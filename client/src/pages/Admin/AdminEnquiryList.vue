@@ -88,11 +88,26 @@
               {{ props.row.user_type }}
             </q-td>
             <q-td>
-              <q-btn color="primary" label="View" @click="viewRow(props.row)" />
+              <q-btn color="primary" label="View" @click="toggleExistingEnq(props.row)" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+
+      <q-dialog v-model="viewExistingEnq">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleExistingEnq" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+            
+              <AdminEnquiryForm 
+              :selectedEnq="subcatForEnq" 
+              :backBtn="toggleExistingEnq" 
+              :parentFetchEnqList="fetchEnquiryData"
+              />
+            
+          </q-card>
+      </q-dialog>
 
     </q-page>
   </div>
@@ -103,13 +118,25 @@
 import { ref, computed, watch ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-
+import AdminEnquiryForm from "../../components/Administrator/AdminEnquiryForm.vue";
 import { useStore } from './../../stores';
-
 const store = useStore();
 
 const { selectedEnqId } = store.adm;
 
+
+//For Update/Delete Cat
+/******************/
+const subcatForEnq = ref('');
+
+const viewExistingEnq = ref(false);
+const toggleExistingEnq = (row) => {
+ 
+  subcatForEnq.value = row.enq_id;
+  viewExistingEnq.value = !viewExistingEnq.value ;
+};
+
+/**********/
 
 const router = useRouter();
 

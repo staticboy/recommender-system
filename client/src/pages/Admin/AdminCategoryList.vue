@@ -181,7 +181,8 @@
             <AdminSubCategoryProfile 
             :selectedSubCatName="subcatForChild" 
             :backBtn="toggleExistingSubCat" 
-            :parentFetchCategoryData="fetchSubCategoryData"/>
+            :parentFetchCategoryData="fetchSubCategoryData"
+            />
           </q-card>
       </q-dialog>
 
