@@ -229,13 +229,11 @@ const toggleExistingSubCat = (row) => {
 };
 
 /**********/
-
 const router = useRouter();
-
 const userName = ref('');
-
 const status = ref('');
 const userType = ref('');
+const somevar = ref('');
 
 const statusOptions = [
   { label: 'ACTIVE', value: 'ACTIVE' },

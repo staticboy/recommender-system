@@ -17,7 +17,7 @@
           </q-btn>
         </div>
 
-        <q-table :rows="updateFilteredTransactions" :rows-per-page-options="[5, 10, 20, 30]" :columns="columns">
+        <q-table :rows="updateFilteredTransactions" :rows-per-page-options="[10, 20, 30]" :columns="columns">
           <!-- Add a custom column for the button -->
           <template v-slot:body="props">
             <q-tr :props="props">
@@ -56,19 +56,20 @@
             </q-tr>
 
           </q-table> -->
-          <q-table :rows="selectedTransaction.settlementBreakdown" >
+          <q-table :rows="selectedTransaction.settlementBreakdown" :rows-per-page-options="[10, 20, 30]" >
           <!-- Add a custom column for the button -->
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td key="biz_id" :props="props">{{ props.row.biz_id }}</q-td>
               <q-td key="prod_id"  :props="props">{{ prodNameMapper(props.row.prod_id )}}</q-td>
               <q-td key="quantity" :props="props">{{ props.row.quantity }}</q-td>
-              
+              <q-td key="prod_price" :props="props"> ${{ props.row.prod_price }}</q-td>
            
             </q-tr>
           </template>
 
         </q-table>
+        <h3 class="text-lg font-semibold mt-4 mb-2" style="text-align: right;">Total Price: {{ selectedTransaction.totalAmount }}</h3>
         </div>
       </div>
 
@@ -175,13 +176,15 @@ function calculateTotalQuantity(prodQuantity) {
 
 const viewItemsInTransaction = (transaction) => {
   console.log("run View Items")
+  console.log(transaction.total_amount)
   selectedTransaction.value = {
     id: transaction.purchase_id,
     statementDate: transaction.purchase_date,
-    settlementBreakdown: transaction.prod_quantity
+    settlementBreakdown: transaction.prod_quantity,
+    totalAmount: transaction.total_amount
   }
 
-  selectedTransaction.value.settlementBreakdown.price[0] = 100
+  // selectedTransaction.value.settlementBreakdown.price[0] = 100
 
   console.log(selectedTransaction.value);
 };
