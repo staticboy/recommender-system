@@ -12,19 +12,24 @@
               <q-btn type="button"  label="Back" id="fn" class="btn" dense @click="parentProps.backBtn"></q-btn>
   
   
-              <q-btn v-if="category.cat_status === 'ACTIVE'"  type="button"   label="Update" id="approve" class="btn"
-               dense @click="submitForm()"></q-btn>
-  
-  
-  
-  
-              <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  
-              label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
-  
-              <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
-              label="Re-activate" id="approve" class="btn" dense @click="reactivateForm()"></q-btn>
-              <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
-              label="Delete" id="reject" class="btn" dense @click="deleteCategory()"></q-btn>
+ 
+
+              <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"   label="Update" id="approve" class="btn"
+             dense @click="
+             requestAction = 1;
+             reverseInitConfirm()"></q-btn>
+            <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  
+            label="Deactivate" id="reject" class="btn" dense @click="
+            requestAction = 2;            
+            reverseInitConfirm()"></q-btn>
+            <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
+            label="Re-activate" id="approve" class="btn" dense @click="
+            requestAction = 3;            
+            reverseInitConfirm()"></q-btn>
+            <q-btn v-if="category.cat_status === 'INACTIVE'" type="button"  
+            label="Delete" id="reject" class="btn" dense @click="
+            requestAction = 4;   
+            reverseInitConfirm()"></q-btn>
   
             </div>
           </div>
@@ -137,15 +142,34 @@
                   </tbody>
                 </table>-->
               </div>
-  
-              <!--
-              <div class="form-group">
-                <h6>Historical buyrate</h6>
-                <div class="adm-graph">
-                  <AdminLineGraph />
+
+            <!--Confirm Dialogue-->
+            <q-dialog v-model="initConfirm">
+            <q-card style="width: 960px; max-width: 80vw;">
+              <q-card-actions align="right">
+                <q-btn icon="close" size="md" flat @click="reverseInitConfirm()" class="q-ml-md q-mt-md" />
+              </q-card-actions>
+
+              <q-card-actions>
+                
+                <div>
+                  <div class="row">
+                    <h6>Confirm Action : {{ actionName[requestAction] }} </h6>
+
+                  </div>
+                  <div class="row q-gutter-md mb-4" >
+                    <q-btn type="button"  
+                    label="Confirm" class="btn" dense @click="commitChanges()"></q-btn>
+                    <q-btn type="button"  
+                    label="Cancel" class="btn" dense @click="reverseInitConfirm()"></q-btn>
+                  </div>
                 </div>
-              </div>
-              -->
+
+              </q-card-actions>  
+            </q-card>
+            </q-dialog>
+  
+
             </div>
           </form>
         </header>
@@ -159,9 +183,10 @@
   import { ref, onMounted, defineProps} from 'vue';
   import { useRouter } from 'vue-router';
   import axios from 'axios';
-
-  
+  import { useQuasar } from "quasar";
   import { useStore } from './../../stores';
+
+  const q = useQuasar();
   const store = useStore();
   const { selectedCatId } = store.adm;
   
@@ -192,6 +217,50 @@
     type: Function
   },
   });
+
+  //another function to invoke parent prop function
+
+
+const actionName = ref(["","Update", "Deactivate","Reactivate","Delete"]);
+
+//to identify req type 
+const requestAction = ref(0);
+const commitChanges = () => {
+console.log(requestAction.value);
+
+switch(requestAction.value) {
+case 1:
+  submitForm();
+  break;
+case 2:
+  deactivateCategory();
+  break;
+case 3:
+  reactivateForm();
+  break;
+case 4:
+  deleteCategory();
+  break;
+default:
+  console.warn('action not known');
+}
+
+q.notify({
+      type: 'positive',
+      message: 'Action commited sucessfully'
+    });
+
+//reset to 0
+requestAction.value = 0;
+reverseInitConfirm();
+
+
+}
+
+const initConfirm = ref(false);
+const reverseInitConfirm = () => {
+initConfirm.value = !initConfirm.value;
+}
   
   
   const submitForm = async () => {

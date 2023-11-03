@@ -33,11 +33,25 @@
             <q-td key="biz_phoneno" :props="props">{{ props.row.biz_phoneno }}</q-td>
             <q-td key="biz_status" :props="props">{{ props.row.biz_status }}</q-td>
             <q-td auto-width key="action" :props="props">
-              <q-btn type="button" color="primary" label="View" @click="view(props.row.biz_id)" dense />
+              <q-btn type="button" color="primary" label="View" @click="toggleExistingBiz(props.row.biz_id)" dense />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+
+      <q-dialog v-model="viewExistingBiz">
+          <q-card style="width: 960px; max-width: 80vw;">
+            <q-card-actions align="right">
+              <q-btn icon="close" size="md" flat @click="toggleExistingBiz" class="q-ml-md q-mt-md" />
+            </q-card-actions>
+            <AdminBusinessProfile
+            :selectedBizId="bizIdForChild" 
+            :backBtn="toggleExistingBiz" 
+            :parentFetchCategoryData="fetchBizData"
+            />
+
+          </q-card>
+      </q-dialog>
     </q-page>
   </div>
 </template>
@@ -45,7 +59,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-//import { DEMO_BUSINESS_LIST_ADMIN } from "../../constants.ts"
+import AdminBusinessProfile from "../../components/Administrator/AdminBusinessProfile.vue";
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useStore } from './../../stores';
@@ -60,6 +74,19 @@ const bizName = ref('');
 const accStatus = ref('');
 const fromDate = ref('');
 const toDate = ref('');
+
+
+
+//For Update/Delete Cat
+/******************/
+const bizIdForChild = ref('');
+
+const viewExistingBiz = ref(false);
+const toggleExistingBiz = (row) => {
+  bizIdForChild.value = row;
+  console.warn(bizIdForChild.value);
+  viewExistingBiz.value = !viewExistingBiz.value ;
+};
 
 const statusOptions = [
   { label: 'Responded', value: 'Pending' },

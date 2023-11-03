@@ -12,19 +12,30 @@
             <q-btn type="button"  label="Back" id="fn" class="btn" dense @click="invokeToggler"></q-btn>
 
 
+
+             <!--
+              reverseInitConfirm 
+              submitForm 1
+              deactivateCategory 2
+              reactivateForm 3
+              deleteCategory 4
+            -->
             <q-btn v-if="category.subcat_status === 'Y'"  type="button"   label="Update" id="approve" class="btn"
-             dense @click="submitForm()"></q-btn>
-
-
-
-
+             dense @click="
+             requestAction = 1;
+             reverseInitConfirm()"></q-btn>
             <q-btn v-if="category.subcat_status === 'Y'" type="button"  
-            label="Deactivate" id="reject" class="btn" dense @click="deactivateCategory()"></q-btn>
-
+            label="Deactivate" id="reject" class="btn" dense @click="
+            requestAction = 2;            
+            reverseInitConfirm()"></q-btn>
             <q-btn v-if="category.subcat_status === 'N'" type="button"  
-            label="Re-activate" id="approve" class="btn" dense @click="reactivateForm()"></q-btn>
+            label="Re-activate" id="approve" class="btn" dense @click="
+            requestAction = 3;            
+            reverseInitConfirm()"></q-btn>
             <q-btn v-if="category.subcat_status === 'N'" type="button"  
-            label="Delete" id="reject" class="btn" dense @click="deleteCategory()"></q-btn>
+            label="Delete" id="reject" class="btn" dense @click="
+            requestAction = 4;   
+            reverseInitConfirm()"></q-btn>
 
           </div>
         </div>
@@ -76,8 +87,7 @@
    
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-first-name"
-              >
+                for="grid-first-name" >
               <u>
                 {{ category.date_updated }}
 
@@ -86,6 +96,31 @@
 
             </div>
 
+            <!--Confirm Dialogue-->
+            <q-dialog v-model="initConfirm">
+            <q-card style="width: 960px; max-width: 80vw;">
+              <q-card-actions align="right">
+                <q-btn icon="close" size="md" flat @click="reverseInitConfirm()" class="q-ml-md q-mt-md" />
+              </q-card-actions>
+
+              <q-card-actions>
+                
+                <div>
+                  <div class="row">
+                    <h6>Confirm Action : {{ actionName[requestAction] }} </h6>
+
+                  </div>
+                  <div class="row q-gutter-md mb-4" >
+                    <q-btn type="button"  
+                    label="Confirm" class="btn" dense @click="commitChanges()"></q-btn>
+                    <q-btn type="button"  
+                    label="Cancel" class="btn" dense @click="reverseInitConfirm()"></q-btn>
+                  </div>
+                </div>
+
+              </q-card-actions>  
+            </q-card>
+            </q-dialog>
 
 
 
@@ -103,9 +138,14 @@ import { ref, onMounted, defineProps} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+import { useQuasar } from "quasar";
 import { useStore } from './../../stores';
+
+const q = useQuasar();
 const store = useStore();
 const { selectedCatId } = store.adm;
+
+
 
 
 const router = useRouter();
@@ -127,6 +167,47 @@ const parentProps = defineProps({
 const invokeToggler = () =>{
 
   parentProps.backBtn(parentProps.selectedSubCatName);
+};
+
+const actionName = ref(["","Update", "Deactivate","Reactivate","Delete"]);
+
+//to identify req type 
+const requestAction = ref(0);
+const commitChanges = () => {
+  console.log(requestAction.value);
+
+  switch(requestAction.value) {
+  case 1:
+    submitForm();
+    break;
+  case 2:
+    deactivateCategory();
+    break;
+  case 3:
+    reactivateForm();
+    break;
+  case 4:
+    deleteCategory();
+    break;
+  default:
+    console.warn('action not known');
+  }
+  
+  q.notify({
+        type: 'positive',
+        message: 'Action commited sucessfully'
+      });
+
+  //reset to 0
+  requestAction.value = 0;
+  reverseInitConfirm();
+
+
+}
+
+const initConfirm = ref(false);
+const reverseInitConfirm = () => {
+  initConfirm.value = !initConfirm.value;
 }
 
 const category = ref({
@@ -135,8 +216,8 @@ const category = ref({
   date_updated: '',
 });
 
-const products = ref([]);
-const product_size = ref(0);
+
+
 
 
 const submitForm = async () => {

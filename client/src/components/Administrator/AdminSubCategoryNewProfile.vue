@@ -83,7 +83,7 @@ const submitForm = async () => {
   await insertNewCatInfo();
   q.notify({
         type: 'positive',
-        message: 'update failed'
+        message: 'New Subcat Created'
       });
   
   parentProps.parentFetchCategoryData();

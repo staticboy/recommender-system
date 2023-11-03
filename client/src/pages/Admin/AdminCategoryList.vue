@@ -101,11 +101,6 @@
             </q-card-actions>
 
             <AdminCatProfile :exampleProp="somevar" :backBtn="closeDialog" :parentFetchCategoryData="fetchCategoryData"/>
-            <q-card-section>
-              
-
-            </q-card-section>
-
           </q-card>
       </q-dialog>
 
@@ -176,18 +171,15 @@
           </q-tr>
         </template>
       </q-table>
-          <!--SubCat Update/delete-->
-          <q-dialog v-model="viewExistingSubCat">
+      <!--SubCat Update/delete-->
+      <q-dialog v-model="viewExistingSubCat">
           <q-card style="width: 960px; max-width: 80vw;">
             <q-card-actions align="right">
               <q-btn icon="close" size="md" flat @click="toggleExistingSubCat" class="q-ml-md q-mt-md" />
             </q-card-actions>
 
             <AdminSubCategoryProfile :selectedSubCatName="subcatForChild" :backBtn="toggleExistingSubCat" :parentFetchCategoryData="fetchSubCategoryData"/>
-            <q-card-section>
-              
 
-            </q-card-section>
 
           </q-card>
       </q-dialog>
