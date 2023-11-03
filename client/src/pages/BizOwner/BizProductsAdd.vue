@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import axios from 'axios';
@@ -158,8 +158,8 @@ const product = ref<BizProductDetails>({
 });
 
 const availabilityOptions = computed(() => [
-  { value: 'AVAILABLE', label: 'Yes' },
-  { value: 'UNAVAILABLE', label: 'No' },
+  {  value: 'AVAILABLE', label: 'Yes'  },
+  {  value: 'UNAVAILABLE', label: 'No'  },
 ]);
 
 const csv_input = ref(null);
@@ -235,6 +235,39 @@ const csvDataToDatabase = async () => {
 };
 
 const addProduct = () => {
+  // console.log(product.prod_name);
+  // if (product.prod_name === '' || product.prod_name === undefined) {
+  //   q.notify({
+  //     icon: "report_problem",
+  //     message: "Product name empty",
+  //     color: "negative",
+  //   });
+  //   return
+  // }
+  // if (product.prod_description === '' || product.prod_description === null) {
+  //   q.notify({
+  //     icon: "report_problem",
+  //     message: "Product description empty",
+  //     color: "negative",
+  //   });
+  //   return
+  // }
+  // if (product.cat_id === '' || product.cat_id == null) {
+  //   q.notify({
+  //     icon: "report_problem",
+  //     message: "Product Category empty",
+  //     color: "negative",
+  //   });
+  //   return
+  // }
+  // if (product.sub_cat === '' || product.sub_cat == null) {
+  //   q.notify({
+  //     icon: "report_problem",
+  //     message: "Product Category empty",
+  //     color: "negative",
+  //   });
+  //   return
+  // }
   q.loading.show();
   // uploadImages("P0652", files.value)
   product._rawValue.biz_id = localStorage.getItem("userId");
@@ -247,6 +280,7 @@ const addProduct = () => {
 //product/addNewProd
 const postRowProduct = async () => {
   try {
+
     //change biz id value to the id of current login biz owner
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/addNewProd`, product._rawValue);
     console.log(response)
@@ -312,6 +346,7 @@ const getAllCategrories = async () => {
       ];
 
 
+
     } else {
       console.error('Failed to fetch category data');
     }
@@ -341,7 +376,10 @@ onMounted(() => {
   getAllSubCategories()
 });
 
-
+watch([product], () => {
+  // The computed property `filteredList` will automatically update here
+  console.log(product);
+});
 </script>
 
 <style>

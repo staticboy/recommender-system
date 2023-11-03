@@ -39,7 +39,9 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     prod_status: '',
   })
 
-
+  const selectedProdId = ref({
+    prod_id : ''
+  });
 
 
   const getBizOwnerProfileDetails = async (biz_id: string) => {
@@ -58,6 +60,7 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     getBizOwnerProfileDetails,
     insertEnquiry,
     editProdDetails,
+    selectedProdId,
   };
 });
 

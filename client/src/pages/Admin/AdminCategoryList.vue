@@ -28,26 +28,6 @@
 
               </div>
 
-              <div class="date-pickers ">
-                <div class="date-picker" @click="toggleDatePicker('startDate')">
-                  <label for="startDate">From:</label>
-                  <span v-if="!showStartDatePicker">
-                    <q-icon name="event" size="24px" />
-                  </span>
-                  <q-date v-model="startDate" label="From" ref="startDatePicker" @blur="onDatePickerBlur('startDate')"
-                    @input="onDatePickerInput('startDate')" v-show="showStartDatePicker" />
-                </div>
-
-                <div class="date-picker" @click="toggleDatePicker('endDate')">
-                  <label for="endDate">To:</label>
-                  <span v-if="!showEndDatePicker">
-                    <q-icon name="event" size="24px" />
-                  </span>
-                  <q-date v-model="endDate" label="To" ref="endDatePicker" @blur="onDatePickerBlur('endDate')"
-                    @input="onDatePickerInput('endDate')" v-show="showEndDatePicker" />
-                </div>
-              </div>
-
 
             </q-form>
           </q-card-section>
@@ -118,7 +98,7 @@
                 </div>
 
                 <div class="col-3">
-                  <q-select v-model="status" label="Status" outlined :options="statusOptions"></q-select>
+                  <q-select v-model="status" label="Status" outlined :options="subCatStatusOptions"></q-select>
                 </div>
 
               </div>
@@ -162,7 +142,7 @@
             </q-td>
 
             <q-td key="subcat_status" :props="props">
-              {{ props.row.subcat_status == 'Y' ? 'Active' : 'Inactive'}}
+              {{ props.row.subcat_status == 'Y' ? 'ACTIVE' : 'INACTIVE'}}
             </q-td>
 
             <q-td>
@@ -256,41 +236,15 @@ const userName = ref('');
 
 const status = ref('');
 const userType = ref('');
-const startDate = ref('');
-const endDate = ref('');
-const somevar = ref('');
-const subcatForChild = ref('');
-
-
-
-const showStartDatePicker = ref(false);
-const showEndDatePicker = ref(false);
-
-const toggleDatePicker = (datePicker: 'startDate' | 'endDate') => {
-  if (datePicker === 'startDate') {
-    showStartDatePicker.value = !showStartDatePicker.value;
-  } else if (datePicker === 'endDate') {
-    showEndDatePicker.value = !showEndDatePicker.value;
-  }
-};
-
-const onDatePickerBlur = (datePicker: 'startDate' | 'endDate') => {
-  if (datePicker === 'startDate') {
-    showStartDatePicker.value = false;
-  } else if (datePicker === 'endDate') {
-    showEndDatePicker.value = false;
-  }
-};
-
-const onDatePickerInput = (datePicker: 'startDate' | 'endDate') => {
-  // Handle date selection here if needed
-  console.log(datePicker);
-};
 
 const statusOptions = [
   { label: 'ACTIVE', value: 'ACTIVE' },
   { label: 'INACTIVE', value: 'INACTIVE' },
-  { label: 'Default', value: '' }
+];
+
+const subCatStatusOptions = [
+  { label: 'ACTIVE', value: 'Y' },
+  { label: 'INACTIVE', value: 'N' },
 ];
 
 const userTypeOptions = [
@@ -304,6 +258,8 @@ const submitForm = () => {
 
 const resetForm = () => {
   // Reset form fields
+  status.value = '';
+  userType.value = '';
 };
 
 //Items
@@ -386,8 +342,6 @@ const columnsSubCat = computed(() => [
 ]);
 
 
-
-
 const tableColumns = ref([
   { name: 'id', required: true, label: 'ID', align: 'left', field: 'cat_id', sortable: true },
   { name: 'enq_submitby', required: true, label: 'Name', align: 'left', field: 'cat_name', sortable: true },
@@ -413,9 +367,11 @@ const viewSubCatRow = (row : any) => {
 
 const filteredList = computed(() => {  //filtering not working
   return tableData.value.filter((item) => {
+    // console.log(status.value.value)
+    // console.log(item.cat_status)
     return (
       (!userName.value || item.cat_name.toLowerCase().includes(userName.value.toLowerCase())) &&
-      (!status.value || item.cat_status === status.value) 
+      (!status.value.value || item.cat_status === status.value.value) 
     );
   });
 });
@@ -424,13 +380,13 @@ const filteredSubCatList = computed(() => {  //filtering not working
   return tableSubData.value.filter((item) => {
     return (
       (!userName.value || item.subcat_name.toLowerCase().includes(userName.value.toLowerCase())) &&
-      (!status.value || item.subcat_status === status.value) 
+      (!status.value.value || item.subcat_status.toUpperCase() === status.value.value) 
     );
   });
 });
 
 // Watch for changes in filter inputs and update the filtered list
-watch([userName, status, userType, startDate, endDate], () => {
+watch([userName, status, userType], () => {
   // The computed property `filteredList` will automatically update here
 });
 

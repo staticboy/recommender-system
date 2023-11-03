@@ -17,7 +17,7 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td auto-width>
-            <q-btn size="sm" color="primary" round dense @click="toggleRowExpansion(props.row)"
+            <q-btn size="sm" color="primary" round dense @click="viewRow(props.row)"
               :icon="props.row.expanded ? 'remove' : 'add'" />
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
@@ -34,61 +34,10 @@
             </template>
           </q-td>
         </q-tr>
-        <q-tr v-if="props.row.expanded" :props="props">
-          <q-td colspan="100%">
-            <div class="row">
-              <div class="col">
-                <q-input outlined v-model="updatedProduct.prod_name" label="Name" dense required type="text"
-                  class="q-mr-md"></q-input>
-              </div>
-              <div class="col">
-                <q-input outlined v-model="updatedProduct.prod_description" label="Description" dense required type="text"
-                  class="q-mr-md"></q-input>
-              </div>
-              <div class="col">
-                <q-input outlined v-model="updatedProduct.prod_stockqty" label="Stock Qty" dense required type="number"
-                  class="q-mr-md"></q-input>
-              </div>
-              <div class="col">
-                <q-input outlined v-model="updatedProduct.prod_price" label="Price" dense required type="number"
-                  class="q-mr-md"></q-input>
-              </div>
-              <div class="col">
-                <q-input outlined v-model="updatedProduct.prod_modelnum" label="Model Number" dense required type="text"
-                  class="q-mr-md"></q-input>
-              </div>
-              <div class="col">
-                <q-select v-model="updatedProduct.cat_id" :options="categoryOptions" label="Category" dense class="q-mr-md" emit-value map-options/>
-              </div>
-              <div class="col">
-                <q-select v-model="updatedProduct.sub_cat" :options="subCategoryOptions" label="Sub-category" dense emit-value map-options
-                  class="q-mr-md" />
-              </div>
-              <div class="col">
-                <q-select v-model="updatedProduct.prod_status" :options="availabilityOptions" label="Available?" dense emit-value map-options
-                  class="q-mr-md" />
-              </div>
-              <div class="col">
-                <q-btn type="submit" color="primary" label="Update" @click="updateRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
-                <q-btn type="submit" color="red" label="Delete" @click="confirmDeleteRow(props.row)" class="q-mt-md q-mr-md" dense></q-btn>
-              </div>
-            </div>
-          </q-td>
-        </q-tr>
+        
       </template>
     </q-table>
-    <q-dialog v-model="confirmDelete" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="warning" color="negative" text-color="white" />
-          <span class="q-ml-sm">Delete {{ selectedRow ? selectedRow.prod_name : '' }}? You won't be able to revert this</span>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Delete" color="negative" @click="deleteRow(selectedRow)" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    
   </div>
 </template>
 
@@ -98,32 +47,21 @@ import { ref, computed, onMounted } from 'vue';
 import SearchBar from './SearchBar.vue';
 import axios from 'axios';
 import { useQuasar } from "quasar";
-import { EditProductDetails } from "./../stores/biz/types";
+import { useRouter } from 'vue-router';
+import { useStore } from '../stores';
+// import { EditProductDetails } from "./../stores/biz/types";
+
+const store = useStore();
+const { selectedProdId } = store.bizOwner;
 
 const q = useQuasar();
 const filteredProductsRef = ref([]);
 const searchQuery = ref('');
 const categoryOptions = ref();
 const subCategoryOptions = ref();
-const selectedRow = ref(null);
-const confirmDelete = ref(false);
+const router = useRouter();
 
-const confirmDeleteRow = (row) => {
-  selectedRow.value = row;
-  confirmDelete.value = true;
-};
-
-const updatedProduct = ref<EditProductDetails>({
-  prod_id: '',
-  cat_id: '',
-  sub_cat: '',
-  prod_name: '',
-  prod_description: '',
-  prod_price: 0,
-  prod_stockqty: 0,
-  prod_modelnum: '',
-  prod_status: '',
-});
+const updatedProducts = ref({});
 
 const availabilityOptions = computed(() => [
   {value: 'AVAILABLE', label: 'Yes'},
@@ -222,83 +160,14 @@ const stockQtyStyle = ref((stockQty) => {
   };
 });
 
-const toggleRowExpansion = (row) => {
-  row.expanded = !row.expanded;
-  // console.log(row)
-  updatedProduct.value = JSON.parse(JSON.stringify(row));
-  // console.log(updatedProduct)
+const viewRow = (row) => {
+  router.push({path : '/biz/products-form'});
+  
+  selectedProdId.prod_id = row.prod_id;
+  // console.log(selectedProdId.prod_id);
 };
 
-
-const updateRow = (row) => {
-  console.log(updatedProduct)
-  updateRowProduct();
-  toggleRowExpansion(row);
-};
-
-const deleteRow = (row) => {
-  //remove item via api
-  console.log(row.prod_id)
-  deleteRowProduct(row)
-};
-
-// API delete
-const deleteRowProduct = async (param) => {
-  try {
-    var prod_id = {"prod_id": param.prod_id }
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/deleteProd`, prod_id);
-    // console.log(response)
-    if (response.statusText === "OK") {
-      q.notify({
-        type: 'positive',
-        message: param.prod_name + ': ' + response.data.message
-      })
-      fetchProductData()
-    } else {
-      console.error('Failed to delete product data');
-      q.notify({
-        type: 'negative',
-        message: param.prod_name + ': ' + response.data.message
-      })
-    }
-  } catch (error) {
-    console.error('Error while deleting product data:', error);
-    q.notify({
-        type: 'negative',
-        message: 'Something went wrong.'
-      })
-  }
-};
-
-// API update
-const updateRowProduct = async () => {
-  try {
-    //change biz id value to the id of current login biz owner
-    const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/product/editInfo`, updatedProduct._rawValue);
-    console.log(response)
-    if (response.statusText === "OK") {
-      // fetchProductData();
-      q.notify({
-        type: 'positive',
-        message: updatedProduct._rawValue.prod_name + ': updated successfully'
-      })
-    } else {
-      console.error('Failed to update product data');
-      q.notify({
-        type: 'negative',
-        message: updatedProduct._rawValue.prod_name + ': update failed'
-      })
-    }
-  } catch (error) {
-    console.error('Error while update product data:', error);
-    q.notify({
-        type: 'negative',
-        message: 'Something went wrong.'
-      })
-  }
-};
-
-
+//APIs
 const fetchProductData = async () => {
   try {
     //change biz id value to the id of current login biz owner

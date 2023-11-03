@@ -43,5 +43,10 @@ export default {
       path: "products-all",
       component: () => import("../pages/BizOwner/BizProductsAdd.vue"),
     },
+    {
+      name: "BizProductsForm",
+      path: "products-form",
+      component: () => import("../components/Modals/BizProdModal.vue"),
+    },
   ]
 }
