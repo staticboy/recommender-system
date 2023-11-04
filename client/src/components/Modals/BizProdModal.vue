@@ -1,4 +1,5 @@
 <template>
+  <div class="q-pt-lg q-pl-md q-pb-sm q-pr-xs">
     <div class="q-pa-md">
       <h4>{{ product.prod_id }} : <b>{{ product.prod_name }}</b></h4>
       <!-- insert images -->
@@ -68,15 +69,41 @@
         label="Update"
         color="primary"
         class="q-mt-md"
-        @click="updateProduct()"
+        @click="requestAction = 1; reverseInitConfirm()"
       />
       <q-btn
         label="Delete"
         color="negative"
         class="q-mt-md"
-        @click="deleteRow(product)"
+        @click="requestAction = 2; reverseInitConfirm()"
       />
     </q-form>
+</div>
+    <q-dialog v-model="initConfirm">
+      <q-card style="width: 960px; max-width: 80vw;">
+        <q-card-actions align="right">
+          <q-btn icon="close" size="md" flat @click="reverseInitConfirm()" class="q-ml-md q-mt-md" />
+        </q-card-actions>
+        <div class="q-gutter-md pb-4">
+        <h6>Confirm Action : {{ actionName[requestAction] }} </h6>
+        <div class="q-gutter-md">
+          <q-btn
+          label="Confirm"
+          color="primary"
+          class="q-mt-md"
+          @click="commitChanges()"
+          />
+          <q-btn
+          label="Cancel"
+          color="primary"
+          class="q-mt-md"
+          @click="reverseInitConfirm()"
+          />
+        </div>
+      </div>
+      </q-card>
+    </q-dialog>
+
 </template>
   
 <script setup lang="ts">
@@ -92,6 +119,9 @@ const store = useStore();
 const { selectedProdId } = store.bizOwner;
 const categoryOptions = ref();
 const subCategoryOptions = ref();
+const requestAction = ref(0);
+
+const actionName = ref(["","Update", "Delete"]);
 
 interface Category {
   cat_id: number;
@@ -119,29 +149,66 @@ const availabilityOptions = computed(() => [
 
 const updateProduct = () => {
   //update item via api
-  console.log(product.value)
+  // console.log(product.value)
   updateRowProduct()
-  router.go(-1)
+  // router.go(-1)
 };
 
 const deleteRow = (param) => {
   //remove item via api
-  console.log(param.prod_id)
+  // console.log(param)
   deleteRowProduct(param)
-  router.go(-1)
+  // router.go(-1)
 };
 
-onMounted(() => {
-  console.log(selectedProdId.prod_id);
-  getProdById();
-  getAllCategrories()
-  getAllSubCategories()
+const currentProdID = ref();
+
+ // Anything that you want to take from the parent
+ const parentProps = defineProps({
+  selectedProdId : {
+    type : String
+  },
+  backBtn : {
+    type: Function
+  },
+  parentFetchProdData : {
+    type: Function
+  },
 });
+
+const commitChanges = () => {
+  console.log(requestAction.value);
+  switch(requestAction.value) {
+  case 1:
+    updateProduct();
+    break;
+  case 2:
+    deleteRow(product.value.prod_id);
+    break;
+  default:
+    console.warn('action not known');
+  }
+  //reset to 0
+  requestAction.value = 0;
+  reverseInitConfirm();
+  parentProps.parentFetchProdData();
+  parentProps.backBtn(product.value.prod_id);
+}
+
+//another function to invoke parent prop function
+const invokeToggler = () =>{
+  parentProps.backBtn(parentProps.selectedProdId);
+};
+
+const initConfirm = ref(false);
+const reverseInitConfirm = () => {
+  initConfirm.value = !initConfirm.value;
+}
 
 // API fetch
 const getProdById = async () => {
   try {
-    var param = {"prod_id": selectedProdId.prod_id} 
+    var param = {"prod_id": parentProps.selectedProdId} 
     console.log(param);
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getById`, param);
     console.log(response)
@@ -186,7 +253,7 @@ const updateRowProduct = async () => {
 // API delete
 const deleteRowProduct = async (param) => {
   try {
-    var prod_id = {"prod_id": param.prod_id }
+    var prod_id = {"prod_id": param }
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/deleteProd`, prod_id);
     // console.log(response)
     if (response.statusText === "OK") {
@@ -253,4 +320,11 @@ const getAllSubCategories = async () => {
   }
 };
 
+
+onMounted(() => {
+  console.log(selectedProdId.prod_id);
+  getProdById();
+  getAllCategrories()
+  getAllSubCategories()
+});
 </script>

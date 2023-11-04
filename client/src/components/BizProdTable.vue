@@ -2,12 +2,11 @@
   <div>
     <SearchBar v-model="searchQuery" class="q-mb-md" />
 
-    <q-table :rows="filteredProducts" :rows-per-page-options="[10, 20, 30]" :columns="columns"
-      :row-key="row => row.id">
+    <q-table :rows="filteredProducts" :rows-per-page-options="[10, 20, 30]" :columns="columns" :row-key="row => row.id">
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th auto-width />
-          
+
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
@@ -17,7 +16,7 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td auto-width>
-            <q-btn size="sm" color="primary" round dense @click="viewRow(props.row)"
+            <q-btn size="sm" color="primary" round dense @click="toggleProd(props.row); prodDetails = props.row"
               :icon="props.row.expanded ? 'remove' : 'add'" />
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
@@ -34,22 +33,49 @@
             </template>
           </q-td>
         </q-tr>
-        
+
       </template>
     </q-table>
-    
+
+    <q-dialog v-model="viewProd" class="pigxelAuto">
+      <q-card style="width: 960px; max-width: 80vw;">
+        <q-card-actions align="right">
+          <q-btn icon="close" size="md" flat @click="toggleProd(prodDetails.prod_id)" class="q-ml-md q-mt-md" />
+        </q-card-actions>
+        <ProductModal
+        :selectedProdId ="prodDetails.prod_id"
+        :backBtn ="toggleProd"
+        :parentFetchProdData ="fetchProductData"
+        />
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import SearchBar from './SearchBar.vue';
 import axios from 'axios';
 import { useQuasar } from "quasar";
 import { useRouter } from 'vue-router';
 import { useStore } from '../stores';
-// import { EditProductDetails } from "./../stores/biz/types";
+import { EditProductDetails } from "./../stores/biz/types";
+import ProductModal from '../components/Modals/BizProdModal.vue';
+
+// D:\FYP\recommender-system\client\src\components\BizProdTable.vue
+//For Update/Delete Cat
+/******************/
+const subcatForEnq = ref('');
+
+const viewProd = ref(false);
+const toggleProd = (row) => {
+
+  subcatForEnq.value = row.enq_id;
+  viewProd.value = !viewProd.value;
+};
+/**********/
 
 const store = useStore();
 const { selectedProdId } = store.bizOwner;
@@ -63,9 +89,26 @@ const router = useRouter();
 
 const updatedProducts = ref({});
 
+const prodDetails = ref<EditProductDetails>({
+  prod_id: '',
+  cat_id: '',
+  sub_cat: '',
+  prod_name: '',
+  prod_description: '',
+  prod_price: 0,
+  prod_stockqty: 0,
+  prod_modelnum: '',
+  prod_status: '',
+});
+
+//watch prodDetails
+watch(prodDetails, () => {
+  console.log(prodDetails.value);
+});
+
 const availabilityOptions = computed(() => [
-  {value: 'AVAILABLE', label: 'Yes'},
-  {value: 'UNAVAILABLE', label: 'No'},
+  { value: 'AVAILABLE', label: 'Yes' },
+  { value: 'UNAVAILABLE', label: 'No' },
 ]);
 
 const columns = computed(() => [
@@ -161,8 +204,8 @@ const stockQtyStyle = ref((stockQty) => {
 });
 
 const viewRow = (row) => {
-  router.push({path : '/biz/products-form'});
-  
+  router.push({ path: '/biz/products-form' });
+
   selectedProdId.prod_id = row.prod_id;
   // console.log(selectedProdId.prod_id);
 };
@@ -171,7 +214,7 @@ const viewRow = (row) => {
 const fetchProductData = async () => {
   try {
     //change biz id value to the id of current login biz owner
-    var param = {"biz_id": localStorage.getItem("userId")} 
+    var param = { "biz_id": localStorage.getItem("userId") }
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByBizId`, param);
     // console.log(response)
     if (response.statusText === "OK") {
@@ -195,7 +238,7 @@ const getAllCategrories = async () => {
         value: category.cat_id,
         label: category.cat_name
       }));
-      categoryOptions.value = [ 
+      categoryOptions.value = [
         ...mappedCategories
       ];
     } else {
@@ -232,3 +275,10 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+.pigxelAuto {
+  box-sizing: border-box;
+  padding: 5px;
+}
+</style>
