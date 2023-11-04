@@ -4,7 +4,7 @@
   <div class=" text-center q-pa-md flex flex-center">
     <div class="">
       <header>
-        <h1>Member Profile: <b>{{ profile.user_id }}</b></h1>
+        <h1>Customer Profile: <b>{{ profile.user_id }}</b></h1>
 
         <div class="flex flex-row btn-grp">
           <div class="form-group q-mt-xl">
