@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { MemberDetails, MemberPreferences } from "./types";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { ProductDetails } from "../product/types";
 
 export const useMemberStore = defineStore("member", () => {
   const memberDetails = ref<MemberDetails>({
@@ -16,17 +17,22 @@ export const useMemberStore = defineStore("member", () => {
     user_gender: "",
   });
   const memberPreferences = ref<MemberPreferences[]>([]);
-  const memberWishlist = ref();
+  const memberWishlist = ref<string[]>([]);
+  const memberCart = ref<string[]>([]);
 
   const getMemberProfileDetailsByID = async (id: string) => {
-    const response: AxiosResponse<MemberDetails> = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/getById`, {
-      user_id: id
+    const response: AxiosResponse<MemberDetails> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getById`, {
+      params: {
+        user_id: id
+      }
     });
     memberDetails.value = response.data;
   };
   const getMemberPreferencesByID = async (id: string) => {
-    const response: AxiosResponse<MemberPreferences[]> = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/getPreference`, {
-      user_id: id
+    const response: AxiosResponse<MemberPreferences[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getPreference`, {
+      params: {
+        user_id: id
+      }
     });
     memberPreferences.value = response.data;
   };
@@ -68,6 +74,73 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   }
+  const addProductToWishlist = async (req: { user_id: string, prod_id: string }) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/addNewWishlist`, {
+      "user_id": req.user_id,
+      "prod_id": req.prod_id
+    });
+    console.log(response)
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  const getMemberWishlist = async (id: string) => {
+    const response: AxiosResponse<{ user_id: string, prod_id: string }[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getWishlist`, {
+      params: {
+        "user_id": id
+      }
+    });
+    if (response.status === 200) {
+      memberWishlist.value = response.data.map(res => res.prod_id)
+    }
+    return response.data;
+  }
+  const addProductToCart = async (req: { user_id: string, prod_id: string }) => {
+    let response;
+    try {
+      response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/addToCart`, {
+        "user_id": req.user_id,
+        "prod_id": req.prod_id
+      });
+      return 1;
+    } catch (error: any) {
+      if (error?.response?.data.message == "Item already added to cart.") {
+        return 0;
+      } else {
+        return -1;
+      }
+    }
+  }
+  const getMemberCart = async (id: string) => {
+    console.log(id)
+    const response: AxiosResponse<{ user_id: string, prod_id: string }[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getCart`, {
+      params: {
+        user_id: id
+      }
+    });
+    if (response.status === 200) {
+      memberCart.value = response.data.map(res => res.prod_id)
+      console.log(memberCart.value)
+      return memberCart.value;
+    } else {
+      return [];
+    }
+  }
+  const deleteFromCart = async (req: { user_id: string, prod_id: string }) => {
+    const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/member/delCart`, {
+      params: {
+        "user_id": req.user_id,
+        "prod_id": req.prod_id
+      }
+    });
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return {
     memberDetails,
@@ -78,5 +151,10 @@ export const useMemberStore = defineStore("member", () => {
     deleteMemberPreferences,
     getMemberProfileDetailsByID,
     getMemberPreferencesByID,
+    addProductToWishlist,
+    getMemberWishlist,
+    addProductToCart,
+    getMemberCart,
+    deleteFromCart,
   }
 });

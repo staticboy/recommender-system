@@ -18,7 +18,7 @@ export async function getMemberAll(req: Request, res: Response) {
 export async function getMemberById(req: Request, res: Response) {
     try 
     {
-        const member = await db.one('SELECT * FROM mem_get_by_id($1)', [req.body]);
+        const member = await db.one('SELECT * FROM mem_get_by_id($1)', [req.query]);
         res.status(200).json(member);
     } catch (error) {
         console.error(error);
@@ -29,7 +29,7 @@ export async function getMemberById(req: Request, res: Response) {
 export async function getMemberByRegdate(req: Request, res: Response) {
     try 
     {
-        const members = await db.any('SELECT * FROM mem_get_by_regdate($1)', [req.body]);
+        const members = await db.any('SELECT * FROM mem_get_by_regdate($1)', [req.query]);
         res.status(200).json(members);
     } catch (error) {
         console.error(error);
@@ -40,7 +40,7 @@ export async function getMemberByRegdate(req: Request, res: Response) {
 export async function getMemberPreference(req: Request, res: Response) {
     try 
     {
-        const member = await db.any('SELECT * FROM mem_get_preference_info($1)', [req.body]);
+        const member = await db.any('SELECT * FROM mem_get_preference_info($1)', [req.query]);
         res.status(200).json(member);
     } catch (error) {
         console.error(error);
@@ -51,8 +51,30 @@ export async function getMemberPreference(req: Request, res: Response) {
 export async function getMemberTransactions(req: Request, res: Response) {
     try 
     {
-        const member = await db.any('SELECT * FROM mem_get_transactions($1)', [req.body]);
+        const member = await db.any('SELECT * FROM mem_get_transactions($1)', [req.query]);
         res.status(200).json(member);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
+
+export async function getMemberWishlist(req: Request, res: Response) {
+    try 
+    {
+        const wishlist = await db.any('SELECT * FROM mem_get_wishlist($1)', [req.query]);
+        res.status(200).json(wishlist);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+}
+
+export async function getMemberCartDetails(req: Request, res: Response) {
+    try 
+    {
+        const cart = await db.any('SELECT * FROM mem_get_cart($1)', [req.query]);
+        res.status(200).json(cart);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -80,11 +102,11 @@ export async function deleteMemberPreferenceInfo(req: Request, res: Response) {
 export async function deleteMemberCartItem(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM mem_delete_from_cart($1)', [req.body]);
+            'SELECT * FROM mem_delete_from_cart($1)', [req.query]);
 
-        if (result === 1) {
+        if (result.mem_delete_from_cart === 1) {
             res.status(200).json({ message: 'Cart item deleted successfully.' });
-        } else if (result === -1) {
+        } else if (result.mem_delete_from_cart === -1) {
             res.status(404).json({ message: 'Cart item not found.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
@@ -156,10 +178,12 @@ export async function insertProdWishlist(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM mem_insert_to_wishlist($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.mem_insert_to_wishlist === 1) {
             res.status(200).json({ message: 'Wishlist item added successfully.' });
-        } else if (result === 0) {
+        } else if (result.mem_insert_to_wishlist === 0) {
             res.status(500).json({ error: 'DB error: Prod wishlist insert failed.' });
+        } else if (result.mem_insert_to_wishlist === -1) {
+            res.status(500).json({ error: 'Product already in wishlist' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });
         }
@@ -192,9 +216,9 @@ export async function insertMemberCartItem(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM mem_insert_to_cart($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.mem_insert_to_cart === 1) {
             res.status(200).json({ message: 'Added to cart.' });
-        } else if (result === -1) {
+        } else if (result.mem_insert_to_cart === -1) {
             res.status(404).json({ message: 'Item already added to cart.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

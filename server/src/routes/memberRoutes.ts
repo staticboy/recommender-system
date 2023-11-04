@@ -14,15 +14,19 @@ import { getMemberAll,
   updateMemberProfileInfo,
   deleteMemberWishItem,
   deleteMemberCartItem,
-  deleteMemberPreferenceInfo } from '../controllers/memberController';
+  deleteMemberPreferenceInfo, 
+  getMemberWishlist,
+  getMemberCartDetails} from '../controllers/memberController';
 
 const router = Router();
 
 router.get('/getAll', getMemberAll);
-router.post('/getById', getMemberById);
-router.post('/getByDate', getMemberByRegdate);
-router.post('/getPreference', getMemberPreference);
-router.post('/getTransaction', getMemberTransactions);
+router.get('/getById', getMemberById);
+router.get('/getByDate', getMemberByRegdate);
+router.get('/getPreference', getMemberPreference);
+router.get('/getTransaction', getMemberTransactions);
+router.get('/getWishlist', getMemberWishlist);
+router.get('/getCart', getMemberCartDetails);
 router.post('/addNewMember', insertNewMember);
 router.post('/addNewPref', insertPreferenceInfo);
 router.post('/addNewRating', insertProdRating);

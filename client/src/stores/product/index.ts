@@ -13,7 +13,9 @@ export const useProductStore = defineStore("product", () => {
     const res = productList.value.find((product) => product.prod_id === id);
     if (!res) {
       const resp = await getProductByID(id);
-      return resp[0];
+      return resp;
+    } else {
+      return res
     }
   }
 
@@ -52,7 +54,7 @@ export const useProductStore = defineStore("product", () => {
     }
   };
   const getProductByID = async (id: string) => {
-    const resp: AxiosResponse<ProductDetails[]> = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getById`, {
+    const resp: AxiosResponse<ProductDetails> = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getById`, {
       prod_id: id
     });
     if (resp.status === 200) {
@@ -65,7 +67,7 @@ export const useProductStore = defineStore("product", () => {
       )
       return resp.data;
     } else {
-      return [];
+      return {} as ProductDetails;
     }
   };
   const getProductRecommendations = async (id: string) => {

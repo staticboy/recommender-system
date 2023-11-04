@@ -1,14 +1,22 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useBizOwnerStore } from "../../stores/biz";
+import { BizProfileDetails } from "../../stores/biz/types";
+import BusinessDetailsModal from "../../components/Modals/BusinessDetailsModal.vue";
 
 const bizStore = useBizOwnerStore();
 const searchTerm = ref("");
+const showBusinessDetailsDialog = ref(false);
+const selectedBusiness = ref<BizProfileDetails>();
 const searchResults = computed(() => {
   return bizStore.businessList.filter((b) => {
     return b.biz_name.toLowerCase().includes(searchTerm.value.toLowerCase());
   });
 });
+const showBusinessDetails = (business: BizProfileDetails) => {
+  selectedBusiness.value = business;
+  showBusinessDetailsDialog.value = true;
+}
 onMounted(async () => {
   if (bizStore.businessList.length === 0) {
     await bizStore.getAllBusinesses();
@@ -27,8 +35,9 @@ onMounted(async () => {
         bordered
         v-for="b in searchResults"
         :key="b.biz_id"
-        class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+        class="flex flex-col justify-center items-center rounded-xl cursor-pointer q-px-sm q-py-lg"
         style="height: 300px;"
+        @click="showBusinessDetails(b)"
       >
         <q-card-section>
           <div class="text-h6"> {{ b.biz_name }}</div>
@@ -39,5 +48,11 @@ onMounted(async () => {
       </q-card>
     </div>
   </q-page>
+  <q-dialog v-model="showBusinessDetailsDialog">
+    <BusinessDetailsModal
+      v-if="selectedBusiness"
+      :business="selectedBusiness" 
+    />
+  </q-dialog>
 </template>
 <style scoped></style>

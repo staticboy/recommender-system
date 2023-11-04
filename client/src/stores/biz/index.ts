@@ -41,14 +41,24 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
   })
 
   const selectedProdId = ref({
-    prod_id : ''
+    prod_id: ''
   });
 
+  const getBizDetails = async (biz_id: string) => {
+    const filter = businessList.value.find((biz) => biz.biz_id === biz_id);
+    if (!filter) {
+      const resp = await getBizOwnerProfileDetails(biz_id)
+      bizProfileDetails.value = resp;
+      return resp;
+    } else {
+      return filter;
+    }
+  }
 
   const getBizOwnerProfileDetails = async (biz_id: string) => {
-    console.log(biz_id);
     const resp = await axios.post<BizProfileDetails>(`${import.meta.env.VITE_API_URL}/api/business/getById`, { biz_id: biz_id });
     bizProfileDetails.value = resp.data;
+    return resp.data;
   }
 
   const insertEnquiry = async (enq: InsertEnquiryRequest) => {
@@ -67,6 +77,7 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     editProdDetails,
     selectedProdId,
     businessList,
+    getBizDetails,
     getBizOwnerProfileDetails,
     insertEnquiry,
     getAllBusinesses,

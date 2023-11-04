@@ -29,14 +29,14 @@ export default {
       component: () => import("../pages/Member/MemberEnquiry.vue"),
     },
     {
-      name: "SearchBusinessPage",
-      path: "search",
-      component: () => import("../pages/Member/SearchBusinessPage.vue"),
+      name: "BusinessSearchPage",
+      path: "business-search",
+      component: () => import("../pages/Member/BusinessSearchPage.vue"),
     },
     {
-      name: "ProductRecommendationPage",
-      path: "recommendation",
-      component: () => import("../pages/Member/ProductRecommendationPage.vue"),
+      name: "ProductSearchPage",
+      path: "product-search",
+      component: () => import("../pages/Member/ProductSearchPage.vue"),
     },
     {
       name: "ShoppingCartPage",

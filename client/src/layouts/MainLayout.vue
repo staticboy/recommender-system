@@ -50,8 +50,8 @@ onBeforeMount(async () => {
         <q-btn stretch flat :to="navRoutes + '/home'" label="Home" />
         <!-- USER -->
         <template v-if="navRoutes === '/user'">
-          <q-btn stretch flat to="/user/search" label="Business" />
-          <q-btn stretch flat to="/user/recommendation" label="Product" />
+          <q-btn stretch flat to="/user/business-search" label="Business" />
+          <q-btn stretch flat to="/user/product-search" label="Product" />
           <q-btn stretch flat to="/user/enquiry" label="Contact Us" />
         </template>
 
