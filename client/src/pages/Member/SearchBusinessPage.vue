@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { DEMO_BUSINESS_LIST } from "../../constants.ts"
+import { ref, computed, onMounted } from "vue";
+import { useBizOwnerStore } from "../../stores/biz";
 
+const bizStore = useBizOwnerStore();
 const searchTerm = ref("");
 const searchResults = computed(() => {
-  return DEMO_BUSINESS_LIST.filter((b) => {
-    return b.toLowerCase().includes(searchTerm.value.toLowerCase());
+  return bizStore.businessList.filter((b) => {
+    return b.biz_name.toLowerCase().includes(searchTerm.value.toLowerCase());
   });
 });
+onMounted(async () => {
+  if (bizStore.businessList.length === 0) {
+    await bizStore.getAllBusinesses();
+  }
+})
 </script>
 <template>
   <q-page>
@@ -16,21 +22,21 @@ const searchResults = computed(() => {
     </div>
     <q-input outlined v-model="searchTerm" label="Search Businesses" />
     <div class="grid grid-cols-3 gap-3 q-pt-md">
-      <template v-for="b in searchResults" :key="b">
-        <q-card
-          dark
-          bordered
-          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
-        >
-          <q-card-section>
-            <div class="text-h6">Business {{ b }}</div>
-          </q-card-section>
-          <q-card-section>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </q-card-section>
-        </q-card>
-      </template>
+      <q-card
+        dark
+        bordered
+        v-for="b in searchResults"
+        :key="b.biz_id"
+        class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+        style="height: 300px;"
+      >
+        <q-card-section>
+          <div class="text-h6"> {{ b.biz_name }}</div>
+        </q-card-section>
+        <q-card-section>
+          {{ b.biz_description }}
+        </q-card-section>
+      </q-card>
     </div>
   </q-page>
 </template>

@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { BizProductDetails, BizProfileDetails, InsertEnquiryRequest, EditProductDetails } from "./types";
-import { List } from "postcss/lib/list";
+import axios, { AxiosResponse } from "axios";
 
 export const useBizOwnerStore = defineStore("bizOwner", () => {
+  const businessList = ref<BizProfileDetails[]>([]);
   const bizProfileDetails = ref<BizProfileDetails>({
     biz_id: '',
     biz_name: '',
@@ -51,16 +52,24 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
   }
 
   const insertEnquiry = async (enq: InsertEnquiryRequest) => {
-    const resp = await axios.post<boolean>("http://localhost:3000/api/enquiries/insertEnquiry", enq);
+    const resp = await axios.post<boolean>(`${import.meta.env.VITE_API_URL}/api/enquiries/insertEnquiry`, enq);
+    return resp.data;
+  }
+
+  const getAllBusinesses = async () => {
+    const resp: AxiosResponse<BizProfileDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/business/getAll`);
+    businessList.value = resp.data;
     return resp.data;
   }
 
   return {
     bizProfileDetails,
-    getBizOwnerProfileDetails,
-    insertEnquiry,
     editProdDetails,
     selectedProdId,
+    businessList,
+    getBizOwnerProfileDetails,
+    insertEnquiry,
+    getAllBusinesses,
   };
 });
 

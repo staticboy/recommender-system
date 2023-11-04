@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
 import { useQuasar } from "quasar";
-import { DEMO_BUSINESS_LIST } from "../../constants.ts";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
+import { useBizOwnerStore } from "../../stores/biz";
 import { CategoryDetails } from "../../stores/category/types";
 import { ProductDetails } from "../../stores/product/types";
 import { MemberPreferences } from "../../stores/member/types";
@@ -14,6 +14,7 @@ const preferenceDialog = ref(false);
 const preferences = ref<MemberPreferences[]>([]);
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
+const bizStore = useBizOwnerStore();
 const selectedCategory = ref<CategoryDetails>({
   cat_id: "",
   cat_name: "",
@@ -41,12 +42,15 @@ onBeforeMount(async () => {
       localStorage.getItem("userId")!
     );
   }
+  if (bizStore.businessList.length === 0) {
+    await bizStore.getAllBusinesses();
+  }
 });
 </script>
 <template>
   <q-page>
     <div class="flex flex-col gap-5 items-center q-px-lg q-pb-xl">
-      <div class="w-full mt-10">
+      <div class="w-full mt-5">
         <h1>Welcome to Sportify!</h1>
       </div>
     </div>
@@ -74,6 +78,132 @@ onBeforeMount(async () => {
           <div class="flex flex-row no-wrap" style="height: 300px">
             <q-card
               v-for="product in productList"
+              :key="product.prod_id"
+              bordered
+              class="rounded-xl q-px-sm"
+              style="width: 400px; height: 300px;"
+            >
+              <q-card-section>
+                <div class="text-h6">{{ product.prod_name }}</div>
+              </q-card-section>
+              <q-card-section class="w-full">
+                {{ product.prod_description }}
+              </q-card-section>
+              <q-card-section>
+                <q-chip> ${{ product.prod_price }} </q-chip>
+              </q-card-section>
+              <q-card-section class="w-full">
+                <span v-if="product.prod_status == 'Not Available'">
+                  {{ product.prod_status }}
+                </span>
+                <q-btn
+                  v-else
+                  label="Add to cart"
+                  icon="shopping_cart"
+                  class="w-full"
+                  @click="
+                    () =>
+                      q.notify({
+                        message: 'Added to cart',
+                        color: 'positive',
+                        icon: 'add_shopping_cart',
+                      })
+                  "
+                />
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-scroll-area>
+      </div>
+    </div>
+
+    <!-- Recommendations based on preference -->
+    <h5>You might be interested in some of these products!</h5>
+    <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
+      <div class="flex col-span-1">
+        <q-card
+          dark
+          bordered
+          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+        >
+          <q-card-section>
+            <div class="text-h6 text-center">Check out our many products for:</div>
+          </q-card-section>
+          <q-card-section>
+            <div class="text-h6 text-center">
+              Temp placeholder for image
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div class="col-span-3">
+        <q-scroll-area style="height: 300px">
+          <div class="flex flex-row no-wrap" style="height: 300px">
+            <q-card
+              v-for="product in productStore.preferenceProductRecommendations"
+              :key="product.prod_id"
+              bordered
+              class="rounded-xl q-px-sm q-py-lg"
+              style="width: 400px"
+            >
+              <q-card-section>
+                <div class="text-h6">{{ product.prod_name }}</div>
+              </q-card-section>
+              <q-card-section class="w-full">
+                {{ product.prod_description }}
+              </q-card-section>
+              <q-card-section>
+                <q-chip> ${{ product.prod_price }} </q-chip>
+              </q-card-section>
+              <q-card-section class="w-full">
+                <span v-if="product.prod_status == 'Not Available'">
+                  {{ product.prod_status }}
+                </span>
+                <q-btn
+                  v-else
+                  label="Add to cart"
+                  icon="shopping_cart"
+                  class="w-full"
+                  @click="
+                    () =>
+                      q.notify({
+                        message: 'Added to cart',
+                        color: 'positive',
+                        icon: 'add_shopping_cart',
+                      })
+                  "
+                />
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-scroll-area>
+      </div>
+    </div>
+
+    <!-- Recommendations based on activity -->
+    <h5>Here are some products that you might like</h5>
+    <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
+      <div class="flex col-span-1">
+        <q-card
+          dark
+          bordered
+          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
+        >
+          <q-card-section>
+            <div class="text-h6 text-center">Check out our many products for:</div>
+          </q-card-section>
+          <q-card-section>
+            <div class="text-h6 text-center">
+              Temp placeholder for image
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div class="col-span-3">
+        <q-scroll-area style="height: 300px">
+          <div class="flex flex-row no-wrap" style="height: 300px">
+            <q-card
+              v-for="product in productStore.activityProductRecommendations"
               :key="product.prod_id"
               bordered
               class="rounded-xl q-px-sm q-py-lg"
@@ -115,15 +245,15 @@ onBeforeMount(async () => {
 
     <!-- Our Business Partners -->
     <h5>Our Business Collaborators</h5>
-    <div class="grid grid-cols-4 gap-3 q-pt-md">
-      <template v-for="b in DEMO_BUSINESS_LIST" :key="b">
+    <div class="grid grid-cols-4 gap-3 q-pt-md q-pb-xl">
+      <template v-for="b in bizStore.businessList.sort(() => .5 - Math.random()).slice(0,6)" :key="b">
         <q-card
           dark
           bordered
           class="flex flex-col justify-center items-center rounded-xl"
         >
           <q-card-section>
-            <div class="text-h6 text-center">Business {{ b }}</div>
+            <div class="text-h6 text-center">{{ b.biz_name }}</div>
           </q-card-section>
         </q-card>
       </template>
