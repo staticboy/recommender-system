@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getProdAll, getProdById, getProdByBizId, getProdByCatId , updateProductInfo, insertNewProduct, deleteProduct, uploadImages, getImages, insertBatchProduct} from '../controllers/productController';
+import { getProdAll, getBestProdPerCat, getProdById, getProdByBizId, getProdByCatId , updateProductInfo, insertNewProduct, deleteProduct, uploadImages, getImages, insertBatchProduct} from '../controllers/productController';
 
 const router = Router();
 
@@ -13,5 +13,7 @@ router.put('/editInfo', updateProductInfo);
 router.post('/deleteProd', deleteProduct);
 router.post('/uploadImages/:prod_id', uploadImages);
 router.get('/getImages/:prod_id', getImages);
+router.get('/getPurchaseProdPerCat', getBestProdPerCat);
+
 
 export default router;

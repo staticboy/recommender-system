@@ -16,6 +16,18 @@ export async function getProdAll(req: Request, res: Response) {
     } 
 }
 
+// GET Products per cat sorted by purchase frequenct
+export async function getBestProdPerCat(req: Request, res: Response) {
+    try 
+    {
+        const product = await db.any('SELECT * FROM vw_ranked_prod_per_cat');
+        res.json(product);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}
+
 export async function getProdById(req: Request, res: Response) {
     try 
     {
