@@ -83,6 +83,7 @@ const toggleExistingBiz = (row) => {
 
 const statusOptions = [
   { label: 'VERIFIED', value: 'VERIFIED' },
+  { label: 'UNVERIFIED', value: 'UNVERIFIED' },
   { label: 'DISABLED', value: 'DISABLED' },
 ];
 
@@ -160,17 +161,6 @@ const fetchBizData = async () => {
   } catch (error) {
     console.error('Error while fetching product data:', error);
   }
-};
-
-const view = (row) => {
-
-  selectedBizId.biz_id = row;
-  console.log(selectedBizId.biz_id );
-
-  router.push('../admin/business-profile');
-
-
-
 };
 
 onMounted(() => {

@@ -71,7 +71,7 @@ export const useProductStore = defineStore("product", () => {
     }
   };
   const getProductRecommendations = async (id: string) => {
-    const resp: AxiosResponse<ProductRecommendations> = await axios.post(`http://104.128.64.150:8080/api/v1/recommendations?user_id=${id}`);
+    const resp: AxiosResponse<ProductRecommendations> = await axios.get(`http://104.128.64.150:8080/api/v1/recommendations?user_id=${id}`);
     activityProductRecommendations.value = resp.data.recommendations_activity;
     preferenceProductRecommendations.value = resp.data.recommendations_pref;
   }
