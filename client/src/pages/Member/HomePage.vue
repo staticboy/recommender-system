@@ -3,7 +3,6 @@ import { ref, onBeforeMount } from "vue";
 import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
-import { useBizOwnerStore } from "../../stores/biz";
 import { CategoryDetails } from "../../stores/category/types";
 import { ProductDetails } from "../../stores/product/types";
 import { MemberPreferences } from "../../stores/member/types";
@@ -14,7 +13,6 @@ const preferenceDialog = ref(false);
 const preferences = ref<MemberPreferences[]>([]);
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
-const bizStore = useBizOwnerStore();
 const selectedCategory = ref<CategoryDetails>({
   cat_id: "",
   cat_name: "",
@@ -41,9 +39,6 @@ onBeforeMount(async () => {
     await productStore.getProductRecommendations(
       localStorage.getItem("userId")!
     );
-  }
-  if (bizStore.businessList.length === 0) {
-    await bizStore.getAllBusinesses();
   }
 });
 </script>
@@ -241,22 +236,6 @@ onBeforeMount(async () => {
           </div>
         </q-scroll-area>
       </div>
-    </div>
-
-    <!-- Our Business Partners -->
-    <h5>Our Business Collaborators</h5>
-    <div class="grid grid-cols-4 gap-3 q-pt-md q-pb-xl">
-      <template v-for="b in bizStore.businessList.sort(() => .5 - Math.random()).slice(0,6)" :key="b">
-        <q-card
-          dark
-          bordered
-          class="flex flex-col justify-center items-center rounded-xl"
-        >
-          <q-card-section>
-            <div class="text-h6 text-center">{{ b.biz_name }}</div>
-          </q-card-section>
-        </q-card>
-      </template>
     </div>
   </q-page>
   <q-dialog persistent v-model="preferenceDialog">
