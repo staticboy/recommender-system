@@ -167,6 +167,14 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   }
+  const memberGetWishlist = async (id: string) => {
+    const response: AxiosResponse<ProductDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getWishlist`, {
+      params: {
+        user_id: id
+      }
+    });
+    return response.data;
+  }
 
   return {
     memberDetails,
