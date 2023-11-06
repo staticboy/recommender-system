@@ -160,9 +160,9 @@ export async function insertProdRating(req: Request, res: Response) {
         const result = await db.one(
             'SELECT * FROM mem_insert_prod_rating($1)', [req.body]);
 
-        if (result === 1) {
+        if (result.mem_insert_prod_rating === 1) {
             res.status(200).json({ message: 'Product rated successfully.' });
-        } else if (result === 0) {
+        } else if (result.mem_insert_prod_rating === 0) {
             res.status(500).json({ error: 'DB error: Prod raiting insert failed.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

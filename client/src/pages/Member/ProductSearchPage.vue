@@ -95,14 +95,14 @@ onBeforeMount(async () => {
   if (categoryStore.categoryList.length === 0) {
     await categoryStore.getAllCategories();
   }
-  // if (
-  //   productStore.activityProductRecommendations.length === 0 ||
-  //   productStore.preferenceProductRecommendations.length === 0
-  // ) {
-  //   await productStore.getProductRecommendations(
-  //     localStorage.getItem("userId") || memberDetails.user_id
-  //   );
-  // }
+  if (
+    productStore.activityProductRecommendations.length === 0 ||
+    productStore.preferenceProductRecommendations.length === 0
+  ) {
+    await productStore.getProductRecommendations(
+      localStorage.getItem("userId") || memberDetails.user_id
+    );
+  }
   if (memberStore.memberWishlist.length === 0) {
     await memberStore.getMemberWishlist(
       localStorage.getItem("userId") || memberDetails.user_id

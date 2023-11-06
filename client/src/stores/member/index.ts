@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { MemberDetails, MemberPreferences } from "./types";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { MemberDetails, MemberPreferences, MemberPastTransactions } from "./types";
+import axios, { AxiosResponse } from "axios";
 import { ProductDetails } from "../product/types";
 
 export const useMemberStore = defineStore("member", () => {
@@ -141,6 +141,32 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   }
+  const getMemberPastTransactions = async (id: string) => {
+    const response: AxiosResponse<MemberPastTransactions[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getTransaction`, {
+      params: {
+        user_id: id
+      }
+    });
+    return response.data;
+  }
+  const memberSubmitProductRating = async (req: {
+    user_id: string,
+    prod_id: string,
+    rating: number,
+    remarks: string
+  }) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/addNewRating`, {
+      "user_id": req.user_id,
+      "prod_id": req.prod_id,
+      "rating": req.rating,
+      "remarks": req.remarks
+    });
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return {
     memberDetails,
@@ -156,5 +182,7 @@ export const useMemberStore = defineStore("member", () => {
     addProductToCart,
     getMemberCart,
     deleteFromCart,
+    getMemberPastTransactions,
+    memberSubmitProductRating,
   }
 });

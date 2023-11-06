@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export interface ProductDetails {
   prod_id: string
   prod_name: string,
@@ -29,6 +31,22 @@ export interface MemberPreferences {
   skill_level: SkillLevel,
   frequency: Frequency,
   draft?: boolean,
+}
+export interface ProductQuantity {
+  biz_id: string,
+  prod_id: string,
+  prod_name?: string,
+  quantity: number,
+  prod_price: number,
+  rating?: number,
+  remarks?: string,
+}
+export interface MemberPastTransactions {
+  purchase_id: string,
+  user_id: string,
+  prod_quantity: ProductQuantity[],
+  total_amount: number,
+  purchase_date: DateTime,
 }
 export enum SkillLevel {
   BEGINNER = "BEGINNER",
