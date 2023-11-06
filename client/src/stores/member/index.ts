@@ -192,5 +192,6 @@ export const useMemberStore = defineStore("member", () => {
     deleteFromCart,
     getMemberPastTransactions,
     memberSubmitProductRating,
+    memberGetWishlist,
   }
 });
