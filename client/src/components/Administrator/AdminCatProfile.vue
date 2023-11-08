@@ -9,10 +9,7 @@
 
   
           <q-form class="q-mt-lg max-w-xl"
-          @submit="
-             requestAction = 1;
-             reverseInitConfirm()"
-          >
+          @submit="requestAction = 1;reverseInitConfirm()">
           <div class="flex flex-row">
             <div class="form-group q-mt-xl">
   

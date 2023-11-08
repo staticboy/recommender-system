@@ -126,8 +126,18 @@
         <q-btn type="button" color="outline" label="Cancel" class="q-mt-md" dense @click="parentProps.backBtn"></q-btn>
         <q-btn v-bind:disable="enquiry.enq_status === 'RESPONDED'" type="submit" color="primary" 
         label="Submit" class="q-mt-md" dense @click="
-        requestAction = 1;   
-        reverseInitConfirm()"></q-btn>
+        if(enquiry.enq_response){
+          requestAction = 1; 
+          reverseInitConfirm();
+        }else{
+          q.notify({
+          type: 'negative',
+          message: 'Invalid response'
+        });
+        }
+
+        
+        "></q-btn>
         <q-btn v-if="enquiry.enq_status === 'OPEN'" type="button" color="secondary" 
         label="Update" class="q-mt-md" dense @click="requestAction = 2;   
             reverseInitConfirm()"></q-btn>
