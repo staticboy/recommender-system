@@ -6,44 +6,46 @@
       <header>
         <h1>Sub Category Profile: <b>{{ category.subcat_name }}</b></h1>
 
-        <div class="flex flex-row">
-          <div class="form-group q-mt-xl">
 
-            <q-btn type="button"  label="Back" id="fn" class="btn" dense @click="invokeToggler"></q-btn>
-
-
-
-             <!--
-              reverseInitConfirm 
-              submitForm 1
-              deactivateCategory 2
-              reactivateForm 3
-              deleteCategory 4
-            -->
-            <q-btn v-if="category.subcat_status === 'Y'"  type="button"   label="Update" id="approve" class="btn"
-             dense @click="
+        <q-form class="q-mt-lg max-w-xl"
+            @submit="
              requestAction = 1;
-             reverseInitConfirm()"></q-btn>
-            <q-btn v-if="category.subcat_status === 'Y'" type="button"  
-            label="Deactivate" id="reject" class="btn" dense @click="
-            requestAction = 2;            
-            reverseInitConfirm()"></q-btn>
-            <q-btn v-if="category.subcat_status === 'N'" type="button"  
-            label="Re-activate" id="approve" class="btn" dense @click="
-            requestAction = 3;            
-            reverseInitConfirm()"></q-btn>
-            <q-btn v-if="category.subcat_status === 'N'" type="button"  
-            label="Delete" id="reject" class="btn" dense @click="
-            requestAction = 4;   
-            reverseInitConfirm()"></q-btn>
+             reverseInitConfirm()">
+          <div class="flex flex-row">
+            <div class="form-group q-mt-xl">
 
+              <q-btn type="button"  label="Back" id="fn" class="btn" dense @click="invokeToggler"></q-btn>
+
+
+
+              <!--
+                reverseInitConfirm 
+                submitForm 1
+                deactivateCategory 2
+                reactivateForm 3
+                deleteCategory 4
+              -->
+              <q-btn v-if="category.subcat_status === 'Y'"  type="submit"   label="Update" id="approve" class="btn"
+              dense></q-btn>
+              <q-btn v-if="category.subcat_status === 'Y'" type="button"  
+              label="Deactivate" id="reject" class="btn" dense @click="
+              requestAction = 2;            
+              reverseInitConfirm()"></q-btn>
+              <q-btn v-if="category.subcat_status === 'N'" type="button"  
+              label="Re-activate" id="approve" class="btn" dense @click="
+              requestAction = 3;            
+              reverseInitConfirm()"></q-btn>
+              <q-btn v-if="category.subcat_status === 'N'" type="button"  
+              label="Delete" id="reject" class="btn" dense @click="
+              requestAction = 4;   
+              reverseInitConfirm()"></q-btn>
+
+            </div>
           </div>
-        </div>
 
-        <form class="q-mt-lg max-w-lg">
           <div class="mb-10">
          
-
+            
             <div class="form-group">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -53,6 +55,7 @@
               </label>
          
               <q-input :readonly="category.subcat_status !== 'Y'" v-model="category.subcat_name" dense required type="text"
+              lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
               class="q-mr-md"></q-input>
               
             </div>
@@ -125,7 +128,7 @@
 
 
           </div>
-        </form>
+        </q-form>
       </header>
     </div>
   </div>

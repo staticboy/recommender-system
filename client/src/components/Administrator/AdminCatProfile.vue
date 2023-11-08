@@ -6,6 +6,13 @@
         <header>
           <h1>Category Profile: <b>{{ category.cat_name }}</b></h1>
   
+
+  
+          <q-form class="q-mt-lg max-w-xl"
+          @submit="
+             requestAction = 1;
+             reverseInitConfirm()"
+          >
           <div class="flex flex-row">
             <div class="form-group q-mt-xl">
   
@@ -14,10 +21,8 @@
   
  
 
-              <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"   label="Update" id="approve" class="btn"
-             dense @click="
-             requestAction = 1;
-             reverseInitConfirm()"></q-btn>
+              <q-btn v-if="category.cat_status === 'ACTIVE'" type="submit"   label="Update" id="approve" class="btn"
+             dense ></q-btn>
             <q-btn v-if="category.cat_status === 'ACTIVE'" type="button"  
             label="Deactivate" id="reject" class="btn" dense @click="
             requestAction = 2;            
@@ -33,8 +38,6 @@
   
             </div>
           </div>
-  
-          <form class="q-mt-lg max-w-lg">
             <div class="mb-10">
               <div class="form-group">
                 <label
@@ -57,6 +60,7 @@
                 </label>
            
                 <q-input :readonly="category.cat_status == 'INACTIVE'" v-model="category.cat_name" dense required type="text"
+                lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
                 class="q-mr-md"></q-input>
                 
               </div>
@@ -68,6 +72,7 @@
                   Category Status
                 </label>
                 <q-input readonly  v-model="category.cat_status" dense required type="text"
+                
                 class="q-mr-md"></q-input>
                 
               </div>
@@ -97,50 +102,7 @@
                     
                   </div>
                 </div>
-                <!--
-                <h6>Best Selling Products</h6>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Rank</th>
-                      <th>Name</th>
-                      <th>Quantities Sold</th>
-                      <th>Age-group of Buyers</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Soccer ball</td>
-                      <td>100</td>
-                      <td>10-20</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Basketball</td>
-                      <td>99</td>
-                      <td>20-40</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Football cleats</td>
-                      <td>12</td>
-                      <td>100+</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Tennis racket</td>
-                      <td>14</td>
-                      <td>10-20</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Ski goggles</td>
-                      <td>13</td>
-                      <td>20-40</td>
-                    </tr>
-                  </tbody>
-                </table>-->
+
               </div>
 
             <!--Confirm Dialogue-->
@@ -171,7 +133,7 @@
   
 
             </div>
-          </form>
+          </q-form>
         </header>
       </div>
     </div>
@@ -337,7 +299,7 @@ initConfirm.value = !initConfirm.value;
     try {
       var param = {"cat_id" : parentProps.exampleProp}
 
-      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/category/deleteCategory`,param);
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/category/deleteCategory`,param);
       
       if (response.statusText === "OK") {
         

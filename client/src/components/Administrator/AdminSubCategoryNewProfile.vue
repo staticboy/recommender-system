@@ -4,24 +4,26 @@
   <div class=" text-center q-pa-md flex flex-center">
     <div class="">
       <header>
+
+
+
+        <q-form class="q-mt-lg max-w-lg" @submit="submitForm()">
+          <div class="mb-10">
+            <div class="flex flex-row">
         <h1>New Sub Category </h1>
 
-        <div class="flex flex-row">
           <div class="form-group q-mt-xl">
+            
 
-            <q-btn type="button"  label="Back" id="fn" class="btn" dense to="/admin/cat-list"></q-btn>
+            <q-btn type="button"  label="Back" id="fn" class="btn" dense @click="parentProps.backBtn"></q-btn>
 
 
-            <q-btn type="button"   label="Create Category" id="approve" class="btn" dense @click="submitForm()"></q-btn>
+            <q-btn type="submit"   label="Create Category" id="approve" class="btn" dense ></q-btn>
 
 
             
           </div>
         </div>
-
-        <form class="q-mt-lg max-w-lg">
-          <div class="mb-10">
-          
 
             <div class="form-group">
               <label
@@ -31,12 +33,14 @@
                 Sub Category Name
               </label>
               <q-input   v-model="category.subcat_name" dense required type="text"
+              lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
+
               class="q-mr-md"></q-input>
               
             </div>
             
           </div>
-        </form>
+        </q-form>
       </header>
     </div>
   </div>
