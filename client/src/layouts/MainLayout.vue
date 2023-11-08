@@ -59,10 +59,10 @@ onBeforeMount(async () => {
         <template v-else-if="navRoutes === '/biz'">
           <!-- <q-btn stretch flat to="/biz/products-all" label="Add Products" /> -->
           <q-btn stretch flat to="/biz/products" label="Products" />
-          <q-btn stretch flat to="/biz/prod-lists" label="View Product List" />
+          <!-- <q-btn stretch flat to="/biz/prod-lists" label="View Product List" /> -->
           <q-btn stretch flat to="/biz/insights" label="Data Insights" />
           <q-btn stretch flat to="/biz/trans-hist" label="Transaction History" />
-          <q-btn stretch flat to="/biz/submit-enq" label="Enquiry" />
+          <q-btn stretch flat to="/biz/submit-enq" label="Contact Us" />
         </template>
 
         <!-- ADMIN -->

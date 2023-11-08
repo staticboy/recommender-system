@@ -144,19 +144,25 @@ export const uploadImages = async (req: Request, res: Response) => {
       if (!prod_id) {
         return res.status(400).json({ error: 'prod_id is missing.' });
       }
-  
+
       const destination = path.join(`${process.env.IMAGE_URL}`, prod_id);
-  
+
+      // Delete existing images before uploading zzzz
+      fs.readdirSync(destination).forEach((file) => {
+        const filePath = path.join(destination, file);
+        fs.unlinkSync(filePath);
+      });
+
       const multerStorage = multer.diskStorage({
         destination: destination,
         filename: (req: Request, file: any, callback: any) => {
-          const fileName = file.originalname;
-          callback(null, fileName);
+            const uniqueFilename = `${Date.now()}-${Math.floor(Math.random() * 1000)}${file.originalname}`;
+            callback(null, uniqueFilename);
         },
       });
-  
+
       const upload = multer({ storage: multerStorage }).array('images', 5);
-  
+
       upload(req, res, (err: any) => {
         if (err) {
           return res.status(500).json({ error: 'Failed to upload images.' });
@@ -176,16 +182,18 @@ export const getImages = async (req: Request, res: Response) => {
       if (!prod_id) {
         return res.status(400).json({ error: 'prod_id is missing.' });
       }
-  
+    //   const imageFolder = path.join(__dirname, 'ProdImages', prod_id);
       const imageFolder = path.join(`${process.env.IMAGE_URL}`, prod_id);
-  
       if (!fs.existsSync(imageFolder)) {
         return res.status(404).json({ error: 'No images found for this product.' });
       }
   
       const imageFiles = fs.readdirSync(imageFolder);
+      const fullImagePaths = imageFiles.map((imageName) => {
+        return `/images/${prod_id}/${imageName}`;
+      });
 
-      return res.status(200).json({ imageFiles });
+      return res.status(200).json({ fullImagePaths });
     } catch (error) {
       console.error('Error while getting images:', error);
       res.status(500).json({ error: 'Something went wrong.' });

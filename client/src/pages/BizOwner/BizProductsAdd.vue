@@ -6,9 +6,9 @@
           <h1 class="q-mb-md">Add New Products</h1>
         </div>
         <q-tabs v-model="selectedTab">
-          <q-tab name="tab1" label="Add New Product">
+          <q-tab name="tab1" label="Manual Entry">
           </q-tab>
-          <q-tab name="tab2" label="Import csv files">
+          <q-tab name="tab2" label="Import csv file">
           </q-tab>
         </q-tabs>
         <div v-if="selectedTab === 'tab1'">
@@ -273,7 +273,7 @@ const addProduct = () => {
   product._rawValue.biz_id = localStorage.getItem("userId");
   postRowProduct();
   q.loading.hide();
-  router.push('/biz/products');
+  // router.push('/biz/products');
 };
 
 //API POST : New product row
@@ -307,10 +307,12 @@ const postRowProduct = async () => {
 };
 
 const uploadImages = async (prod_id: any, imageFiles: any) => {
+  console.log(imageFiles)
   const formData = new FormData();
   for (let i = 0; i < imageFiles.length; i++) {
-    formData.append('images', imageFiles[i]);
+    formData.append('images', imageFiles[i].file);
   }
+
   try {
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/uploadImages/${prod_id}`, formData, {
       headers: {
