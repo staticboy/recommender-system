@@ -40,36 +40,31 @@
       <div class="fixed inset-0 flex items-center justify-center z-50" v-if="selectedTransaction">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="bg-white p-4 rounded-md shadow-lg z-10">
-          <h2 class="text-xl font-semibold mb-2">Transaction Details</h2>
-          <p>Transaction ID: {{ selectedTransaction.id }}</p>
-          <q-btn class="mb-4" type="button" color="primary" label="Close" @click="resetSteps" dense />
-          <h3 class="text-lg font-semibold mb-2">Statement Date: {{ selectedTransaction.statementDate }}</h3>
-          <!-- <q-table :rows="selectedTransaction.settlementBreakdown" row-key="id">
-            <q-tr>
-              <q-td class="border px-4 py-2" label="Product ID" field="prod_id"></q-td>
-              <q-td class="border px-4 py-2" label="Product Name">
-                {{ prodNameMapper(row.prod_id) }}
-              </q-td>
-              <q-td class="border px-4 py-2" label="Quantity" field="quantity"></q-td> 
-              
-         
-            </q-tr>
+          <div class="flex flex-container">
+            <div class="col flex-start">
+              <h2 class="text-xl font-semibold mb-2">Transaction Details</h2>
+              <p>Transaction ID: {{ selectedTransaction.id }}</p>
+              <h3 class="text-lg font-semibold mb-2">Statement Date: {{ selectedTransaction.statementDate }}</h3>
+            </div>
+            <div>
+              <q-btn class="mb-4" type="button" color="primary" label="Close" @click="resetSteps" dense />
+            </div>
+          </div>
+          <q-table :rows="selectedTransaction.settlementBreakdown" :rows-per-page-options="[10, 20, 30]">
+            <!-- Add a custom column for the button -->
+            <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td key="biz_id" :props="props">{{ props.row.biz_id }}</q-td>
+                <q-td key="prod_id" :props="props">{{ prodNameMapper(props.row.prod_id) }}</q-td>
+                <q-td key="quantity" :props="props">{{ props.row.quantity }}</q-td>
+                <q-td key="prod_price" :props="props"> ${{ props.row.prod_price }}</q-td>
 
-          </q-table> -->
-          <q-table :rows="selectedTransaction.settlementBreakdown" :rows-per-page-options="[10, 20, 30]" >
-          <!-- Add a custom column for the button -->
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="biz_id" :props="props">{{ props.row.biz_id }}</q-td>
-              <q-td key="prod_id"  :props="props">{{ prodNameMapper(props.row.prod_id )}}</q-td>
-              <q-td key="quantity" :props="props">{{ props.row.quantity }}</q-td>
-              <q-td key="prod_price" :props="props"> ${{ props.row.prod_price }}</q-td>
-           
-            </q-tr>
-          </template>
+              </q-tr>
+            </template>
 
-        </q-table>
-        <h3 class="text-lg font-semibold mt-4 mb-2" style="text-align: right;">Total Price: {{ selectedTransaction.totalAmount }}</h3>
+          </q-table>
+          <h3 class="text-lg font-semibold mt-4 mb-2" style="text-align: right;">Total Price: {{
+            selectedTransaction.totalAmount }}</h3>
         </div>
       </div>
 
