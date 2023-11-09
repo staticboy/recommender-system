@@ -9,25 +9,45 @@
       <q-form @submit.prevent="submitEnquiry">
         <div class="row">
           <div class="col-6">
-            <q-input outlined v-model="enquiry.enq_subject" label="Subject" dense required type="text"
-              class="q-mr-md"></q-input>
+            <q-input 
+              outlined 
+              v-model="enquiry.enq_subject" 
+              label="Subject" 
+              dense 
+              required 
+              type="text"
+              class="q-mr-md"
+              :rules="[ val => val && val.length > 0 || 'Please type something']"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <q-input outlined v-model="enquiry.enq_message" label="Description" type="textarea" :rows=4 dense required
-              class="q-mt-md width-100"></q-input>
+            <q-input 
+              outlined 
+              v-model="enquiry.enq_message" 
+              label="Description" 
+              type="textarea" 
+              :rows=4 
+              dense 
+              required
+              class="q-mt-md width-100"
+              lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
+            />
           </div>
-
         </div>
         <div class="row">
           <div class="col-6">
-        
-              <q-select v-model="enquiry.enq_types" :options="enq_types" label="Enquiry Type" dense emit-value map-options
-                class="q-mr-md q-mt-md" />
-            
+            <q-select
+              v-model="enquiry.enq_types"
+              :options="enq_types"
+              label="Enquiry Type"
+              dense
+              emit-value
+              map-options
+              class="q-mr-md q-mt-md"
+            />
           </div>
-          
         </div>
         <div class="row">
           <div class="col-6">

@@ -34,31 +34,40 @@
           </div>
           <div class="col-6">
             <q-input outlined v-model="profile.biz_name" label="Business Name" dense required type="text" class="q-mr-md"
-              :disable="isDisabled"></q-input>
+              :disable="isDisabled" :rules="[ val => val && val.length > 0 || 'Please type something']"/>
           </div>
         </div>
         <div class="row q-mt-md">
           <div class="col-3">
             <q-input outlined v-model="profile.biz_yearest" label="Year Established" dense required type="number"
-              class="q-mr-md" :maxlength="4" :readonly="isDisabled"></q-input>
+              class="q-mr-md" :maxlength="4" :readonly="isDisabled" 
+              :rules="[val => !!val || 'Please enter a year', val => val >= 1900 && val <= new Date().getFullYear() || 'Please enter a valid year']">
+            </q-input>
           </div>
           <div class="col-3">
             <q-input outlined v-model="profile.biz_phoneno" label="Contact Number" dense required type="number"
-              class="q-mr-md" :maxlength="8" :readonly="isDisabled"></q-input>
+              class="q-mr-md" :maxlength="8" :readonly="isDisabled"
+              :rules="[val => !!val || 'Please enter a phone number', val => val.toString().length === 8 || 'Please enter an 8 digit phone number']">
+            </q-input>
           </div>
           <div class="col-3">
             <q-input outlined v-model="profile.biz_address" label="Address" type="textarea" :rows=3 dense required
-              class="q-mr-md" :readonly="isDisabled"></q-input>
+              class="q-mr-md" :readonly="isDisabled"
+              :rules="[ val => val && val.length > 0 || 'Please type something']">
+            </q-input>
           </div>
           <div class="col-3">
             <q-input outlined v-model="profile.biz_country" label="Country" dense required type="text" class="q-mr-md"
-              :disable="isDisabled"></q-input>
+              :disable="isDisabled" :rules="[ val => val && val.length > 0 || 'Please type something']">
+            </q-input>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <q-input outlined v-model="profile.biz_description" label="Description" type="textarea" :rows=3 dense required
-              class="q-mt-md width-100" :readonly="isDisabled"></q-input>
+              class="q-mt-md width-100" :readonly="isDisabled"
+              :rules="[ val => val && val.length > 0 || 'Please type something']">
+            </q-input>
           </div>
         </div>
       </q-form>
