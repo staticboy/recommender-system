@@ -9,20 +9,26 @@
       </div>
     </div>
     <!-- show editable form of values from product -->
-    <q-form class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="requestAction = 1; reverseInitConfirm()">
       <q-input
         v-model="product.prod_name"
         label="Product Name"
         dense
         outlined
         class="q-mb-md"
+        required
+        :rules="[ val => val && val.length > 0 || 'Please type something']"
+
       />
+
       <q-input
         v-model="product.prod_description"
         label="Description"
         dense
         outlined
         class="q-mb-md"
+        required
+        lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
       />
       <q-input
         v-model="product.prod_stockqty"
@@ -30,6 +36,8 @@
         dense
         outlined
         class="q-mb-md"
+        required
+        :rules="[ val => val && val > 0 || 'Please enter values greater than 0']"
       />
       <q-input
         v-model="product.prod_price"
@@ -37,6 +45,8 @@
         dense
         outlined
         class="q-mb-md"
+        required
+        :rules="[ val => val && val > 0  || 'Please enter values greater than 0']"
       />
       <q-input
         v-model="product.prod_modelnum"
@@ -44,6 +54,9 @@
         dense
         outlined
         class="q-mb-md"
+        required
+        lazy-rules:rules="[ val => val && val.length > 0 || 'Please type something']"
+        
       />
       <q-select
         v-model="product.cat_id"
@@ -87,8 +100,10 @@
         label="Update"
         color="primary"
         class="q-mt-md"
-        @click="updateRowProduct()"
+        type="submit"
       />
+
+
       <q-btn
         label="Delete"
         color="negative"
