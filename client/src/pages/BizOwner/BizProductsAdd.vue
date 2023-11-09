@@ -200,7 +200,7 @@ const csv_save = () => {
   clear_csv()
 }
 const csvDataToDatabase = async () => {
-  console.log(csv_data)
+
   const databaseData = csv_data.value.slice(1).map(row => {
     const rowData = {};
     for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
@@ -212,6 +212,12 @@ const csvDataToDatabase = async () => {
 
     return rowData;
   });
+
+  databaseData.length
+
+  if(databaseData.length > 0){
+
+  
   try {
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/addNewProdBatch`, databaseData);
     console.log(response)
@@ -231,6 +237,13 @@ const csvDataToDatabase = async () => {
       type: 'negative',
       message: 'Something went wrong.'
     })
+  }
+
+  }else{
+    q.notify({
+        type: 'negative',
+        message: 'No data to upload'
+      })
   }
 };
 
