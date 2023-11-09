@@ -86,6 +86,19 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   }
+  const deleteProductFromWishlist = async (req: { user_id: string, prod_id: string }) => {
+    const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/member/delWish`, {
+      params: {
+        "user_id": req.user_id,
+        "prod_id": req.prod_id
+      }
+    });
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   const getMemberWishlist = async (id: string) => {
     const response: AxiosResponse<{ user_id: string, prod_id: string }[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getWishlist`, {
       params: {
@@ -93,7 +106,7 @@ export const useMemberStore = defineStore("member", () => {
       }
     });
     if (response.status === 200) {
-      memberWishlist.value = response.data.map(res => res.prod_id)
+      memberWishlist.value = Array.from(new Set(memberWishlist.value.concat(response.data.map(res => res.prod_id))))
     }
     return response.data;
   }
@@ -186,6 +199,7 @@ export const useMemberStore = defineStore("member", () => {
     getMemberProfileDetailsByID,
     getMemberPreferencesByID,
     addProductToWishlist,
+    deleteProductFromWishlist,
     getMemberWishlist,
     addProductToCart,
     getMemberCart,

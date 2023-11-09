@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
 import { useMemberStore } from "../../stores/member";
@@ -11,6 +12,7 @@ import { BizProfileDetails } from "../../stores/biz/types";
 import { ProductDetails } from "../../stores/product/types";
 
 const route = useRoute();
+const $q = useQuasar();
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
 const memberStore = useMemberStore();
@@ -27,7 +29,9 @@ const filteredProductList = ref<ProductDetails[]>([]);
 
 const addCategoryToFilter = async (cat_id: string) => {
   if (!categoryFilter.value.find((cf) => cf.cat_id === cat_id)) {
-    filteredProductList.value = await productStore.getProductsByCategory(cat_id);
+    filteredProductList.value = await productStore.getProductsByCategory(
+      cat_id
+    );
     categoryFilter.value.push(
       categoryStore.categoryList.find(
         (c) => c.cat_id === cat_id
@@ -42,7 +46,9 @@ const removeCategoryFromFilter = (cat_id: string) => {
 };
 const addBusinessToFilter = async (biz_id: string) => {
   if (!businessFilter.value.find((bf) => bf.biz_id === biz_id)) {
-    filteredProductList.value = await productStore.getProductsByBusiness(biz_id);
+    filteredProductList.value = await productStore.getProductsByBusiness(
+      biz_id
+    );
     businessFilter.value.push(
       bizStore.businessList.find(
         (b) => b.biz_id === biz_id
@@ -58,6 +64,53 @@ const removeBusinessFromFilter = (biz_id: string) => {
 const openDialog = (index: number) => {
   selected.value = index;
   dialog.value = !dialog.value;
+};
+const saveToWishlist = async (id: string) => {
+  const success = await memberStore.addProductToWishlist({
+    user_id:
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+  if (success) {
+    wishlist.value.push(id);
+    $q.notify({
+      message: "Saved to wishlist",
+      color: "positive",
+      icon: "cloud_done",
+    });
+  } else {
+    $q.notify({
+      message: "Failed to save to wishlist",
+      color: "negative",
+      icon: "cloud_off",
+    });
+  }
+};
+const addToCart = async (id: string) => {
+  const resp = await memberStore.addProductToCart({
+    user_id:
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+  if (resp === 1) {
+    $q.notify({
+      message: "Added to cart",
+      color: "positive",
+      icon: "add_shopping_cart",
+    });
+  } else if (resp === 0) {
+    $q.notify({
+      message: "Product already added to cart",
+      color: "negative",
+      icon: "add_shopping_cart",
+    });
+  } else {
+    $q.notify({
+      message: "Failed to add to cart",
+      color: "negative",
+      icon: "add_shopping_cart",
+    });
+  }
 };
 watch(
   () => [searchTerm, categoryFilter, businessFilter],
@@ -197,10 +250,11 @@ onBeforeMount(async () => {
   <q-dialog v-model="dialog">
     <ViewProductDetails
       :product="filteredProductList[selected]"
-      :wishlist="
+      :exists="
         !!wishlist.find((wl) => wl === filteredProductList[selected].prod_id)
       "
-      :save-to-wishlist="wishlist.push(filteredProductList[selected].prod_id)"
+      @save-to-wishlist="saveToWishlist(filteredProductList[selected].prod_id)"
+      @add-to-cart="addToCart(filteredProductList[selected].prod_id)"
     />
   </q-dialog>
 </template>

@@ -120,11 +120,11 @@ export async function deleteMemberCartItem(req: Request, res: Response) {
 export async function deleteMemberWishItem(req: Request, res: Response) {
     try {
         const result = await db.one(
-            'SELECT * FROM mem_delete_from_wishlist($1)', [req.body]);
+            'SELECT * FROM mem_delete_from_wishlist($1)', [req.query]);
 
-        if (result === 1) {
+        if (result.mem_delete_from_wishlist === 1) {
             res.status(200).json({ message: 'Wishlist item deleted successfully.' });
-        } else if (result === -1) {
+        } else if (result.mem_delete_from_wishlist === -1) {
             res.status(404).json({ message: 'Wishlist item not found.' });
         } else {
             res.status(500).json({ error: 'Internal server error.' });

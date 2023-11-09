@@ -10,11 +10,11 @@
         :rows="filteredProducts"
         :rows-per-page-options="[10, 20, 30]"
         :columns="columns"
-        :row-key="prod_name"
+        :row-key="(row) => row.prod_id"
         selection="multiple"
-        v-model:selected="selected"
         grid
         hide-header
+        :pagination="pagination"
       >
         <template v-slot:item="props">
           <div
@@ -24,7 +24,7 @@
               <q-separator />
               <q-list dense>
                 <q-item
-                  v-for="col in props.cols.filter((col) => col.name !== 'desc')"
+                  v-for="col in props.cols.filter((c: any) => c.name !== 'desc')"
                   :key="col.prod_name"
                 >
                   <q-item-section>
@@ -42,7 +42,15 @@
                 glossy
                 icon="shopping_cart"
                 class="btn-fixed-width"
+                @click="addToCart(props.row.prod_id)"
               />
+              <q-btn
+                color="primary"
+                rounded
+                label="remove from wishlist"
+                @click="removeFromWishlist(props.row.prod_id)"
+              />
+              <q-icon name="heart" color="red" />
             </q-card>
           </div>
         </template>
@@ -51,11 +59,13 @@
   </q-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onBeforeMount } from "vue";
 import { useMemberStore } from "../../stores/member";
 import SearchBar from "../../components/SearchBar.vue";
+import { QTableColumn, useQuasar } from "quasar";
 
+const q = useQuasar();
 const memberStore = useMemberStore();
 const searchQuery = ref("");
 const pagination = ref({
@@ -65,8 +75,8 @@ const pagination = ref({
   rowsPerPage: 5,
 });
 
-const products = ref([]);
-const columns = computed(() => [
+const products = ref<{ user_id: string; prod_id: string }[]>([]);
+const columns = [
   {
     name: "prod_id",
     required: true,
@@ -111,7 +121,7 @@ const columns = computed(() => [
     field: "biz_name",
     sortable: true,
   },
-]);
+] as QTableColumn[];
 
 const filteredProducts = computed(() => {
   return products.value
@@ -119,16 +129,38 @@ const filteredProducts = computed(() => {
       const searchString = searchQuery.value.toLowerCase();
 
       return Object.values(product)
-        .map((value) =>
-          typeof value === "string" ? value.toLowerCase() : value
-        )
-        .some((value) => value.toString().includes(searchString));
+        .map((val) => (typeof val === "string" ? val.toLowerCase() : val))
+        .some((val) => val.toString().includes(searchString));
     })
     .slice();
 });
+const addToCart = async (id: string) => {
+  await memberStore.addProductToCart({
+    user_id: memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+};
+const removeFromWishlist = async (id: string) => {
+  const resp = await memberStore.deleteProductFromWishlist({
+    user_id: memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+  if (resp) {
+    products.value = products.value.filter((p) => p.prod_id !== id);
+    q.notify({
+      type: "positive",
+      message: "Product removed from wishlist",
+    });
+  } else {
+    q.notify({
+      type: "negative",
+      message: "Failed to remove product from wishlist",
+    });
+  }
+};
 onBeforeMount(async () => {
   products.value = await memberStore.getMemberWishlist(
-    memberStore.memberDetails.user_id
+    memberStore.memberDetails.user_id || localStorage.getItem("user_id")!
   );
 });
 </script>
