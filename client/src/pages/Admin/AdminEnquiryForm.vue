@@ -189,7 +189,8 @@
         <div class="form-group">
 
           <q-input outlined  v-model="enquiry.enq_response"  type="textarea" :rows=4 dense required
-              class="q-mt-md width-100 ticket"></q-input>
+              class="q-mt-md width-100 ticket" :rules="[ val => val && val.length > 0 || 'Please type something']">
+          </q-input>
 
     
         </div>
