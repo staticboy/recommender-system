@@ -72,7 +72,7 @@ const pagination = ref({
   sortBy: "prod_name",
   descending: false,
   page: 1,
-  rowsPerPage: 5,
+  rowsPerPage: 6,
 });
 
 const products = ref<{ user_id: string; prod_id: string }[]>([]);

@@ -1,26 +1,75 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, onMounted } from "vue";
 import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
+import { useMemberStore } from "../../stores/member";
 import { CategoryDetails } from "../../stores/category/types";
 import { ProductDetails } from "../../stores/product/types";
 import { MemberPreferences } from "../../stores/member/types";
 import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 import ViewProductDetails from "../../components/Modals/ViewProductDetails.vue";
 
-const q = useQuasar();
+const $q = useQuasar();
 const preferenceDialog = ref(false);
 const preferences = ref<MemberPreferences[]>([]);
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
+const memberStore = useMemberStore();
 const selectedCategory = ref<CategoryDetails>({
   cat_id: "",
   cat_name: "",
   cat_status: "",
 });
 const productList = ref<ProductDetails[]>([]);
-
+const wishlist = ref<string[]>([]);
+const saveToWishlist = async (id: string) => {
+  const success = await memberStore.addProductToWishlist({
+    user_id:
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+  if (success) {
+    wishlist.value.push(id);
+    $q.notify({
+      message: "Saved to wishlist",
+      color: "positive",
+      icon: "cloud_done",
+    });
+  } else {
+    $q.notify({
+      message: "Failed to save to wishlist",
+      color: "negative",
+      icon: "cloud_off",
+    });
+  }
+};
+const addToCart = async (id: string) => {
+  const resp = await memberStore.addProductToCart({
+    user_id:
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id,
+    prod_id: id,
+  });
+  if (resp === 1) {
+    $q.notify({
+      message: "Added to cart",
+      color: "positive",
+      icon: "add_shopping_cart",
+    });
+  } else if (resp === 0) {
+    $q.notify({
+      message: "Product already added to cart",
+      color: "negative",
+      icon: "add_shopping_cart",
+    });
+  } else {
+    $q.notify({
+      message: "Failed to add to cart",
+      color: "negative",
+      icon: "add_shopping_cart",
+    });
+  }
+};
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
@@ -44,6 +93,12 @@ onBeforeMount(async () => {
       localStorage.getItem("userId")!
     );
   }
+  if (memberStore.memberWishlist.length === 0) {
+    await memberStore.getMemberWishlist(
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id
+    );
+    wishlist.value = memberStore.memberWishlist;
+  }
 });
 </script>
 <template>
@@ -53,6 +108,7 @@ onBeforeMount(async () => {
         <h1>Welcome to Sportify!</h1>
       </div>
     </div>
+    {{ wishlist }}
     <!-- Products -->
     <h5>Check out some of these products!</h5>
     <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
@@ -80,6 +136,9 @@ onBeforeMount(async () => {
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
+              :exists="!!wishlist.find((wl) => wl === product.prod_id)"
+              @save-to-wishlist="saveToWishlist(product.prod_id)"
+              @add-to-cart="addToCart(product.prod_id)"
             />
           </div>
         </q-scroll-area>
@@ -113,6 +172,9 @@ onBeforeMount(async () => {
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
+              :exists="!!wishlist.find((wl) => wl === product.prod_id)"
+              @save-to-wishlist="saveToWishlist(product.prod_id)"
+              @add-to-cart="addToCart(product.prod_id)"
             />
           </div>
         </q-scroll-area>
@@ -146,6 +208,9 @@ onBeforeMount(async () => {
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
+              :exists="!!wishlist.find((wl) => wl === product.prod_id)"
+              @save-to-wishlist="saveToWishlist(product.prod_id)"
+              @add-to-cart="addToCart(product.prod_id)"
             />
           </div>
         </q-scroll-area>
