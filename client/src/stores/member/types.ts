@@ -36,6 +36,7 @@ export interface ProductQuantity {
   biz_id: string,
   prod_id: string,
   prod_name?: string,
+  prod_description?: string,
   quantity: number,
   prod_price: number,
   rating?: number,

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { MemberDetails, MemberPreferences, MemberPastTransactions } from "./types";
+import { MemberDetails, MemberPreferences, MemberPastTransactions, ProductQuantity } from "./types";
 import axios, { AxiosResponse } from "axios";
 import { ProductDetails } from "../product/types";
 
@@ -79,7 +79,6 @@ export const useMemberStore = defineStore("member", () => {
       "user_id": req.user_id,
       "prod_id": req.prod_id
     });
-    console.log(response)
     if (response.status === 200) {
       return true;
     } else {
@@ -127,7 +126,6 @@ export const useMemberStore = defineStore("member", () => {
     }
   }
   const getMemberCart = async (id: string) => {
-    console.log(id)
     const response: AxiosResponse<{ user_id: string, prod_id: string }[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getCart`, {
       params: {
         user_id: id
@@ -135,7 +133,6 @@ export const useMemberStore = defineStore("member", () => {
     });
     if (response.status === 200) {
       memberCart.value = response.data.map(res => res.prod_id)
-      console.log(memberCart.value)
       return memberCart.value;
     } else {
       return [];
@@ -188,7 +185,18 @@ export const useMemberStore = defineStore("member", () => {
     });
     return response.data;
   }
-
+  const memberSendTransaction = async (req: {
+    user_id: string,
+    total_amount: number,
+    prod_quantity: ProductQuantity[],
+  }) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/memberSendTransaction`, req);
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return {
     memberDetails,
     memberPreferences,
@@ -207,5 +215,6 @@ export const useMemberStore = defineStore("member", () => {
     getMemberPastTransactions,
     memberSubmitProductRating,
     memberGetWishlist,
+    memberSendTransaction,
   }
 });

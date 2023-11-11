@@ -18,7 +18,11 @@ export const useProductStore = defineStore("product", () => {
       return res
     }
   }
-
+  const getProductImageLink = async (id: string) => {
+    // /getImages/:prod_id
+    const resp = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getImages/${id}`);
+    return resp.data;
+  }
   const getProductsByCategory = async (id: string) => {
     const resp: AxiosResponse<ProductDetails[]> = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/getByCatId`, {
       cat_id: id
@@ -75,13 +79,23 @@ export const useProductStore = defineStore("product", () => {
     activityProductRecommendations.value = resp.data.recommendations_activity;
     preferenceProductRecommendations.value = resp.data.recommendations_pref;
   }
+  const getProductsByCatAndPurchaseNum = async (sorted: boolean, num: number) => {
+    const resp: AxiosResponse<ProductDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getPurchaseProdPerCat`)
+    if (resp.status === 200) {
+      return resp.data;
+    } else {
+      return [];
+    }
+  }
   return {
     productList,
     activityProductRecommendations,
     preferenceProductRecommendations,
     getProductDetail,
+    getProductImageLink,
     getProductsByCategory,
     getProductsByBusiness,
     getProductRecommendations,
+    getProductsByCatAndPurchaseNum,
   }
 });
