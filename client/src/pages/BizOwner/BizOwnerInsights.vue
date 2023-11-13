@@ -20,6 +20,8 @@
         </q-badge>
         <q-btn size="md" submit class="ml-6 mb-2 mt-2" label="Generate" no-caps color="primary" unelevated
           @click="onGenerate" />
+          <q-btn size="md" submit class="ml-6 mb-2 mt-2" label="Export" no-caps color="primary" unelevated v-if="dataAvailable"
+          @click="exportToExcel" />
       </div>
     </div>
     <div class="grid grid-cols-4 gap-4 w-full">
@@ -93,11 +95,13 @@ import { useStore } from './../../stores';
 import SalesLineChart from './../../components/Charts/SalesLineChart.vue';
 import ProductSalesBarChart from './../../components/Charts/ProductSalesBarChart.vue';
 import AvgReviewsChart from './../../components/Charts/AvgReviewsChart.vue';
+import ExcelJS from 'exceljs';
 
 const router = useRouter();
 const q = useQuasar();
 const revenueByDateData = ref(null);
 const revenueByProdData = ref(null);
+const rawTransaction = ref(null);
 const avgTransactionAmt = ref(null);
 const cntTransaction = ref(null);
 const totalSales = ref(null);
@@ -153,6 +157,78 @@ const onGenerate = async () => {
   q.loading.hide();
 };
 
+const exportToExcel = () => {
+  const workbook = new ExcelJS.Workbook();
+
+  if (revenueByDateData.value.length > 0) {
+    const ws = workbook.addWorksheet('revenue_data');
+    const hdr = Object.keys(revenueByDateData.value[0]);
+    ws.addRow(hdr);
+    revenueByDateData.value.forEach(item => {
+      const values = hdr.map(hdr => item[hdr]);
+      ws.addRow(values);
+    });
+  }
+
+  if (revenueByProdData.value.length > 0) {
+    const ws2 = workbook.addWorksheet('revenue_prod');
+    const hdr2 = Object.keys(revenueByProdData.value[0]);
+    ws2.addRow(hdr2);
+    revenueByProdData.value.forEach(item => {
+      const values = hdr2.map(hdr => item[hdr]);
+      ws2.addRow(values);
+    });
+  }
+
+  if (rawTransaction.value.length > 0) {
+    const ws3 = workbook.addWorksheet('revenue_raw');
+    const hdr3 = Object.keys(rawTransaction.value[0]);
+    ws3.addRow(hdr3);
+    rawTransaction.value.forEach(item => {
+      const values = hdr3.map(hdr => item[hdr]);
+      ws3.addRow(values);
+    });
+  }
+
+  if (avgReviews.value.length > 0) {
+    const ws4 = workbook.addWorksheet('reviews_avg');
+    const hdr4 = Object.keys(avgReviews.value[0]);
+    ws4.addRow(hdr4);
+    avgReviews.value.forEach(item => {
+      const values = hdr4.map(hdr => item[hdr]);
+      ws4.addRow(values);
+    });
+  }
+
+  if (rawReviews.value.length > 0) {
+    const ws5 = workbook.addWorksheet('reviews_raw');
+    const hdr5 = Object.keys(rawReviews.value[0]);
+    ws5.addRow(hdr5);
+    rawReviews.value.forEach(item => {
+      const values = hdr5.map(hdr => item[hdr]);
+      ws5.addRow(values);
+    });
+  }
+
+  workbook.xlsx.writeBuffer()
+    .then(buffer => {
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "Insights_" + localStorage.getItem("userId") + "_" + fromDate.value.from + "_" + fromDate.value.to;
+
+      link.click();
+    })
+    .catch(error => {
+      q.notify({
+        icon: "report_problem",
+        message: 'Error exporting to Excel:', error,
+        color: "negative",
+      });
+    });
+};
+
 // Fetch
 const getInsight = async () => {
   try {
@@ -166,7 +242,7 @@ const getInsight = async () => {
     }
     var param = { "biz_id": localStorage.getItem("userId"), "start_date": fromDate.value.from, "end_date": fromDate.value.to };
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/business/getBizInsight`, param);
-    // console.log(response);
+    console.log(response);
     if (response.data[0].biz_get_insights.revenue_by_date != null) {
       if (response.data[0].biz_get_insights.success == "true") {
         dataAvailable.value = true;
@@ -179,6 +255,7 @@ const getInsight = async () => {
       topProduct.value = response.data[0].biz_get_insights.top_product[0].prod_list;
       avgReviews.value = response.data[0].biz_get_insights.review_avg;
       rawReviews.value = response.data[0].biz_get_insights.raw_review;
+      rawTransaction.value = response.data[0].biz_get_insights.raw_transaction;
     }
     else {
       q.notify({
