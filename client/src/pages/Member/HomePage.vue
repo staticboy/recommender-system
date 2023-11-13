@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, onMounted } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
@@ -108,7 +108,6 @@ onBeforeMount(async () => {
         <h1>Welcome to Sportify!</h1>
       </div>
     </div>
-    {{ wishlist }}
     <!-- Products -->
     <h5>Check out some of these products!</h5>
     <div class="grid grid-cols-4 gap-3 q-py-lg h-max">

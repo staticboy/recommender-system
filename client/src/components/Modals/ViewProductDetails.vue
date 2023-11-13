@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import { ProductDetails } from "../../stores/product/types";
 import { useProductStore } from "../../stores/product";
 
@@ -14,10 +14,15 @@ const props = defineProps({
     default: "row",
   },
 });
-const link = ref("");
+const link = ref<string[]>([]);
+const slide = ref(0);
 const productStore = useProductStore();
+const getImageLinks = computed(() => {
+  return link.value;
+});
 onBeforeMount(async () => {
-  link.value = await productStore.getProductImageLink(props.product.prod_id);
+  const resp = await productStore.getProductImageLink(props.product.prod_id);
+  link.value = resp;
 });
 const emits = defineEmits(["saveToWishlist", "addToCart"]);
 </script>
@@ -27,7 +32,7 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
       flex === 'row'
         ? {
             display: 'flex',
-            height: '55vh',
+            height: '65vh',
             width: '80vw',
           }
         : {
@@ -43,19 +48,42 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
       bordered
       class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
       :style="{
-        width: flex === 'row' ? '50%' : '100%',
+        width: flex === 'row' ? '60%' : '100%',
         height: flex === 'row' ? '100%' : '65%',
       }"
     >
-      <q-card-section class="flex justify-center items-center align-middle">
-        <q-img v-if="link.length > 0" :src="link">
-          <template v-slot:default>
-            <div class="absolute flex flex-center text-h5">
-              <q-spinner-hourglass color="white" size="50px" />
-            </div>
-          </template>
-        </q-img>
-        <q-icon v-else name="broken_image" size="100px" class="text-grey-8" />
+      <q-card-section style="width: 100%">
+        <q-carousel
+          v-if="getImageLinks.length > 0"
+          animated
+          v-model="slide"
+          arrows
+          navigation
+          infinite
+          dark
+          control-color="primary"
+          navigation-icon="radio_button_unchecked"
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          style="width: 100%"
+        >
+          <q-carousel-slide
+            v-for="(img, index) in getImageLinks"
+            :key="index"
+            :name="index"
+            class="column no-wrap flex-center"
+          >
+            <q-img
+              :src="img"
+              fit="contain"
+              spinner-color="white"
+              style="width: 100%; height: 100%"
+            />
+          </q-carousel-slide>
+        </q-carousel>
+        <div v-else class="flex justify-center items-center align-middle">
+          <q-icon name="broken_image" size="100px" class="text-grey-8" />
+        </div>
       </q-card-section>
     </q-card>
     <q-card
@@ -68,13 +96,16 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
           : 'justify-center items-center content-center rounded-xl'
       "
       :style="{
-        width: flex === 'row' ? '50%' : '100%',
+        width: flex === 'row' ? '40%' : '100%',
         height: flex === 'row' ? '100%' : '35%',
       }"
     >
-      <q-card-section class="truncate-elipsis" :class="flex === 'column' ? 'text-left xpadding' : ''">
+      <q-card-section
+        class="truncate-elipsis"
+        :class="flex === 'column' ? 'text-left xpadding' : ''"
+      >
         <div :class="flex === 'row' ? 'text-h6' : 'text-bold'">
-          {{ product.prod_name }}
+          {{ product.prod_name }} {{ product.prod_id }}
           <q-tooltip>{{ product.prod_name }}</q-tooltip>
         </div>
         <template v-if="flex === 'row'"> <br /><br /> </template>

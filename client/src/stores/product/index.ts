@@ -20,9 +20,9 @@ export const useProductStore = defineStore("product", () => {
   }
   const getProductImageLink = async (id: string) => {
     // /getImages/:prod_id
-    const resp = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getImages/${id}`);
+    const resp: AxiosResponse<{fullImagePaths: string[]}> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getImages/${id}`);
     const baseURL = import.meta.env.VITE_API_URL;
-    const img_path = resp.data.fullImagePaths.map((relativePath: any) => baseURL + relativePath);
+    const img_path = resp.data.fullImagePaths.map((relativePath: any) => baseURL + relativePath) as string[];
     return img_path;
   }
   const getProductsByCategory = async (id: string) => {
