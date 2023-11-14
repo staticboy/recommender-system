@@ -6,10 +6,10 @@ import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
 import { useMemberStore } from "../../stores/member";
 import { useBizOwnerStore } from "../../stores/biz";
-import ViewProductDetails from "../../components/Modals/ViewProductDetails.vue";
 import { CategoryDetails } from "../../stores/category/types";
 import { BizProfileDetails } from "../../stores/biz/types";
 import { ProductDetails } from "../../stores/product/types";
+import ViewProductDetails from "../../components/Modals/ViewProductDetails.vue";
 
 const route = useRoute();
 const $q = useQuasar();
@@ -26,24 +26,11 @@ const categoryFilter = ref<CategoryDetails[]>([]);
 const businessFilter = ref<BizProfileDetails[]>([]);
 const selected = ref(0);
 const filteredProductList = ref<ProductDetails[]>([]);
+const priceFilter = ref({
+  min: 0,
+  max: Math.max(...productStore.productList.map((p) => p.prod_price)),
+});
 
-const addCategoryToFilter = async (cat_id: string) => {
-  if (!categoryFilter.value.find((cf) => cf.cat_id === cat_id)) {
-    filteredProductList.value = await productStore.getProductsByCategory(
-      cat_id
-    );
-    categoryFilter.value.push(
-      categoryStore.categoryList.find(
-        (c) => c.cat_id === cat_id
-      ) as CategoryDetails
-    );
-  }
-};
-const removeCategoryFromFilter = (cat_id: string) => {
-  categoryFilter.value = categoryFilter.value.filter(
-    (cf) => cf.cat_id !== cat_id
-  );
-};
 const addBusinessToFilter = async (biz_id: string) => {
   if (!businessFilter.value.find((bf) => bf.biz_id === biz_id)) {
     filteredProductList.value = await productStore.getProductsByBusiness(
@@ -56,11 +43,7 @@ const addBusinessToFilter = async (biz_id: string) => {
     );
   }
 };
-const removeBusinessFromFilter = (biz_id: string) => {
-  businessFilter.value = businessFilter.value.filter(
-    (bf) => bf.biz_id !== biz_id
-  );
-};
+
 const openDialog = (index: number) => {
   selected.value = index;
   dialog.value = !dialog.value;
@@ -113,11 +96,11 @@ const addToCart = async (id: string) => {
   }
 };
 watch(
-  () => [searchTerm, categoryFilter, businessFilter],
+  [searchTerm, categoryFilter, businessFilter, priceFilter],
   () => {
     // search bar
     if (searchTerm.value.length > 0) {
-      filteredProductList.value = productStore.productList.filter((prod) => {
+      filteredProductList.value = filteredProductList.value.filter((prod) => {
         return prod.prod_name
           .toLowerCase()
           .includes(searchTerm.value.toLowerCase());
@@ -125,7 +108,7 @@ watch(
     }
     // category selection
     if (categoryFilter.value.length > 0) {
-      filteredProductList.value = productStore.productList.filter((prod) => {
+      filteredProductList.value = filteredProductList.value.filter((prod) => {
         return (
           categoryFilter.value.find((cf) => cf.cat_id === prod.cat_id) !==
           undefined
@@ -134,10 +117,19 @@ watch(
     }
     // business selection
     if (businessFilter.value.length > 0) {
-      filteredProductList.value = productStore.productList.filter((prod) => {
+      filteredProductList.value = filteredProductList.value.filter((prod) => {
         return (
           businessFilter.value.find((bf) => bf.biz_id === prod.biz_id) !==
           undefined
+        );
+      });
+    }
+    // price range selection
+    if (priceFilter.value.min > 0 || priceFilter.value.max > 0) {
+      filteredProductList.value = filteredProductList.value.filter((prod) => {
+        return (
+          prod.prod_price >= priceFilter.value.min &&
+          prod.prod_price <= priceFilter.value.max
         );
       });
     }
@@ -172,74 +164,78 @@ onBeforeMount(async () => {
       await addBusinessToFilter(route.query.businessId);
     }
   }
+  await bizStore.getAllBusinesses();
+  filteredProductList.value = await productStore.getAllProducts();
 });
 </script>
 <template>
-  {{ filteredProductList.length }}
   <q-page>
     <q-input clearable outlined v-model="searchTerm" label="Search Products" />
-    <div class="overflow-hidden pl-2" style="height: 1.5em">
-      <span
-        v-for="cat in categoryStore.categoryList.filter(
-          (c) => c.cat_status === 'ACTIVE'
-        )"
-        :key="cat.cat_id"
-        class="mr-2 cursor-pointer"
-        @click="addCategoryToFilter(cat.cat_id)"
-      >
-        {{ cat.cat_name }}
-      </span>
-    </div>
-    <div class="grid grid-cols-6 w-full">
+    <div class="grid grid-cols-6 w-full mt-6 gap-6">
       <div class="col-span-1">
         <h5>Filters</h5>
         <br /><br />
-        <h6>Selected Category</h6>
-        <template v-if="categoryFilter">
-          <q-chip
-            v-for="cat in categoryFilter"
-            :key="cat.cat_id"
-            removable
-            @remove="removeCategoryFromFilter(cat.cat_id)"
-          >
-            {{ cat.cat_name }}
-          </q-chip>
-        </template>
+        <div>
+          <h6>Category Search</h6>
+          <q-select
+            filled
+            v-model="categoryFilter"
+            use-input
+            input-debounce="0"
+            use-chips
+            multiple
+            :options="
+              categoryStore.categoryList.filter(
+                (c) => c.cat_status === 'ACTIVE'
+              )
+            "
+            option-label="cat_name"
+            option-value="cat_id"
+          />
+        </div>
         <br /><br />
         <h6>Business</h6>
-        <template v-if="businessFilter">
-          <q-chip
-            v-for="biz in businessFilter"
-            :key="biz.biz_id"
-            removable
-            @remove="removeBusinessFromFilter(biz.biz_id)"
-          >
-            {{ biz.biz_name }}
-          </q-chip>
-        </template>
+        <q-select
+          filled
+          v-model="businessFilter"
+          use-input
+          input-debounce="0"
+          use-chips
+          multiple
+          :options="bizStore.businessList"
+          option-label="biz_name"
+          option-value="biz_id"
+        />
         <br /><br />
-        <h6>Product</h6>
+        <h6>Price Range</h6>
+        <q-range
+          v-model="priceFilter"
+          label-always
+          :min="0"
+          :max="Math.max(...filteredProductList.map((p) => p.prod_price))"
+          color="primary"
+        />
       </div>
       <div
         class="col-span-5 grid grid-cols-3 gap-3"
         v-if="filteredProductList.length > 0"
       >
         <template v-for="p in filteredProductList" :key="p.prod_id">
-          <q-card
-            dark
-            bordered
-            class="flex flex-col justify-center items-center rounded-xl cursor-pointer q-px-sm q-py-lg"
+          <ViewProductDetails
+            :product="p"
+            :exists="
+              !!wishlist.find(
+                (wl) => wl === filteredProductList[selected].prod_id
+              )
+            "
+            :flex="'column'"
+            :hide-actions="true"
+            @save-to-wishlist="
+              saveToWishlist(filteredProductList[selected].prod_id)
+            "
+            @add-to-cart="addToCart(filteredProductList[selected].prod_id)"
             @click="openDialog(filteredProductList.indexOf(p))"
-          >
-            <q-card-section>
-              <div class="text-h6">{{ p.prod_name }}</div>
-              <div class="text-subtitle2">{{ p.prod_description }}</div>
-            </q-card-section>
-            <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </q-card-section>
-          </q-card>
+          />
         </template>
       </div>
       <div v-else class="col-span-5 flex justify-center items-center">

@@ -9,6 +9,10 @@ const props = defineProps({
     required: true,
   },
   exists: Boolean,
+  hideActions: {
+    type: Boolean,
+    default: false,
+  },
   flex: {
     type: String as PropType<"row" | "column">,
     default: "row",
@@ -28,12 +32,13 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
 </script>
 <template>
   <div
+    class="!max-w-none justify-center"
     :style="
       flex === 'row'
         ? {
             display: 'flex',
             height: '65vh',
-            width: '80vw',
+            width: '70vw',
           }
         : {
             display: 'flex',
@@ -48,8 +53,9 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
       bordered
       class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
       :style="{
-        width: flex === 'row' ? '60%' : '100%',
+        width: flex === 'row' ? '40%' : '100%',
         height: flex === 'row' ? '100%' : '65%',
+        maxWidth: '800px'
       }"
     >
       <q-card-section style="width: 100%">
@@ -96,8 +102,9 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
           : 'justify-center items-center content-center rounded-xl'
       "
       :style="{
-        width: flex === 'row' ? '40%' : '100%',
+        width: flex === 'row' ? '' : '100%',
         height: flex === 'row' ? '100%' : '35%',
+        maxWidth: '500px'
       }"
     >
       <q-card-section
@@ -116,6 +123,7 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
         Stock: {{ product.prod_stockqty }}
       </q-card-section>
       <q-card-actions
+        v-if="hideActions"
         class="flex"
         :class="
           flex === 'row'

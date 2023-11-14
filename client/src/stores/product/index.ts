@@ -8,7 +8,16 @@ export const useProductStore = defineStore("product", () => {
   const productList = ref<ProductDetails[]>([]);
   const activityProductRecommendations = ref<ProductDetails[]>([]);
   const preferenceProductRecommendations = ref<ProductDetails[]>([]);
-
+  
+  const getAllProducts = async () => {
+    const resp: AxiosResponse<ProductDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getAll`);
+    if (resp.status === 200) {
+      productList.value = resp.data;
+    } else {
+      return resp.data;
+    }
+    return productList.value;
+  }
   const getProductDetail = async (id: string) => {
     const res = productList.value.find((product) => product.prod_id === id);
     if (!res) {
@@ -93,6 +102,7 @@ export const useProductStore = defineStore("product", () => {
     productList,
     activityProductRecommendations,
     preferenceProductRecommendations,
+    getAllProducts,
     getProductDetail,
     getProductImageLink,
     getProductsByCategory,
