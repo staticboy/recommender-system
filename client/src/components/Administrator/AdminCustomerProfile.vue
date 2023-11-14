@@ -245,9 +245,11 @@ const activateProfile = async () => {
 //GET MEMBER PROFILE API
 const fetchMemberData = async () => {
   try {
-    var param = {"user_id" : parentProps.selectedMemId}
-    console.log("invoke");
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/getById`, param);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getById`, {
+      params: {
+        user_id: parentProps.selectedMemId
+      }
+    });
     
     console.log(response);
     if (response.statusText === "OK") {

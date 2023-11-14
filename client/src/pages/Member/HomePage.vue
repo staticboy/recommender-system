@@ -158,9 +158,9 @@ onBeforeMount(async () => {
               Check out our many products for:
             </div>
           </q-card-section>
-          <q-card-section>
+          <!-- <q-card-section>
             <div class="text-h6 text-center">Temp placeholder for image</div>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
       </div>
       <div class="col-span-3">
@@ -194,9 +194,9 @@ onBeforeMount(async () => {
               Check out our many products for:
             </div>
           </q-card-section>
-          <q-card-section>
+          <!-- <q-card-section>
             <div class="text-h6 text-center">Temp placeholder for image</div>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
       </div>
       <div class="col-span-3">
