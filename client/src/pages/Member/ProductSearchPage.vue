@@ -149,13 +149,20 @@ onBeforeMount(async () => {
     if (Array.isArray(route.query.businessId)) {
       for (const biz_id of route.query.businessId) {
         await addBusinessToFilter(biz_id as string);
+        fullProductList.value = fullProductList.value.concat(
+          await productStore.getProductsByBusiness(biz_id as string)
+        );
       }
     } else {
       await addBusinessToFilter(route.query.businessId);
+      fullProductList.value = await productStore.getProductsByBusiness(
+        route.query.businessId as string
+      );
     }
+  } else {
+    fullProductList.value = await productStore.getAllProducts();
   }
   await bizStore.getAllBusinesses();
-  fullProductList.value = await productStore.getAllProducts();
 });
 </script>
 <template>
