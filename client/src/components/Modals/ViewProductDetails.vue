@@ -9,7 +9,7 @@ const props = defineProps({
     required: true,
   },
   exists: Boolean,
-  hideActions: {
+  hide: {
     type: Boolean,
     default: false,
   },
@@ -123,7 +123,7 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
         Stock: {{ product.prod_stockqty }}
       </q-card-section>
       <q-card-actions
-        v-if="hideActions"
+        v-if="!hide"
         class="flex"
         :class="
           flex === 'row'
