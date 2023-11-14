@@ -8,6 +8,7 @@ export interface SignUpDetails {
   phoneno?: number,
   address?: string,
   country?: string,
+  zipcode?: string,
   gender?: string,
   status: "ACTIVE" | "INACTIVE",
 }

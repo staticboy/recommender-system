@@ -25,6 +25,7 @@
     "pinia": "^2.1.6",
     "powerbi-client-vue-js": "^1.0.3",
     "quasar": "^2.12.4",
+    "ts-postcode-validator": "^0.0.2",
     "vue": "^3.3.4",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.2.4",

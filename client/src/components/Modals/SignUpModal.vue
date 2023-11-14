@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { SignUpDetails } from "../../stores/guest/types";
 import { DateTime } from "luxon";
 import { useGuestStore } from "../../stores/guest";
+import { validate } from "ts-postcode-validator";
 
 const router = useRouter();
 const q = useQuasar();
@@ -20,6 +21,7 @@ const form = ref<SignUpDetails>({
   dateEst: DateTime.now().year.toString(),
   address: "",
   country: "",
+  zipcode: "",
   gender: "M",
   status: "ACTIVE",
 });
@@ -48,7 +50,14 @@ const rules = {
   ],
   phoneno: [(val: number) => !!val || "Please enter your phone number."],
   address: [(val: string) => !!val || "Please enter your address."],
-  country: [(val: string) => !!val || "Please enter your country"],
+  country: [(val: string) => !!val || "Please select your country."],
+  zipcode: [(val: string) => !!val || "Please enter your zip code.",
+  (val: string) => {
+      console.log(form.value.country)
+      const country = form.value.country;
+      return validate(val, country) || "Invalid zip code.";
+    },
+  ],
   gender: [
     (val: string) => val === "M" || val === "F" || "Please select a gender",
   ],
@@ -243,13 +252,44 @@ onMounted(() => {});
               lazy-rules
               :rules="rules.address"
             />
-            <q-input
+            <q-select
+              outlined
+              map-options
+              emit-value
+              v-model="form.country"
+              :options="[
+                {
+                  label: 'Australia',
+                  value: 'AU',
+                },
+                {
+                  label: 'Singapore',
+                  value: 'SG',
+                },
+                {
+                  label: 'Malaysia',
+                  value: 'MY',
+                },
+              ]"
+              label="Country"
+              lazy-rules
+              :rules="rules.country"
+            />
+            <!-- <q-input
               outlined
               clearable
               v-model="form.country"
               label="Country"
               lazy-rules
               :rules="rules.country"
+            /> -->
+            <q-input
+              outlined
+              clearable
+              v-model="form.zipcode"
+              label="Zip Code"
+              lazy-rules
+              :rules="rules.zipcode"
             />
           </div>
         </div>

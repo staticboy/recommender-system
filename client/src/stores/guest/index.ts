@@ -12,6 +12,7 @@ export const useGuestStore = defineStore("guest", () => {
       "user_phoneno": req.phoneno,
       "user_address": req.address,
       "user_country": req.country,
+      "user_zipcode": req.zipcode,
       "user_gender": req.gender,
       "user_status": req.status,
     });
@@ -27,6 +28,7 @@ export const useGuestStore = defineStore("guest", () => {
       "biz_phoneno": req.phoneno,
       "biz_address": req.address,
       "biz_country": req.country,
+      "biz_zipcode": req.zipcode,
     });
     return resp.data;
   };
