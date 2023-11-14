@@ -160,7 +160,7 @@ const removeFromWishlist = async (id: string) => {
 };
 onBeforeMount(async () => {
   products.value = await memberStore.getMemberWishlist(
-    memberStore.memberDetails.user_id || localStorage.getItem("user_id")!
+    memberStore.memberDetails.user_id || localStorage.getItem("userId")!
   );
 });
 </script>
