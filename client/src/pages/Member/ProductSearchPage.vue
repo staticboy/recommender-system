@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, watch } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
@@ -25,17 +25,48 @@ const searchTerm = ref("");
 const categoryFilter = ref<CategoryDetails[]>([]);
 const businessFilter = ref<BizProfileDetails[]>([]);
 const selected = ref(0);
-const filteredProductList = ref<ProductDetails[]>([]);
+const fullProductList = ref<ProductDetails[]>([]);
 const priceFilter = ref({
   min: 0,
   max: Math.max(...productStore.productList.map((p) => p.prod_price)),
 });
-
+const filteredProductList = computed(() => {
+  let resp = fullProductList.value;
+  if (searchTerm.value.length > 0) {
+    resp = resp.filter((prod) => {
+      return prod.prod_name
+        .toLowerCase()
+        .includes(searchTerm.value.toLowerCase());
+    });
+  }
+  if (categoryFilter.value.length > 0) {
+    resp = resp.filter((prod) => {
+      return (
+        categoryFilter.value.find((cf) => cf.cat_id === prod.cat_id) !==
+        undefined
+      );
+    });
+  }
+  if (businessFilter.value.length > 0) {
+    resp = resp.filter((prod) => {
+      return (
+        businessFilter.value.find((bf) => bf.biz_id === prod.biz_id) !==
+        undefined
+      );
+    });
+  }
+  if (priceFilter.value.min > 0 || priceFilter.value.max > 0) {
+    resp = resp.filter((prod) => {
+      return (
+        prod.prod_price >= priceFilter.value.min &&
+        prod.prod_price <= priceFilter.value.max
+      );
+    });
+  }
+  return resp;
+});
 const addBusinessToFilter = async (biz_id: string) => {
   if (!businessFilter.value.find((bf) => bf.biz_id === biz_id)) {
-    filteredProductList.value = await productStore.getProductsByBusiness(
-      biz_id
-    );
     businessFilter.value.push(
       bizStore.businessList.find(
         (b) => b.biz_id === biz_id
@@ -95,47 +126,6 @@ const addToCart = async (id: string) => {
     });
   }
 };
-watch(
-  [searchTerm, categoryFilter, businessFilter, priceFilter],
-  () => {
-    // search bar
-    if (searchTerm.value.length > 0) {
-      filteredProductList.value = filteredProductList.value.filter((prod) => {
-        return prod.prod_name
-          .toLowerCase()
-          .includes(searchTerm.value.toLowerCase());
-      });
-    }
-    // category selection
-    if (categoryFilter.value.length > 0) {
-      filteredProductList.value = filteredProductList.value.filter((prod) => {
-        return (
-          categoryFilter.value.find((cf) => cf.cat_id === prod.cat_id) !==
-          undefined
-        );
-      });
-    }
-    // business selection
-    if (businessFilter.value.length > 0) {
-      filteredProductList.value = filteredProductList.value.filter((prod) => {
-        return (
-          businessFilter.value.find((bf) => bf.biz_id === prod.biz_id) !==
-          undefined
-        );
-      });
-    }
-    // price range selection
-    if (priceFilter.value.min > 0 || priceFilter.value.max > 0) {
-      filteredProductList.value = filteredProductList.value.filter((prod) => {
-        return (
-          prod.prod_price >= priceFilter.value.min &&
-          prod.prod_price <= priceFilter.value.max
-        );
-      });
-    }
-  },
-  { deep: true, immediate: true }
-);
 onBeforeMount(async () => {
   if (categoryStore.categoryList.length === 0) {
     await categoryStore.getAllCategories();
@@ -165,7 +155,7 @@ onBeforeMount(async () => {
     }
   }
   await bizStore.getAllBusinesses();
-  filteredProductList.value = await productStore.getAllProducts();
+  fullProductList.value = await productStore.getAllProducts();
 });
 </script>
 <template>
