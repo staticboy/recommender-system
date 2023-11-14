@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from "vue-router";
 import { computed, onBeforeMount } from "vue";
 import { useMemberStore } from "../stores/member/index";
+import LOGO from "../assets/logo.png";
 
 const route = useRoute();
 const router = useRouter();
@@ -43,9 +44,7 @@ onBeforeMount(async () => {
     <q-header elevated>
       <q-toolbar>
         <q-btn flat round dense icon="menu" class="q-mr-sm" />
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-        </q-avatar>
+        <q-img :src="LOGO" fit="contain" height="50px" width="150px"/>
 
         <q-btn stretch flat :to="navRoutes + '/home'" label="Home" />
         <!-- USER -->

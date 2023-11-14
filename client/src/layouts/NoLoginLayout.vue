@@ -4,7 +4,7 @@
       <q-toolbar>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <q-avatar class="cursor-pointer" @click="router.push({ name: 'GuestLandingPage' })">
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          <q-img :src="LOGO" />
         </q-avatar>
         <q-space />
         <div class="q-ml-xs">
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import LOGO from "../assets/logo.png";
 
 const router = useRouter();
 const login = () => {
