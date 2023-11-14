@@ -13,7 +13,9 @@ export const useBizOwnerStore = defineStore("bizOwner", () => {
     biz_yearest: 0,
     biz_address: '',
     biz_country: '',
-    biz_description: ''
+    biz_zipcode: '',
+    biz_description: '',
+    cats: ''
   });
 
   const bizListProductDetails = ref<BizProductDetails>({

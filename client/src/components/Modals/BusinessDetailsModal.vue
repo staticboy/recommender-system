@@ -32,8 +32,9 @@ const router = useRouter();
       style="height: 100%; width: 55%"
     >
       <q-card-section>
-        Country: {{ business.biz_country }} <br /><br />
         Address: {{ business.biz_address }} <br /><br />
+        Zip Code: {{ business.biz_zipcode }} <br /><br />
+        Country: {{ business.biz_country }} <br /><br />
         Phone Number: {{ business.biz_phoneno }} <br /><br />
         Email: {{ business.biz_email }} <br /><br />
         <q-btn

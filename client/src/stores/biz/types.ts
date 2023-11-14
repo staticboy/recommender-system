@@ -12,7 +12,9 @@ export interface BizProfileDetails {
   biz_yearest: number;
   biz_address: string;
   biz_country: string;
+  biz_zipcode: string;
   biz_description: string;
+  cats: string;
 }
 
 export interface BizProductDetails {

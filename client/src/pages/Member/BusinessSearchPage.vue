@@ -10,7 +10,7 @@ const showBusinessDetailsDialog = ref(false);
 const selectedBusiness = ref<BizProfileDetails>();
 const searchResults = computed(() => {
   return bizStore.businessList.filter((b) => {
-    return b.biz_name.toLowerCase().includes(searchTerm.value.toLowerCase());
+    return b.biz_name.toLowerCase().includes(searchTerm.value.toLowerCase())
   });
 });
 const showBusinessDetails = (business: BizProfileDetails) => {
@@ -20,6 +20,7 @@ const showBusinessDetails = (business: BizProfileDetails) => {
 onMounted(async () => {
   if (bizStore.businessList.length === 0) {
     await bizStore.getAllBusinesses();
+    console.log(bizStore.getAllBusinesses())
   }
 })
 </script>
@@ -44,6 +45,9 @@ onMounted(async () => {
         </q-card-section>
         <q-card-section>
           {{ b.biz_description }}
+        </q-card-section>
+        <q-card-section>
+          Product Categories Sold: {{ b.cats ? b.cats : 'None yet' }}
         </q-card-section>
       </q-card>
     </div>
