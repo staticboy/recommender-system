@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useQuasar } from "quasar";
 import { useCategoryStore } from "../../stores/category";
@@ -20,6 +20,8 @@ const bizStore = useBizOwnerStore();
 const wishlist = ref<string[]>([]);
 const { memberDetails } = useMemberStore();
 const dialog = ref(false);
+const hasLoadedAll = ref(false);
+const hasMounted = ref(false);
 // Search and filter vaariables
 const searchTerm = ref("");
 const categoryFilter = ref<CategoryDetails[]>([]);
@@ -126,10 +128,19 @@ const addToCart = async (id: string) => {
     });
   }
 };
-onBeforeMount(async () => {
-  if (categoryStore.categoryList.length === 0) {
-    await categoryStore.getAllCategories();
+watch([searchTerm, categoryFilter, businessFilter, priceFilter], async () => {
+  if (
+    !hasLoadedAll.value && hasMounted.value &&
+    (categoryFilter.value.length === 0 && businessFilter.value.length === 0)
+  ) {
+    fullProductList.value = await productStore.getAllProducts();
+    hasLoadedAll.value = true;
   }
+});
+onBeforeMount(async () => {
+  if (bizStore.getBizDetails.length === 0) await bizStore.getAllBusinesses();
+  if (categoryStore.categoryList.length === 0)
+    await categoryStore.getAllCategories();
   if (
     productStore.activityProductRecommendations.length === 0 ||
     productStore.preferenceProductRecommendations.length === 0
@@ -160,9 +171,19 @@ onBeforeMount(async () => {
       );
     }
   } else {
-    fullProductList.value = await productStore.getAllProducts();
+    await memberStore.getMemberPreferencesByID(
+      localStorage.getItem("userId") || memberStore.memberDetails.user_id
+    );
+    categoryFilter.value = categoryStore.categoryList.filter((c) =>
+      memberStore.memberPreferences.find((p) => p.cat_id === c.cat_id)
+    );
+    for (const cat of categoryFilter.value) {
+      fullProductList.value = fullProductList.value.concat(
+        await productStore.getProductsByCategory(cat.cat_id)
+      );
+    }
   }
-  await bizStore.getAllBusinesses();
+  hasMounted.value = true;
 });
 </script>
 <template>
@@ -226,12 +247,13 @@ onBeforeMount(async () => {
               )
             "
             :flex="'column'"
-            :hide-actions="true"
+            :hide="true"
             @save-to-wishlist="
               saveToWishlist(filteredProductList[selected].prod_id)
             "
             @add-to-cart="addToCart(filteredProductList[selected].prod_id)"
             @click="openDialog(filteredProductList.indexOf(p))"
+            class="cursor-pointer"
           />
         </template>
       </div>
