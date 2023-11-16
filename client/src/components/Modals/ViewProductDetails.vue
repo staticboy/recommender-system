@@ -71,19 +71,20 @@ const emits = defineEmits(["saveToWishlist", "addToCart"]);
           navigation-icon="radio_button_unchecked"
           transition-prev="slide-right"
           transition-next="slide-left"
-          style="width: 100%"
+          style="width: 100%; height: 100%"
         >
           <q-carousel-slide
             v-for="(img, index) in getImageLinks"
             :key="index"
             :name="index"
             class="column no-wrap flex-center"
+            style="height: 100%;"
           >
             <q-img
               :src="img"
               fit="contain"
               spinner-color="white"
-              style="width: 100%; height: 100%"
+              style="height: 100%;"
             />
           </q-carousel-slide>
         </q-carousel>

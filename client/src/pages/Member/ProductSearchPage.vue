@@ -235,7 +235,7 @@ onBeforeMount(async () => {
         />
       </div>
       <div
-        class="col-span-5 grid grid-cols-3 gap-3"
+        class="col-span-5 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 gap-1"
         v-if="filteredProductList.length > 0"
       >
         <template v-for="p in filteredProductList" :key="p.prod_id">
@@ -254,6 +254,7 @@ onBeforeMount(async () => {
             @add-to-cart="addToCart(filteredProductList[selected].prod_id)"
             @click="openDialog(filteredProductList.indexOf(p))"
             class="cursor-pointer"
+            style="height: 400px;"
           />
         </template>
       </div>
