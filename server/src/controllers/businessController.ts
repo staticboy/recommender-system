@@ -23,6 +23,17 @@ export async function getBusinessAll(req: Request, res: Response) {
     } 
 }
 
+export async function getBusinessAll2(req: Request, res: Response) {
+    try 
+    {
+        const business = await db.any('SELECT * FROM biz_get_all2()');
+        res.json(business);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    } 
+}
+
 export async function getBusinessById(req: Request, res: Response) {
     try 
     {

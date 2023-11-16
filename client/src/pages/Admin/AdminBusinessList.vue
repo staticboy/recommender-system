@@ -147,7 +147,7 @@ const filteredList = computed(() => {
 const fetchBizData = async () => {
   try {
     
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/business/getAll`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/business/getAll2`);
     
     console.log(response);
     if (response.statusText === "OK") {

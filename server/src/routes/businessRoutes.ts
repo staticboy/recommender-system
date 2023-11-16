@@ -9,11 +9,13 @@ import { getBusinessAll,
   getBusinessTxn,
   insertNewBusiness,
   getBusinessInsights,
-  getAdminPerformance } from '../controllers/businessController';
+  getAdminPerformance, 
+getBusinessAll2} from '../controllers/businessController';
 
 const router = Router();
 
 router.get('/getAll', getBusinessAll);
+router.get('/getAll2', getBusinessAll2);
 router.post('/getById', getBusinessById);
 router.post('/getByDate', getBusinessByRegdate);
 router.post('/addNewBusiness', insertNewBusiness);
