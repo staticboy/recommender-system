@@ -135,10 +135,31 @@ const filteredProducts = computed(() => {
     .slice();
 });
 const addToCart = async (id: string) => {
-  await memberStore.addProductToCart({
+  const resp = await memberStore.addProductToCart({
     user_id: memberStore.memberDetails.user_id,
     prod_id: id,
   });
+  if (resp == 1) {
+    products.value = products.value.filter((p) => p.prod_id !== id);
+    q.notify({
+      type: "positive",
+      message: "Product added to cart",
+    });
+  } else if (resp == 0) {
+    q.notify({
+      type: "negative",
+      message: "Product already added to cart",
+    });
+  }
+  else {
+    q.notify({
+      type: "negative",
+      message: "Failed to add to cart",
+    });
+  }
+  products.value = await memberStore.getMemberWishlist(
+    memberStore.memberDetails.user_id || localStorage.getItem("userId")!
+  );
 };
 const removeFromWishlist = async (id: string) => {
   const resp = await memberStore.deleteProductFromWishlist({
