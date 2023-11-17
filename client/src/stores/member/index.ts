@@ -192,6 +192,7 @@ export const useMemberStore = defineStore("member", () => {
   }) => {
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/memberSendTransaction`, req);
     if (response.status === 200) {
+      memberCart.value = [];
       return true;
     } else {
       return false;
