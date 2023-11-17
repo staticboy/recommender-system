@@ -83,23 +83,7 @@ onBeforeMount(async () => {
     <!-- Recommendations based on most bought products -->
     <h5>Check out some of our most popular products!</h5>
     <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
-      <div class="flex col-span-1">
-        <q-card
-          dark
-          bordered
-          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
-        >
-          <q-card-section>
-            <div class="text-h6 text-center">
-              Check out our many products for:
-            </div>
-          </q-card-section>
-          <!-- <q-card-section>
-            <div class="text-h6 text-center">Temp placeholder for image</div>
-          </q-card-section> -->
-        </q-card>
-      </div>
-      <div class="col-span-3">
+      <div class="col-span-4">
         <q-scroll-area dark visible style="height: 350px">
           <div class="flex flex-row no-wrap" style="height: 350px">
             <ViewProductDetails
@@ -119,23 +103,7 @@ onBeforeMount(async () => {
     <!-- Recommendations based on most popular products by category -->
     <h5>Here are some products that you might like</h5>
     <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
-      <div class="flex col-span-1">
-        <q-card
-          dark
-          bordered
-          class="flex flex-col justify-center items-center rounded-xl q-px-sm q-py-lg"
-        >
-          <q-card-section>
-            <div class="text-h6 text-center">
-              Check out our many products for:
-            </div>
-          </q-card-section>
-          <!-- <q-card-section>
-            <div class="text-h6 text-center">Temp placeholder for image</div>
-          </q-card-section> -->
-        </q-card>
-      </div>
-      <div class="col-span-3">
+      <div class="col-span-4">
         <q-scroll-area dark visible style="height: 350px">
           <div class="flex flex-row no-wrap" style="height: 350px">
             <ViewProductDetails
