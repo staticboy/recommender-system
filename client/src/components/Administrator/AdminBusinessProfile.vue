@@ -149,7 +149,7 @@ const actionName = ref(["","Verify Account", "Disable Account"]);
 
 //to identify req type 
 const requestAction = ref(0);
-const commitChanges = () => {
+const commitChanges = async () => {
   console.log(requestAction.value);
 
   switch(requestAction.value) {
@@ -173,8 +173,9 @@ const commitChanges = () => {
   requestAction.value = 0;
   reverseInitConfirm();
   parentProps.parentFetchCategoryData();
+  console.log("i ran this");
   parentProps.backBtn();
-
+  
 }
 
 const initConfirm = ref(false);

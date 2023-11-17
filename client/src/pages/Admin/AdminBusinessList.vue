@@ -51,7 +51,7 @@
 
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import AdminBusinessProfile from "../../components/Administrator/AdminBusinessProfile.vue";
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -162,6 +162,10 @@ const fetchBizData = async () => {
     console.error('Error while fetching product data:', error);
   }
 };
+
+watch([viewExistingBiz], () => {
+  fetchBizData();
+});
 
 onMounted(() => {
   console.log(store.adm);
