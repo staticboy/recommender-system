@@ -3,9 +3,13 @@
     <q-header elevated>
       <q-toolbar>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <q-avatar class="cursor-pointer" @click="router.push({ name: 'GuestLandingPage' })">
-          <q-img :src="LOGO" />
-        </q-avatar>
+        <q-img
+          :src="LOGO"
+          fit="contain"
+          height="50px"
+          width="150px"
+          @click="router.push({ name: 'GuestLandingPage' })"
+        />
         <q-space />
         <div class="q-ml-xs">
           <q-btn flat round dense label="Log In" @click="login" />

@@ -19,6 +19,16 @@ const navRoutes = computed(() => {
   }
 });
 
+const toHomePage = () => {
+  if (navRoutes.value === "/user") {
+    router.push({ name: "HomePage" });
+  } else if (navRoutes.value === "/biz") {
+    router.push({ name: "BizOwnerHome" });
+  } else {
+    router.push({ name: "AdminHome" });
+  }
+};
+
 const logout = () => {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userId");
@@ -44,7 +54,13 @@ onBeforeMount(async () => {
     <q-header elevated>
       <q-toolbar>
         <q-btn flat round dense icon="menu" class="q-mr-sm" />
-        <q-img :src="LOGO" fit="contain" height="50px" width="150px"/>
+        <q-img
+          :src="LOGO"
+          fit="contain"
+          height="50px"
+          width="150px"
+          @click="toHomePage()"
+        />
 
         <q-btn stretch flat :to="navRoutes + '/home'" label="Home" />
         <!-- USER -->
@@ -60,7 +76,12 @@ onBeforeMount(async () => {
           <q-btn stretch flat to="/biz/products" label="Products" />
           <!-- <q-btn stretch flat to="/biz/prod-lists" label="View Product List" /> -->
           <q-btn stretch flat to="/biz/insights" label="Data Insights" />
-          <q-btn stretch flat to="/biz/trans-hist" label="Transaction History" />
+          <q-btn
+            stretch
+            flat
+            to="/biz/trans-hist"
+            label="Transaction History"
+          />
           <q-btn stretch flat to="/biz/submit-enq" label="Contact Us" />
         </template>
 
@@ -70,7 +91,12 @@ onBeforeMount(async () => {
           <q-btn stretch flat to="/admin/enquiry-list" label="Enquiries" />
           <q-btn stretch flat to="/admin/business-list" label="Businesses" />
           <q-btn stretch flat to="/admin/cat-list" label="Categories" />
-          <q-btn stretch flat to="/admin/performance-dashboard" label="Performance" />
+          <q-btn
+            stretch
+            flat
+            to="/admin/performance-dashboard"
+            label="Performance"
+          />
         </template>
 
         <q-space />
