@@ -153,7 +153,7 @@ onBeforeMount(async () => {
     <q-card>
       <q-card-section>
         <div class="text-h6 text-center">
-          Please login to view more products!
+          Please login to view more!
         </div>
       </q-card-section>
       <q-card-actions class="flex justify-center">
