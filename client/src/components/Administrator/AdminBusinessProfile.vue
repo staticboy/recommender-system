@@ -173,7 +173,6 @@ const commitChanges = async () => {
   requestAction.value = 0;
   reverseInitConfirm();
   parentProps.parentFetchCategoryData();
-  console.log("i ran this");
   parentProps.backBtn();
   
 }

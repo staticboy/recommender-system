@@ -106,6 +106,10 @@ watch(prodDetails, () => {
   console.log(prodDetails.value);
 });
 
+watch([viewProd], () => {
+  fetchProductData();
+});
+
 const availabilityOptions = computed(() => [
   { value: 'AVAILABLE', label: 'Yes' },
   { value: 'UNAVAILABLE', label: 'No' },

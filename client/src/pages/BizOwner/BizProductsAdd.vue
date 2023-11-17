@@ -198,6 +198,7 @@ const csv_save = () => {
   csvDataToDatabase();
   q.loading.hide();
   clear_csv()
+  router.push({ path: '/biz/products' });
 }
 const csvDataToDatabase = async () => {
 
@@ -248,39 +249,6 @@ const csvDataToDatabase = async () => {
 };
 
 const addProduct = () => {
-  // console.log(product.prod_name);
-  // if (product.prod_name === '' || product.prod_name === undefined) {
-  //   q.notify({
-  //     icon: "report_problem",
-  //     message: "Product name empty",
-  //     color: "negative",
-  //   });
-  //   return
-  // }
-  // if (product.prod_description === '' || product.prod_description === null) {
-  //   q.notify({
-  //     icon: "report_problem",
-  //     message: "Product description empty",
-  //     color: "negative",
-  //   });
-  //   return
-  // }
-  // if (product.cat_id === '' || product.cat_id == null) {
-  //   q.notify({
-  //     icon: "report_problem",
-  //     message: "Product Category empty",
-  //     color: "negative",
-  //   });
-  //   return
-  // }
-  // if (product.sub_cat === '' || product.sub_cat == null) {
-  //   q.notify({
-  //     icon: "report_problem",
-  //     message: "Product Category empty",
-  //     color: "negative",
-  //   });
-  //   return
-  // }
   q.loading.show();
   // uploadImages("P0652", files.value)
   product._rawValue.biz_id = localStorage.getItem("userId");
