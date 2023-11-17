@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { ProductDetails, ProductRecommendations } from "./types"
+import { ProductDetails, ProductRecommendations, RankedProdPerCat } from "./types"
 import axios, { AxiosResponse } from "axios";
 
 export const useProductStore = defineStore("product", () => {
@@ -8,6 +8,7 @@ export const useProductStore = defineStore("product", () => {
   const productList = ref<ProductDetails[]>([]);
   const activityProductRecommendations = ref<ProductDetails[]>([]);
   const preferenceProductRecommendations = ref<ProductDetails[]>([]);
+  const rankedProdPerCat = ref<RankedProdPerCat[]>([]);
   
   const getAllProducts = async () => {
     const resp: AxiosResponse<ProductDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getAll`);
@@ -90,9 +91,10 @@ export const useProductStore = defineStore("product", () => {
     activityProductRecommendations.value = resp.data.recommendations_activity;
     preferenceProductRecommendations.value = resp.data.recommendations_pref;
   }
-  const getProductsByCatAndPurchaseNum = async (sorted: boolean, num: number) => {
-    const resp: AxiosResponse<ProductDetails[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getPurchaseProdPerCat`)
+  const getProductsByCatAndPurchaseNum = async () => {
+    const resp: AxiosResponse<RankedProdPerCat[]> = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/getPurchaseProdPerCat`)
     if (resp.status === 200) {
+      rankedProdPerCat.value = resp.data;
       return resp.data;
     } else {
       return [];
@@ -102,6 +104,7 @@ export const useProductStore = defineStore("product", () => {
     productList,
     activityProductRecommendations,
     preferenceProductRecommendations,
+    rankedProdPerCat,
     getAllProducts,
     getProductDetail,
     getProductImageLink,

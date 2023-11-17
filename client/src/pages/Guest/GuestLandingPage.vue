@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
-import { useQuasar } from "quasar";
+import { ref, onBeforeMount, computed } from "vue";
 import { useCategoryStore } from "../../stores/category";
 import { useProductStore } from "../../stores/product";
 import { CategoryDetails } from "../../stores/category/types";
-import { ProductDetails } from "../../stores/product/types";
+import { ProductDetails, RankedProdPerCat } from "../../stores/product/types";
 import ViewProductDetails from "../../components/Modals/ViewProductDetails.vue";
 
-const $q = useQuasar();
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
 const redirectDialog = ref(false);
@@ -16,19 +14,27 @@ const selectedCategory = ref<CategoryDetails>({
   cat_name: "",
   cat_status: "",
 });
-const productList = ref<ProductDetails[]>([]);
+const productListByCategory = ref<ProductDetails[]>([]);
+const productListByPurchaseNumByCat = ref<RankedProdPerCat[]>([]);
+const recommendByPurchaseNum = computed(() =>
+  [...productListByPurchaseNumByCat.value]
+    .sort((a, b) => b.buys - a.buys)
+    .slice(0, 10)
+);
 const redirectToLogin = () => {
   redirectDialog.value = true;
-}
+};
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
     useCategoryStore().categoryList[
       Math.floor(Math.random() * useCategoryStore().categoryList.length)
     ];
-  productList.value = await productStore.getProductsByCategory(
+  productListByCategory.value = await productStore.getProductsByCategory(
     selectedCategory.value.cat_id
   );
+  productListByPurchaseNumByCat.value =
+    await productStore.getProductsByCatAndPurchaseNum();
 });
 </script>
 <template>
@@ -61,7 +67,7 @@ onBeforeMount(async () => {
         <q-scroll-area dark visible style="height: 350px">
           <div class="flex flex-row no-wrap" style="height: 350px">
             <ViewProductDetails
-              v-for="product in productList"
+              v-for="product in productListByCategory"
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
@@ -74,7 +80,7 @@ onBeforeMount(async () => {
     </div>
 
     <!-- Recommendations based on most bought products -->
-    <h5>You might be interested in some of these products!</h5>
+    <h5>Check out some of our most popular products!</h5>
     <div class="grid grid-cols-4 gap-3 q-py-lg h-max">
       <div class="flex col-span-1">
         <q-card
@@ -87,16 +93,16 @@ onBeforeMount(async () => {
               Check out our many products for:
             </div>
           </q-card-section>
-          <q-card-section>
+          <!-- <q-card-section>
             <div class="text-h6 text-center">Temp placeholder for image</div>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
       </div>
       <div class="col-span-3">
         <q-scroll-area dark visible style="height: 350px">
           <div class="flex flex-row no-wrap" style="height: 350px">
             <ViewProductDetails
-              v-for="product in productStore.preferenceProductRecommendations"
+              v-for="product in recommendByPurchaseNum"
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
@@ -131,7 +137,7 @@ onBeforeMount(async () => {
         <q-scroll-area dark visible style="height: 350px">
           <div class="flex flex-row no-wrap" style="height: 350px">
             <ViewProductDetails
-              v-for="product in productStore.activityProductRecommendations"
+              v-for="product in productStore.rankedProdPerCat.slice(0, 10)"
               :key="product.prod_id"
               :product="product"
               :flex="'column'"
