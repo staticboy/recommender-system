@@ -197,6 +197,15 @@ export const useMemberStore = defineStore("member", () => {
       return false;
     }
   }
+  const getMemberRegisteredCount = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/member/getAll`);
+    if (response.status === 200) {
+      console.log(response.data.length)
+      return response.data.length;
+    } else {
+      return -1;
+    }
+  }
   return {
     memberDetails,
     memberPreferences,
@@ -216,5 +225,6 @@ export const useMemberStore = defineStore("member", () => {
     memberSubmitProductRating,
     memberGetWishlist,
     memberSendTransaction,
+    getMemberRegisteredCount
   }
 });

@@ -27,10 +27,18 @@ const routes: RouteRecordRaw[] = [
           noNav: true,
         },
       },
+      // {
+      //   name: "GuestLandingPage",
+      //   path: "/",
+      //   component: () => import("../pages/Guest/GuestLandingPage.vue"),
+      //   meta: {
+      //     noNav: true,
+      //   },
+      // },
       {
-        name: "GuestLandingPage",
+        name: "GuestInfoPage",
         path: "/",
-        component: () => import("../pages/Guest/GuestLandingPage.vue"),
+        component: () => import("../pages/Guest/GuestInfoPage.vue"),
         meta: {
           noNav: true,
         },
