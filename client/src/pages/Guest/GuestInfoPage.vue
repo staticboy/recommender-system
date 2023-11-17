@@ -79,7 +79,7 @@ onBeforeMount(async () => {
         <q-card>
           <div class="text-center">
             <q-icon name="account_circle" size="2em" class="text-primary mt-2" />
-            <h3 class="text-lg font-semibold mt-2">Current Resgistered Members: {{ activeUsers }}</h3>
+            <h3 class="text-lg font-semibold mt-2">Current Registered Members: {{ activeUsers }}</h3>
             <p class="text-secondary">Join our community of sports enthusiasts</p>
           </div>
         </q-card>
