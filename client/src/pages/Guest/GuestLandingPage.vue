@@ -73,6 +73,7 @@ onBeforeMount(async () => {
               :flex="'column'"
               :hide="true"
               @click="redirectToLogin()"
+              class="cursor-pointer"
             />
           </div>
         </q-scroll-area>
@@ -108,6 +109,7 @@ onBeforeMount(async () => {
               :flex="'column'"
               :hide="true"
               @click="redirectToLogin()"
+              class="cursor-pointer"
             />
           </div>
         </q-scroll-area>
@@ -143,6 +145,7 @@ onBeforeMount(async () => {
               :flex="'column'"
               :hide="true"
               @click="redirectToLogin()"
+              class="cursor-pointer"
             />
           </div>
         </q-scroll-area>
