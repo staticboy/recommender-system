@@ -7,10 +7,14 @@ import { ProductDetails, RankedProdPerCat } from "../../stores/product/types";
 import ViewProductDetails from "../../components/Modals/ViewProductDetails.vue";
 import { useBizOwnerStore } from "../../stores/biz";
 import { useMemberStore } from "../../stores/member";
+import { BizProfileDetails } from "../../stores/biz/types";
+import BusinessDetailsModal from "../../components/Modals/BusinessDetailsModal.vue";
 
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
 const redirectDialog = ref(false);
+const viewBusinessDialog = ref(false);
+const selectedBusiness = ref<BizProfileDetails>();
 const selectedCategory = ref<CategoryDetails>({
   cat_id: "",
   cat_name: "",
@@ -35,6 +39,10 @@ const searchResults = computed(() => {
 });
 const memberStore = useMemberStore();
 const activeUsers = ref(0);
+const viewBusinessDetails = (business: BizProfileDetails) => {
+  selectedBusiness.value = business;
+  viewBusinessDialog.value = true;
+}
 
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
@@ -154,7 +162,9 @@ onBeforeMount(async () => {
             <div class="flex flex-row no-wrap" style="height: 350px">
               <q-card dark bordered v-for="b in searchResults" :key="b.biz_id"
                 class="flex flex-col justify-center items-center rounded-xl cursor-pointer q-px-sm q-py-lg"
-                style="height: 350px; width: 200px;">
+                style="height: 350px; width: 200px;"
+                @click="viewBusinessDetails(b)"
+              >
                 <q-card-section>
                   <div class="text-h6"> {{ b.biz_name }}</div>
                 </q-card-section>
@@ -180,6 +190,13 @@ onBeforeMount(async () => {
         <q-btn label="Login" color="primary" class="q-ma-md" @click="$router.push('/login')" />
       </q-card-actions>
     </q-card>
+  </q-dialog>
+  <q-dialog v-model="viewBusinessDialog">
+    <BusinessDetailsModal
+      v-if="selectedBusiness"
+      :business="selectedBusiness"
+      :disable="true"
+    />
   </q-dialog>
 </template>
 <style scoped lang="scss"></style>
