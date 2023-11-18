@@ -36,6 +36,10 @@ const searchResults = computed(() => {
 const memberStore = useMemberStore();
 const activeUsers = ref(0);
 
+const goToSite = () => {
+  window.location.href = "https://fyp23s311.wixsite.com/my-site";
+}
+
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
@@ -165,6 +169,14 @@ onBeforeMount(async () => {
             </div>
           </q-scroll-area>
         </div>
+      </div>
+      <div>
+          <q-btn
+            label="About us"
+            color="primary"
+            class="q-ma-md"
+            @click="goToSite()"
+          />
       </div>
     </q-container>
   </q-page>
