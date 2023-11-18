@@ -24,9 +24,7 @@ const recommendByPurchaseNum = computed(() =>
 const redirectToLogin = () => {
   redirectDialog.value = true;
 };
-const goToSite = () => {
-  window.location.href = "https://fyp23s311.wixsite.com/my-site";
-}
+
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
@@ -146,11 +144,6 @@ onBeforeMount(async () => {
       </q-card-actions>
     </q-card>
   </q-dialog>
-  <q-btn
-          label="About us"
-          color="primary"
-          class="q-ma-md"
-          @click="goToSite()"
-        />
+  
 </template>
 <style scoped lang="scss"></style>
