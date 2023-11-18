@@ -267,6 +267,21 @@ export async function updateMemberProfileInfo(req: Request, res: Response) {
     }
 }
 
+export async function memberLogViewProduct(req: Request, res: Response) {
+    try {
+        const result = await db.one('SELECT * FROM mem_log_view_product($1)', [req.body])
+
+        if (result.mem_log_view_product === 1) {
+            res.status(200).json({ message: 'Product view logged successfully.' });
+        } else {
+            res.status(500).json({ error: 'DB error: Product view logging failed.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Oops, something broke.' });
+    }
+}
+
 //Purchase 
 export async function memberSendTransaction(req: Request, res: Response) {
     try {

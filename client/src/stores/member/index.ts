@@ -207,6 +207,17 @@ export const useMemberStore = defineStore("member", () => {
       return -1;
     }
   }
+  const memberLogViewProduct = async (req: {
+    user_id: string,
+    prod_id: string
+  }) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/member/memberLogViewProduct`, req);
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return {
     memberDetails,
     memberPreferences,
@@ -226,6 +237,7 @@ export const useMemberStore = defineStore("member", () => {
     memberSubmitProductRating,
     memberGetWishlist,
     memberSendTransaction,
-    getMemberRegisteredCount
+    getMemberRegisteredCount,
+    memberLogViewProduct
   }
 });

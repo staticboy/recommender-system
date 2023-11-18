@@ -137,6 +137,17 @@ watch([searchTerm, categoryFilter, businessFilter, priceFilter], async () => {
     hasLoadedAll.value = true;
   }
 });
+watch(dialog, () => {
+  if (dialog.value) {
+    setTimeout(async () => {
+      await memberStore.memberLogViewProduct({
+        user_id:
+          localStorage.getItem("userId") || memberStore.memberDetails.user_id,
+        prod_id: filteredProductList.value[selected.value].prod_id,
+      });
+    }, 2000);
+  }
+});
 onBeforeMount(async () => {
   if (bizStore.getBizDetails.length === 0) await bizStore.getAllBusinesses();
   if (categoryStore.categoryList.length === 0)
