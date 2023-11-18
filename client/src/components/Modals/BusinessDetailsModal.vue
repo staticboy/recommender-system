@@ -7,6 +7,10 @@ defineProps({
     type: Object as PropType<BizProfileDetails>,
     required: true,
   },
+  disable: {
+    type: Boolean,
+    default: false,
+  },
 });
 const router = useRouter();
 </script>
@@ -38,6 +42,7 @@ const router = useRouter();
         Phone Number: {{ business.biz_phoneno }} <br /><br />
         Email: {{ business.biz_email }} <br /><br />
         <q-btn
+          v-if="!disable"
           flat
           outlined
           no-caps
