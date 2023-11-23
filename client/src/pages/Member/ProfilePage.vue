@@ -6,6 +6,9 @@ import { useCategoryStore } from "../../stores/category";
 import { MemberDetails, MemberPreferences } from "../../stores/member/types";
 import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 
+const isPwd1 = ref('visibility_off');
+const isPwd2 = ref('visibility_off');
+
 const q = useQuasar();
 const memberStore = useMemberStore();
 const categoryStore = useCategoryStore();
@@ -161,17 +164,35 @@ onBeforeMount(async () => {
             v-model="curMemberDetails.user_password"
             label="Password"
             lazy-rules
+            :type="isPwd1 ? 'password' : 'text'"
             :rules="[(val) => !!val || 'Password is required']"
             :disable="!editMode.profile"
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd1 ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd1 = !isPwd1"
+              />
+            </template>
+          </q-input>
           <q-input
             outlined
             v-model="confirmPassword"
             label="Confirm Password"
             lazy-rules
+            :type="isPwd2 ? 'password' : 'text'"
             :rules="[(val) => !!val || 'Password is required']"
             :disable="!editMode.profile"
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd2 ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd2 = !isPwd2"
+              />
+            </template>
+          </q-input>
         </div>
       </div>
 
