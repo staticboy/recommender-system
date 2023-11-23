@@ -51,7 +51,7 @@ const goToSite = () => {
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
-    useCategoryStore().categoryList[
+    useCategoryStore().categoryList.filter(cat => cat.cat_status == "ACTIVE")[
     Math.floor(Math.random() * useCategoryStore().categoryList.length)
     ];
   productListByCategory.value = await productStore.getProductsByCategory(

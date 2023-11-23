@@ -73,7 +73,7 @@ const addToCart = async (id: string) => {
 onBeforeMount(async () => {
   await categoryStore.getAllCategories();
   selectedCategory.value =
-    useCategoryStore().categoryList[
+    useCategoryStore().categoryList.filter(cat => cat.cat_status == "ACTIVE")[
       Math.floor(Math.random() * useCategoryStore().categoryList.length)
     ];
   productList.value = await productStore.getProductsByCategory(
