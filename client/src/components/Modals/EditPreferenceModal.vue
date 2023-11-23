@@ -182,7 +182,7 @@ onBeforeMount(async () => {
               map-options
               v-model="props.row.cat_id"
               :options="
-                categoryStore.categoryList.map((cat) => {
+                categoryStore.categoryList.filter(cat => cat.cat_status == 'ACTIVE').map((cat) => {
                   return {
                     label: cat.cat_name,
                     value: cat.cat_id,
