@@ -33,6 +33,17 @@ const logout = () => {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userId");
   localStorage.removeItem("pref_count");
+  memberStore.memberDetails = {
+    user_id: "",
+    user_email: "",
+    user_password: "",
+    user_name: "",
+    user_dob: "",
+    user_phoneno: 0,
+    user_address: "",
+    user_country: "",
+    user_gender: "",
+  };
   router.push({ name: "LoginPage" });
 };
 
