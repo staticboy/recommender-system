@@ -6,8 +6,8 @@ import { useCategoryStore } from "../../stores/category";
 import { MemberDetails, MemberPreferences } from "../../stores/member/types";
 import EditPreferenceModal from "../../components/Modals/EditPreferenceModal.vue";
 
-const isPwd1 = ref('visibility_off');
-const isPwd2 = ref('visibility_off');
+const isPwd1 = ref(true);
+const isPwd2 = ref(true);
 
 const q = useQuasar();
 const memberStore = useMemberStore();
